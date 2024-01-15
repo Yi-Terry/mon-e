@@ -1,0 +1,11 @@
+.accountPage{
+    text-align: center;
+}
+button.accountPage{
+    
+}
+input#createAccount{
+    display: block;
+    margin: 0 auto;
+    
+}
