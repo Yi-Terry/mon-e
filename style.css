@@ -17,8 +17,8 @@ form {
   
   
   /* Full-width inputs */
-  input[type=text], input[type=password] {
-    width: 100%;
+  input[type="text"], input[type=password], input[type=number] {
+    width: 15%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
@@ -36,9 +36,8 @@ form {
     margin: 8px 0;
     border: none;
     cursor: pointer;
-    width: 100%;
+    width: 15%;
   }
-  
   
   
   /* Add a hover effect for buttons */
