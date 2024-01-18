@@ -10,23 +10,23 @@
     <form action="" method="post">
 
         <div class="imageContainer">
-            <img src="images/testlogo.png" alt="Mon-e_logo" class="logo">
+            <img src="images/logo2.png" alt="Mon-e_logo" class="logo">
         </div>
 
         <div class="login">
             <h3>Welcome to Mon-e</h3>
-
+            <h4>Please Sign In!</h4>
             <label for="uname">Enter Username</label>
             <input type="text" placeholder="Enter Username" name="uname" required>
-
             <label for="psw">Enter Password</label>
             <input type="text" placeholder="Enter Password" name="psw" required>
-
-            <button type="submit">Login</button>
-    <label>Don't Have an Account?</label><a href="createAccount.html">Sign up Here</a>
+            <a href = "forgotPassword.html">Forgot Password?</a>
+            <br>
+            <button onclick = "window.location.href = 'homePage.html'" id = "login" type="submit">Login</button>
+            <br>
+            <label>Don't Have an Account? </label><a href="createAccount.html">Sign up Here</a>
         </div>
-
-
     </form>
 </body>
 </html>
+
