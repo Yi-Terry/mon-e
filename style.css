@@ -1,98 +1,138 @@
 .accountPage{
-    text-align: center;
+  text-align: center;
 }
 
 input#createAccount{
-    display: block;
-    margin: 0 auto;
-    
+  display: block;
+  margin: 0 auto;
+  
 }
 
 
 /* Bordered form */
 form {
-    border: 3px solid #f1f1f1;
-  }
-  
-  
-  
-  /* Full-width inputs */
-  input[type=text], input[type=password] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-  }
-  
-  
-  
-  /* Set a style for all buttons */
-  button {
-    background-color: #04AA6D;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-  }
-  
-  
-  
-  /* Add a hover effect for buttons */
-  button:hover {
-    opacity: 0.8;
-  }
+  border: 3px solid #f1f1f1;
+}
 
-  /* Center the avatar image inside this container */
+
+
+/* Full-width inputs */
+input[type="text"], input[type=password], input[type=number] {
+  width: 15%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.group input {
+  width: 56px;
+  height: 56px;
+  margin: 0 8px;
+  font-size: 25px;
+  text-align: center;
+  border-radius: 3px;
+  border: none;
+  color: transparent;
+  background: #f0f0f0;
+  text-shadow: 0 0 0 #000;
+  transition: 0.1s ease-in-out;
+}
+
+.group input::-webkit-inner-spin-button {
+  display: none;
+}
+
+.group input:focus {
+  outline-offset: 3px;
+  outline: 2px solid #11bd67;
+}
+
+/*Set style for button options */
+.buttonOptions button{
+  background-color: white;
+  color: black;
+  border-style:solid;
+  text-align: center;
+  border-color: #000;
+  padding: 14px 100px;
+  width: 30%;
+}
+
+/* Set a style for all buttons */
+button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 15%;
+}
+
+
+/* Add a hover effect for buttons */
+button:hover {
+  opacity: 0.8;
+}
+
+/* Center the avatar image inside this container */
 .imgcontainer {
-    text-align: center;
-    margin: 24px 0 12px 0;
+  text-align: center;
+  margin: 24px 0 12px 0;
+
+}
+
+
+
+/* Avatar image */
+img.logo {
+  width: 40%;
+  margin: auto;
+  text-align: center;
+  border-radius: 50%;
+}
   
-  }
-  
-  
-  
-  /* Avatar image */
-  img.logo {
-    width: 40%;
-    border-radius: 50%;
-  }
-    
-  /* Add padding to containers */
-  
-  .login {
-    padding: 16px;
-  }
-  
-  
-  
-  /* The "Forgot password" text */
+/* Add padding to containers */
+
+.login {
+  padding: 16px;
+}
+
+
+
+/* The "Forgot password" text */
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+
   span.psw {
-    float: right;
-    padding-top: 16px;
-  }
-  
-  
-  
-  /* Change styles for span and cancel button on extra small screens */
-  @media screen and (max-width: 300px) {
-  
-    span.psw {
-  
-      display: block;
-  
-      float: none;
-  
-    }
-  
-    .cancelbtn {
-  
-      width: 100%;
-    }
-  
+
+    display: block;
+
+    float: none;
+
   }
 
+  .cancelbtn {
 
+    width: 100%;
+  }
+
+}
+.forgotPassword{
+  text-align: center;
+}
+.signUp{
+  text-align: center;
+}
+.forgotLink{
+  text-align:right;
+}

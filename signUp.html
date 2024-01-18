@@ -7,26 +7,41 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <form action="" method="post">
+    <div class = "signUp">
+        <form action="" method="post">
 
-        <div class="imageContainer">
-            <img src="images/testlogo.png" alt="Mon-e_logo" class="logo">
-        </div>
-
-        <div class="login">
-            <h3>Welcome to Mon-e</h3>
-
-            <label for="uname">Enter Username</label>
-            <input type="text" placeholder="Enter Username" name="uname" required>
-
-            <label for="psw">Enter Password</label>
-            <input type="text" placeholder="Enter Password" name="psw" required>
-
-            <button type="submit">Login</button>
-    <label>Don't Have an Account?</label><a href="createAccount.html">Sign up Here</a>
-        </div>
-
-
-    </form>
+            <div class="imageContainer">
+                <img src="images/logo2.png" alt="Mon-e_logo" class="logo">
+            </div>
+    
+            <div class="login">
+                <h1>Welcome to Mon-e</h1>
+                <h3>Please Sign In!</h3>
+                <label for="uname">Enter Username</label>
+                <input type="text" placeholder="Username" name="uname" required>
+                <br>
+                <label for="psw">Enter Password</label>
+                <input type="text" placeholder="Password" name="psw" required>
+                <br>
+                <a class = "forgotLink" href = "forgotPassword.html">Forgot Password?</a>
+                <br>
+                <button onclick = "window.location.href = 'homePage.html'" id = "login" type="submit">Login</button>
+                <br>
+                <hr>
+                Or
+                <br>
+                <div class="buttonOptions">
+                    <button id="google" type="submit"><img src="images/googlelogo.png">Continue with Google</button>
+                    <br>
+                    <button id="apple" type = "submit">Continue with Apple</button>
+                    <br>
+                    <button id="facebook" type = "submit">Continue with Facebook</button>
+                </div>
+                <hr>
+                <label>Don't Have an Account? </label><a href="createAccount.html">Sign up Here</a>
+            </div>
+        </form>
+    </div>
 </body>
 </html>
+
