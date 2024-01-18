@@ -56,90 +56,14 @@ input[type="text"], input[type=password], input[type=number] {
   border-style:solid;
   text-align: center;
   border-color: #000;
-  padding: 14px 100px;
+  padding: 14px 20px;
   width: 30%;
 }
-
-/* Set a style for all buttons */
-button {
-  background-color: #04AA6D;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 15%;
+.buttonOptions img{
+  float: left;
+  width:20%
 }
-
-
-/* Add a hover effect for buttons */
-button:hover {
-  opacity: 0.8;
-}
-
-/* Center the avatar image inside this container */
-.imgcontainer {
-  text-align: center;
-  margin: 24px 0 12px 0;
-
-}
-
-
-
-/* Avatar image */
-img.logo {
-  width: 40%;
-  margin: auto;
-  text-align: center;
-  border-radius: 50%;
-}
-  
-/* Add padding to containers */
-
-.login {
-  padding: 16px;
-}
-
-
-
-/* The "Forgot password" text */
-span.psw {
-  float: right;
-  padding-top: 16px;
-}
-
-
-
-/* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
-
-  span.psw {
-
-    display: block;
-
-    float: none;
-
-  }
-
-  .cancelbtn {
-
-    width: 100%;
-  }
-
-}
-.forgotPassword{
-  text-align: center;
-}
-.signUp{
-  text-align: center;
-}
-.forgotLink{
-  text-align:right;
-}
-
-
-
-
+/* Set style for Google Button Sign In*/
 .gsi-material-button {
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -242,4 +166,87 @@ span.psw {
 .gsi-material-button:not(:disabled):hover .gsi-material-button-state {
   background-color: #303030;
   opacity: 8%;
+}
+/** Set style for Apple Sign In Button */
+.signin-button{
+  text-align:center;
+  position: relative;
+}
+
+/* Set a style for all buttons */
+button {
+  text-align:center;
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 15%;
+}
+
+
+/* Add a hover effect for buttons */
+button:hover {
+  opacity: 0.8;
+}
+
+/* Center the avatar image inside this container */
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+
+}
+
+
+
+/* Avatar image */
+img.logo {
+  width: 40%;
+  margin: auto;
+  text-align: center;
+  border-radius: 50%;
+}
+  
+/* Add padding to containers */
+
+.login {
+  padding: 16px;
+}
+
+
+
+/* The "Forgot password" text */
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+
+  span.psw {
+
+    display: block;
+
+    float: none;
+
+  }
+
+  .cancelbtn {
+
+    width: 100%;
+  }
+
+}
+.forgotPassword{
+  text-align: center;
+}
+.signUp{
+  text-align: center;
+}
+.forgotLink{
+  text-align:right;
 }
