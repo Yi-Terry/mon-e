@@ -49,7 +49,10 @@ function createWindow(){ //creates window
 
     
 
-    win.webContents.openDevTools(); //just here to check for some stuff, remove later
+    // win.webContents.openDevTools(); //just here to check for some stuff, remove later
+
+
+    
 
 
 

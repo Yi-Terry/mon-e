@@ -1,11 +1,11 @@
 .accountPage{
-    text-align: center;
+  text-align: center;
 }
 
 input#createAccount{
-    display: block;
-    margin: 0 auto;
-    
+  display: block;
+  margin: 0 auto;
+  
 }
 
 
@@ -17,8 +17,8 @@ form {
   
   
   /* Full-width inputs */
-  input[type="text"], input[type=password], input[type=number] {
-    width: 15%;
+  input[type=text], input[type=password] {
+    width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
@@ -26,28 +26,6 @@ form {
     box-sizing: border-box;
   }
   
-  .group input {
-    width: 56px;
-    height: 56px;
-    margin: 0 8px;
-    font-size: 25px;
-    text-align: center;
-    border-radius: 3px;
-    border: none;
-    color: transparent;
-    background: #f0f0f0;
-    text-shadow: 0 0 0 #000;
-    transition: 0.1s ease-in-out;
-  }
-  
-  .group input::-webkit-inner-spin-button {
-    display: none;
-  }
-  
- .group input:focus {
-    outline-offset: 3px;
-    outline: 2px solid #11bd67;
-  }
   
   
   /* Set a style for all buttons */
@@ -58,8 +36,9 @@ form {
     margin: 8px 0;
     border: none;
     cursor: pointer;
-    width: 15%;
+    width: 100%;
   }
+  
   
   
   /* Add a hover effect for buttons */
@@ -67,7 +46,7 @@ form {
     opacity: 0.8;
   }
 
-  /* Center the avatar image inside this container */
+/* Center the avatar image inside this container */
 .imgcontainer {
     text-align: center;
     margin: 24px 0 12px 0;
@@ -79,8 +58,6 @@ form {
   /* Avatar image */
   img.logo {
     width: 40%;
-    margin: auto;
-    text-align: center;
     border-radius: 50%;
   }
     
@@ -117,7 +94,5 @@ form {
     }
   
   }
-  .forgotPassword{
-    text-align: center;
-  }
+
 
