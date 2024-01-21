@@ -1,6 +1,9 @@
 .accountPage{
   text-align: center;
 }
+.page{
+  text-align: center;
+}
 
 input#createAccount{
   display: block;
