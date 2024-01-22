@@ -31,6 +31,10 @@
 
 </style>
 <body>
+    <!-- Used for facebook button -->
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0&appId=278032248330476" nonce="nuEx3Map"></script>
+
     <div class="signUp">
         <form action="" method="post">
 
@@ -54,6 +58,7 @@
                 <hr>
                 Or
                 <br>
+                <!-- Google button -->
                 <div class="buttonOptions">
                     <button class="gsi-material-button" id="googleSignInBtn">
                         <div class="gsi-material-button-state"></div>
@@ -72,11 +77,13 @@
                         </div>
                     </button>
                     <br>
-                    <!-- <button id="apple" type = "submit">Continue with Apple</button> -->
+                    <!-- Apple buttpo -->
                     <div id="appleid-signin" class="signin-button" data-color="white" data-border="true" data-type="sign-in" data-label-position="center"></div>
                     <script type="text/javascript" src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"></script>
                     <br>
-                    <button id="facebook" type="submit">Continue with Facebook</button>
+                    <!-- Facebook button -->
+                    <div class="fb-login-button" data-width="" data-size="" data-button-type="" data-layout="" data-auto-logout-link="false" data-use-continue-as="false"></div>
+                  
                 </div>
                 <hr>
                 <label>Don't Have an Account? </label><a href="createAccount.html">Sign up Here</a>
@@ -84,11 +91,11 @@
         </form>
     </div>
 
-
+<!-- For gooogle, apple, and facebook login -->
 <script type="module">
 
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
 
     import { firebaseConfig } from "./firebase.js";  
 
@@ -97,6 +104,23 @@
     document.getElementById('googleSignInBtn').addEventListener('click', async () => {
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
+        
+        try {
+            const result = await signInWithPopup(auth, provider);
+
+            const user = result.user;
+            console.log('Signed in as:', user.displayName);
+
+        } catch (error) {
+
+            console.error('Error signing in:', error.message);
+        }
+    });
+
+
+    document.getElementById('faceBookbtn').addEventListener('click', async () => {
+        const auth = getAuth(app);
+        const provider = new FacebookAuthProvider();
         
         try {
             const result = await signInWithPopup(auth, provider);
