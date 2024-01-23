@@ -91,11 +91,11 @@
         </form>
     </div>
 
-<!-- For gooogle, apple, and facebook login -->
+<!-- For Google, Apple, and Facebook login -->
 <script type="module">
 
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
 
     import { firebaseConfig } from "./firebase.js";  
 
@@ -117,6 +117,17 @@
         }
     });
 
+   
+    const appleSignInProvider = new OAuthProvider('apple.com');
+    document.getElementById('appleid-signin').addEventListener('click', async () => {
+        const auth = getAuth(app);
+
+        try {
+            await signInWithPopup(auth, appleSignInProvider);
+        } catch (error) {
+            console.error('Error signing in with Apple:', error.message);
+        }
+    });
 
     document.getElementById('faceBookbtn').addEventListener('click', async () => {
         const auth = getAuth(app);
@@ -137,5 +148,3 @@
 
 </body>
 </html>
-
-
