@@ -8,34 +8,71 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="page">
-        <div class="accountPage">
+    <div class="accountPage">
         
-            <h2 class="createAccount">Create an Account</h2>
-    
-            <label for="firstName">Enter First Name</h3>
-            <input type="text" placeholder="First Name" name="firstName" id="createAccount" required>
+        <h2 class="createAccount">Create an Account</h2>
+
+        <label for="firstName">Enter First Name</h3>
+        <input type="text" placeholder="First Name" name="firstName" id="firstName" required>
+        
+        
+         <label for="lastName">Enter Last Name</h3>
+         <input type="text" placeholder="Last Name" name="lastName" id="lastName" required>
+        
             
-            
-             <label for="lastName">Enter Last Name</h3>
-             <input type="text" placeholder="Last Name" name="lastName" id="createAccount" required>
-            
-                
-            <label for="phonenumber">Enter Phone Number</h3>
-             <input type="number" placeholder="Phone Number" name="phoneNumber" id="createAccount" required>
-    
-    
-            <label for="email">Enter an Email</h3>
-            <input type="text" placeholder="Email" name="email" id="createAccount" required>
-            
-    
-            <label for="Password_input">Create a Password</h3>
-            <input type="text" placeholder="Password" name="Password_input" id="createAccount" required>
-          
-            <button onclick = "window.location.href = 'signUp.html'" id="back" type="submit">Back</button> 
-            <button onclick = "window.location.href = 'signUp.html'" id="create" type="submit">Create</button> 
-            
-        </div>
+        <label for="phonenumber">Enter Phone Number</h3>
+         <input type="number" placeholder="Phone Number" name="phoneNumber" id="phoneNumber" required>
+
+
+        <label for="email">Enter an Email</h3>
+        <input type="text" placeholder="Email" name="email" id="email" required>
+        
+
+        <label for="Password_input">Create a Password</h3>
+        <input type="password" placeholder="Password" name="Password_input" id="Password_input" required>
+      
+        <button onclick = "window.location.href = 'signUp.html'" id="back" type="submit">Back</button> 
+        <button id="create">Create</button> 
+        
     </div>
 </body>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
+    import { getDatabase, set, ref } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
+    
+    import { firebaseConfig } from "./firebase.js";  
+
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    document.getElementById("create").addEventListener('click', function(){
+
+        const auth = getAuth();
+
+        var FirstName = document.getElementById('firstName').value;
+        var LastName = document.getElementById('lastName').value;
+        var PhoneNumber = document.getElementById('phoneNumber').value;
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('Password_input').value;
+        
+        createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            set(ref(database, 'users/' + user.uid),{
+                FirstName: FirstName,
+                LastName: LastName,
+                PhoneNumber: PhoneNumber,
+                email: email,
+                password: password
+            })
+            alert('Account Created!')
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+
+            console.error('Error signing in:', error.message);
+        });
+    });
+</script>
 </html>
