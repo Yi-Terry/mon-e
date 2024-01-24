@@ -143,7 +143,7 @@ form {
     cursor: pointer;
     font-family: 'Roboto', arial, sans-serif;
     font-size: 14px;
-    height: 40px;
+    height: 28px;
     letter-spacing: 0.25px;
     outline: none;
     overflow: hidden;
@@ -154,7 +154,7 @@ form {
     transition: background-color .218s, border-color .218s, box-shadow .218s;
     vertical-align: middle;
     white-space: nowrap;
-    width: auto;
+    width: 200px;
     max-width: 400px;
     min-width: min-content;
   }
