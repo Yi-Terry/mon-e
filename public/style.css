@@ -200,12 +200,15 @@ form {
     right: 0;
     top: 0;
   }
+
+
   
   .gsi-material-button:disabled {
     cursor: default;
     background-color: #ffffff61;
     border-color: #1f1f1f1f;
   }
+
   
   .gsi-material-button:disabled .gsi-material-button-contents {
     opacity: 38%;
@@ -229,5 +232,6 @@ form {
   .gsi-material-button:not(:disabled):hover .gsi-material-button-state {
     background-color: #303030;
     opacity: 8%;
+
   }
   
