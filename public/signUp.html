@@ -125,9 +125,14 @@
             const password = document.getElementById('password').value;
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-                    console.log('Signed in');
+
+                if(userCredential.user.emailVerified){ //This will return true or false
+                    console.log('email is verified')
                     window.location.assign("homePage.html")
-                    // ...
+                }else{
+                    alert('Email not verified')
+                }
+                    
                 })
                 .catch((error) => {
                     const errorCode = error.code;
