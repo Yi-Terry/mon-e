@@ -126,10 +126,14 @@
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     console.log('Signed in');
+                    window.location.assign("homePage.html")
                     // ...
                 })
                 .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
                     console.error('Error signing in:', error.message);
+                    alert(errorMessage)
                 });
         });
 
