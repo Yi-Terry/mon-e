@@ -14,21 +14,18 @@
 <style>
    
    .signUp {
-            text-align: center;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-           
-            
+        text-align: center;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
    }
-    .signin-button {
-        text-align:center;
+
+   .signin-button {
+        text-align: center;
         width: 200px;
         height: 28px;
         margin: 8px auto;
-       
-    }
-
+   }
 
 </style>
 <body>
@@ -37,7 +34,7 @@
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0&appId=278032248330476" nonce="nuEx3Map"></script>
 
     <div class="signUp">
-        <form action="" method="post">
+        <form id="loginForm" action="#" method="post">
 
             <div class="imageContainer">
                 <img src="images/logo2.png" alt="Mon-e_logo" class="logo">
@@ -48,15 +45,15 @@
                 <h3>Please Sign In!</h3>
                 <label for="email">Enter Email</label>
                 <br>
-                <input type="text" placeholder="Email" id="email "name="emailaddress" required>
+                <input type="text" placeholder="Email" id="email" name="emailaddress" required>
                 <br>
                 <label for="psw">Enter Password</label>
                 <br>
-                <input type="text" placeholder="Password" id= "password" name="psw" required>
+                <input type="password" placeholder="Password" id="password" name="psw" required>
                 <br>
                 <a class="forgotLink" href="forgotPassword.html">Forgot Password?</a>
                 <br>
-                <button id="login" type="submit">Login</button>
+                <button id="login" type="button">Login</button>
                 <br>
                 <hr>
                 Or
@@ -85,8 +82,7 @@
                     <script type="text/javascript" src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"></script>
                     <br>
                     <!-- Facebook button -->
-                    <div class="fb-login-button" data-width= "200" data-size="medium" data-button-type="" data-layout="" data-auto-logout-link="false" data-use-continue-as="false"></div>
-                  
+                    <div class="fb-login-button" data-width="200" data-size="medium" data-button-type="" data-layout="" data-auto-logout-link="false" data-use-continue-as="false"></div>
                 </div>
                 <hr>
                 <label>Don't Have an Account? </label><a href="createAccount.html">Sign up Here</a>
@@ -94,86 +90,57 @@
         </form>
     </div>
 
-<!-- For Google, Apple, and Facebook login -->
-<script type="module">
+    <!-- For Google, Apple, and Facebook login -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
+        import { firebaseConfig } from "./firebase.js";
 
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
-
-    import { firebaseConfig } from "./firebase.js";  
-
-    const app = initializeApp(firebaseConfig);
-
-    document.getElementById('googleSignInBtn').addEventListener('click', async () => {
-        const auth = getAuth(app);
-        const provider = new GoogleAuthProvider();
-        
-        try {
-            const result = await signInWithPopup(auth, provider);
-
-            const user = result.user;
-            console.log('Signed in as:', user.displayName);
-
-        } catch (error) {
-
-            console.error('Error signing in:', error.message);
-        }
-    });
-
-   
-    const appleSignInProvider = new OAuthProvider('apple.com');
-    document.getElementById('appleid-signin').addEventListener('click', async () => {
+        const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        try {
-            await signInWithPopup(auth, appleSignInProvider);
-        } catch (error) {
-            console.error('Error signing in with Apple:', error.message);
-        }
-    });
+        document.getElementById('googleSignInBtn').addEventListener('click', async () => {
+            const provider = new GoogleAuthProvider();
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                console.log('Signed in as:', user.displayName);
+            } catch (error) {
+                console.error('Error signing in:', error.message);
+            }
+        });
 
-    document.getElementById('faceBookbtn').addEventListener('click', async () => {
-        const auth = getAuth(app);
-        const provider = new FacebookAuthProvider();
-        
-        try {
-            const result = await signInWithPopup(auth, provider);
+        const appleSignInProvider = new OAuthProvider('apple.com');
+        document.getElementById('appleid-signin').addEventListener('click', async () => {
+            try {
+                await signInWithPopup(auth, appleSignInProvider);
+            } catch (error) {
+                console.error('Error signing in with Apple:', error.message);
+            }
+        });
 
-            const user = result.user;
-            console.log('Signed in as:', user.displayName);
+        document.getElementById('login').addEventListener('click', function (event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    console.log('Signed in');
+                    // ...
+                })
+                .catch((error) => {
+                    console.error('Error signing in:', error.message);
+                });
+        });
 
-        } catch (error) {
-
-            console.error('Error signing in:', error.message);
-        }
-    });
-
-    document.getElementById('login').addEventListener('click', function(){
-
-    const auth = getAuth();
-    var email = document.getElementsById('email').value;
-    var password = document.getElementById('psw').value;
-
-    signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-    // Signed in 
-    console.log('Signed in')
-    // ...
-    })
-    .catch((error) => {
-    console.error('Error signing in:', error.message);
-    });
-});
-
-const user = auth.currentUser();
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    const uid = user.uid;
-    // ...
-  } else {
-  }
-});
-
-</script>
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const uid = user.uid;
+                // ...
+            } else {
+                
+            }
+        });
+    </script>
 </body>
 </html>
