@@ -46,17 +46,17 @@
             <div class="login">
                 <h1>Welcome to Mon-e!!</h1>
                 <h3>Please Sign In!</h3>
-                <label for="uname">Enter Username</label>
+                <label for="email">Enter Email</label>
                 <br>
-                <input type="text" placeholder="Username" name="uname" required>
+                <input type="text" placeholder="Email" id="email "name="emailaddress" required>
                 <br>
                 <label for="psw">Enter Password</label>
                 <br>
-                <input type="text" placeholder="Password" name="psw" required>
+                <input type="text" placeholder="Password" id= "password" name="psw" required>
                 <br>
                 <a class="forgotLink" href="forgotPassword.html">Forgot Password?</a>
                 <br>
-                <button onclick="window.location.href = 'homePage.html'" id="login" type="submit">Login</button>
+                <button id="login" type="submit">Login</button>
                 <br>
                 <hr>
                 Or
@@ -98,7 +98,7 @@
 <script type="module">
 
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
 
     import { firebaseConfig } from "./firebase.js";  
 
@@ -147,7 +147,33 @@
             console.error('Error signing in:', error.message);
         }
     });
-</script>
 
+    document.getElementById('login').addEventListener('click', function(){
+
+    const auth = getAuth();
+    var email = document.getElementsById('email').value;
+    var password = document.getElementById('psw').value;
+
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+    // Signed in 
+    console.log('Signed in')
+    // ...
+    })
+    .catch((error) => {
+    console.error('Error signing in:', error.message);
+    });
+});
+
+const user = auth.currentUser();
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    const uid = user.uid;
+    // ...
+  } else {
+  }
+});
+
+</script>
 </body>
 </html>
