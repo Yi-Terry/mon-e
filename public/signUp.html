@@ -120,6 +120,17 @@
             }
         });
 
+        document.getElementById('faceBookBtn').addEventListener('click', async () => {
+            const provider = new FacebookAuthProvider();
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                console.log('Signed in as:', user.displayName);
+            } catch (error) {
+                console.error('Error signing in with Facebook:', error.message);
+            }
+        });
+
         document.getElementById('login').addEventListener('click', function (event) {
             event.preventDefault();
             const email = document.getElementById('email').value;
