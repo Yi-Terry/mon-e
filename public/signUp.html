@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon-e</title>
     <link rel="stylesheet" href="style.css">
-    <meta name="appleid-signin-client-id" content="[CLIENT_ID]">
-    <meta name="appleid-signin-scope" content="[SCOPES]">
-    <meta name="appleid-signin-redirect-uri" content="[REDIRECT_URI]">
-    <meta name="appleid-signin-state" content="[STATE]">
-
+  
 </head>
 <style>
    
@@ -78,8 +74,13 @@
                     </button>
                     <br>
                     <!-- Apple button -->
-                    <div id="appleid-signin" class="signin-button" data-color="white" data-border="true" data-type="sign-in" data-label-position="center"></div>
-                    <script type="text/javascript" src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"></script>
+                    <button class="applesignin-button" id="appleid-signin"> 
+                        <span class="applesignin-button">Sign in with Apple</span>
+                        <ion-icon class="appleicon" name="logo-apple"></ion-icon>
+                    <div id="appleid-signin" class="applesignin-button" data-color="black" data-border="true" data-type="sign-in" data-label-position="center"></div>
+                </button>
+                <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+                <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
                     <br>
                     <!-- Facebook button -->
                     <div class="fb-login-button" data-width="200" data-size="medium" data-button-type="" data-layout="" data-auto-logout-link="false" data-use-continue-as="false"></div>

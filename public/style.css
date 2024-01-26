@@ -201,7 +201,22 @@ form {
     top: 0;
   }
 
+.applesignin-button{
+  background-color:black;;
+  color:white;
+  text-align: center;
+  font-size: small;
+  padding:4px;
+ font-weight: 700;
+ text-align: center;
+ padding-bottom: 2px;
+ 
+}
 
+.appleicon{
+  float: left;
+ font-size: large;
+}
   
   .gsi-material-button:disabled {
     cursor: default;
