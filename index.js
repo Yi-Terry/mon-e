@@ -1,10 +1,7 @@
 const electron = require("electron");
 const express = require('express');
 const path = require("path");
-const url = require("url");
-
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
+const { app, BrowserWindow, session } = require('electron');
 
 const appServer = express();
 const serverPort = 3000;
@@ -24,16 +21,26 @@ let win;
 function createWindow() {
   win = new BrowserWindow({
     webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: false,
-        webSecurity: false, 
-        allowRunningInsecureContent: true,
+      nodeIntegration: true,
+      contextIsolation: false,
+      webSecurity: false, 
+      allowRunningInsecureContent: true,
     }
   });
 
   win.loadURL(`http://localhost:${serverPort}/signUp.html`);
 
   win.on('closed', () => {
+    session.defaultSession.clearStorageData({
+      storages: ['cookies']
+    }, function (error) {
+      if (error) {
+        console.error('Error clearing cookies:', error);
+      } else {
+        console.log('Cookies cleared');
+      }
+    });
+
     win = null;
   });
 }
