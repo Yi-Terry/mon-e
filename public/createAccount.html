@@ -47,13 +47,13 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
     import { getDatabase, set, ref } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
-    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged  } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
     
     import { firebaseConfig } from "./firebase.js";  
 
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
-    document.getElementById("create").addEventListener('click', function(){
+    document.getElementById("create").addEventListener('click', async () =>{
 
         const auth = getAuth();
 
@@ -63,7 +63,7 @@
         var email = document.getElementById('email').value;
         var password = document.getElementById('Password_input').value;
         
-        createUserWithEmailAndPassword(auth, email, password)
+       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user;
             set(ref(database, 'users/' + user.uid),{
@@ -74,6 +74,8 @@
                 password: password
             })
             alert('Account Created!')
+            sendEmailVerification(user);
+            window.location.assign("signUp.html")
         })
         .catch((error) => {
             const errorCode = error.code;
@@ -82,5 +84,6 @@
             console.error('Error signing in:', error.message);
         });
     });
+
 </script>
 </html>
