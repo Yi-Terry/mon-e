@@ -12,5 +12,8 @@
     "electron": "^28.1.3",
     "express": "^4.18.2",
     "firebase": "^10.7.2"
+  },
+  "devDependencies": {
+    "prettier": "3.2.4"
   }
 }

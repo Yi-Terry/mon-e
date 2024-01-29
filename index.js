@@ -1,7 +1,6 @@
-const electron = require("electron");
+const { app, BrowserWindow, session, ipcMain } = require('electron');
 const express = require('express');
-const path = require("path");
-const { app, BrowserWindow, session } = require('electron');
+const path = require('path');
 
 const appServer = express();
 const serverPort = 3000;
@@ -18,13 +17,18 @@ appServer.listen(serverPort, () => {
 
 let win;
 
+ipcMain.on('get-main-window', (event) => {
+  event.returnValue = win;
+});
+
 function createWindow() {
   win = new BrowserWindow({
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-      webSecurity: false, 
+      nodeIntegration: false,
+      contextIsolation: true,
+      webSecurity: false,
       allowRunningInsecureContent: true,
+      preload: path.join(__dirname, 'preload.js'), // Add this line
     }
   });
 

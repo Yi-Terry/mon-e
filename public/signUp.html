@@ -83,7 +83,7 @@
                 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
                     <br>
                     <!-- Facebook button -->
-                    <div class="fb-login-button" data-width="200" data-size="medium" data-button-type="" data-layout="" data-auto-logout-link="false" data-use-continue-as="false"></div>
+                    <div class="fb-login-button" data-width="200" data-size="medium" data-button-type="" data-layout="" data-auto-logout-link="false" data-use-continue-as="false" id="faceBookBtn"></div>
                 </div>
                 <hr>
                 <label>Don't Have an Account? </label><a href="createAccount.html">Sign up Here</a>
@@ -94,11 +94,24 @@
     <!-- For Google, Apple, and Facebook login -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
+        import { getAuth, signInWithPopup, signOut, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
         import { firebaseConfig } from "./firebase.js";
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+
+         
+    window.addEventListener('beforeunload', () => {
+        
+        console.log('Window is closing. Logging out of Firebase.');
+        signOut(auth)
+            .then(() => {
+                console.log('Logged out of Firebase');
+            })
+            .catch((error) => {
+                console.error('Error logging out of Firebase:', error.message);
+            });
+    });
 
         document.getElementById('googleSignInBtn').addEventListener('click', async () => {
             const provider = new GoogleAuthProvider();
@@ -140,7 +153,7 @@
 
                 if(userCredential.user.emailVerified){ //This will return true or false
                     console.log('email is verified')
-                    window.location.assign("homePage.html")
+                    const user = userCredential.user;
                 }else{
                     alert('Email not verified')
                 }
@@ -154,14 +167,15 @@
                 });
         });
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                const uid = user.uid;
-                // ...
-            } else {
-                
-            }
-        });
+    onAuthStateChanged(auth, (user) => {
+        console.log(user)
+        if (user) {
+            console.log('User is logged in:', user.displayName);
+            window.location.assign("homePage.html")
+        } else {
+            console.log('User is logged out');
+        }
+    });
     </script>
 </body>
 </html>
