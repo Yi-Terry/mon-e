@@ -93,12 +93,21 @@
 
     <!-- For Google, Apple, and Facebook login -->
     <script type="module">
+       
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
+<<<<<<< HEAD
+        import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider, signInWithEmailAndPassword, onAuthStateChanged, signInWithCredential } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
+=======
         import { getAuth, signInWithPopup, signOut, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
+>>>>>>> f068863e7dfe2c94496cc60cbea6a8d184c8b57a
         import { firebaseConfig } from "./firebase.js";
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+<<<<<<< HEAD
+        
+        //google login
+=======
 
          
     window.addEventListener('beforeunload', () => {
@@ -113,6 +122,7 @@
             });
     });
 
+>>>>>>> f068863e7dfe2c94496cc60cbea6a8d184c8b57a
         document.getElementById('googleSignInBtn').addEventListener('click', async () => {
             const provider = new GoogleAuthProvider();
             try {
@@ -123,7 +133,8 @@
                 console.error('Error signing in:', error.message);
             }
         });
-
+        
+        //apple login
         const appleSignInProvider = new OAuthProvider('apple.com');
         document.getElementById('appleid-signin').addEventListener('click', async () => {
             try {
@@ -133,17 +144,48 @@
             }
         });
 
+        //Facebook login
+        //TODO:
+        //get domain of webpage.
         document.getElementById('faceBookBtn').addEventListener('click', async () => {
-            const provider = new FacebookAuthProvider();
-            try {
-                const result = await signInWithPopup(auth, provider);
+            signInWithPopup(auth, provider)
+            .then((result) => {
+                // The signed-in user info.
                 const user = result.user;
-                console.log('Signed in as:', user.displayName);
-            } catch (error) {
-                console.error('Error signing in with Facebook:', error.message);
-            }
+
+                // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+                const credential = FacebookAuthProvider.credentialFromResult(result);
+                const accessToken = credential.accessToken;
+
+            // IdP data available using getAdditionalUserInfo(result)
+            // ...
+             })
+            .catch((error) => {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // The email of the user's account used.
+                const email = error.customData.email;
+                // The AuthCredential type that was used.
+                const credential = FacebookAuthProvider.credentialFromError(error);
+
+                // ...
+            });
+
+
+
+            // const auth = getAuth();
+            // signInWithCredential(auth, credential)
+            // .then((result) => {
+            //     const credential = FacebookAuthProvider.credentialFromResult(result);
+            //     console.log('Signed in as:', user.displayName);
+            // })
+            // .catch ((error) => {
+            //     console.error('Error signing in with Facebook:', error.message);
+            // });
         });
 
+        //login with account with us
         document.getElementById('login').addEventListener('click', function (event) {
             event.preventDefault();
             const email = document.getElementById('email').value;
