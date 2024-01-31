@@ -24,3 +24,17 @@
   background-color:#04AA6D;
   color: white;
 }
+
+
+.dark-theme .navbar {
+  background-color: #333;
+}
+
+.dark-theme .navbar a {
+  color: white;
+}
+
+.dark-theme .navbar a:hover {
+  background-color: gainsboro;
+  color: black;
+}
