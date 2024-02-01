@@ -10,11 +10,13 @@
 <body>
     <div class="navbar">
         <a href="promo.html">Mon-e</a>
-        <a href="" >About Us</a>
+        <a href="aboutUs.html" >About Us</a>
         <a href="" >Receipt Scanner</a>
         <a href="homePage.html" >My Account</a>
         <a href="appAppearance.html"> App Appearance</a>
     </div>
+
+    <div class="aboutUs">
     <h1>About Us</h1>
     <h2>Meet the Team</h2>
     <h3>Front End</h3>
@@ -29,5 +31,50 @@
         <li>Patric Gudel</li>
         <li>Varune Tomar</li>
     </ul>
+</div>
+
+
+
+
+<script>
+function setTheme() {
+    var storedTheme = localStorage.getItem('theme');
+    if (storedTheme === 'darkTheme') {
+        toggleTheme('darkTheme');
+    } else {
+        toggleTheme('lightTheme');
+    }
+}
+
+// Function to toggle the theme
+function toggleTheme(theme) {
+    var body = document.body;
+
+    if (theme === 'lightTheme') {
+        body.style.backgroundColor = 'white';
+        body.style.color = 'black';
+    } else {
+        body.style.backgroundColor = '#333';
+        body.style.color = 'white';
+    }
+
+    // Remove 'selected' class from all buttons
+    var buttons = document.querySelectorAll('.theme-button');
+    buttons.forEach(function (button) {
+        button.classList.remove('selected');
+    });
+
+    // Add 'selected' class to the clicked button
+    var clickedButton = document.getElementById(theme);
+    clickedButton.classList.add('selected');
+
+    // Store the selected theme in localStorage
+    localStorage.setItem('theme', theme);
+
+}
+
+// Call setTheme on page load
+setTheme();
+</script>
 </body>
 </html>
