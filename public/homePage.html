@@ -9,27 +9,74 @@
 
 <body>
 
-  <div class="dropdown">
-    <div class="select"></div>
-    <span class="selected">Account</span>
-
-    <ul class="dropdown-menu">
-      <li>Settings</li>
-      <li>Contact Us</li>
-      <li>About Us</li>
-      <li>Log out</li>
-    </ul>
-  </div>
 
     <div class="navbar">
-      <a href="">Mon-e</a>
-      <a class="active" href="homePage.html" >Home</a>
-      <a href="" >Game Page</a>
-      <a href="" >Receipt Scanner</a>
-      <a href="accountPage.html" >Account Page</a>
-      <a href="appAppearance.html"> App Appearance</a>
+      <nav>
+        <img src="images/logo2.png" class="logo">
+
+        <ul>
+      <li><a href="">Mon-e</a></li>
+      <li> <a class="active" href="homePage.html" >Home</a></li>
       
+      <li><a href="" >Receipt Scanner</a></li>
+      <li> <a href="accountPage.html" >Account Page</a></li>
+      <li>  <a href="appAppearance.html"> App Appearance</a></li>
+
+    </ul>
+      <img src="images/account logo.jpg" class="user-pic" onclick="toggleMenu()">
+
+      <div class="sub-menu-wrap" id="subMenu">
+        <div class="sub-menu">
+            <div class="user-info">
+              <h2>User</h2>
+            </div>
+
+            <hr>
+            
+            <a href="#" class="sub-menu-link">
+              <img src="images/profile.png">
+              <p>Edit Profile</p>
+              <span>></span>
+            </a>
+
+            <a href="#" class="sub-menu-link">
+              <img src="images/setting.png">
+              <p>Settings and Privacy</p>
+              <span>></span>
+            </a>
+      
+            <a href="#" class="sub-menu-link">
+              <img src="images/help.png">
+              <p>Help and Support</p>
+              <span>></span>
+            </a>
+      
+            <a href="#" class="sub-menu-link">
+              <img src="images/logout.png">
+              <p>Log Out</p>
+              <span>></span>
+            </a>
+      
+        </div>
+      </div>
+
+     
+
+
+
+    </nav>
     </div>
+
+    <script>
+      let subMenu =document.getElementById("subMenu");
+
+      function toggleMenu() {
+        subMenu.classList.toggle("open-menu");
+      }
+
+
+
+    </script>
     
     <h1>Welcome User!</h1>
 
