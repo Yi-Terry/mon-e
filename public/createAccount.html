@@ -23,8 +23,7 @@
          <br>
             
         <label for="phonenumber">Enter Phone Number</h3>
-         <input type="number" placeholder="Phone Number" name="phoneNumber" id="phoneNumber" required>
-
+            <input type="tel" minlength="10" maxlength="10" id="phoneNumber" name="phonenumber" title="10 digit mobile number" required>
          <br>
 
 
@@ -71,7 +70,8 @@
                 LastName: LastName,
                 PhoneNumber: PhoneNumber,
                 email: email,
-                password: password
+                password: password,
+                created_at: Date.now()
             })
             alert('Account Created!')
             sendEmailVerification(user);

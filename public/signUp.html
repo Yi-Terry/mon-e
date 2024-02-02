@@ -95,7 +95,7 @@
     <script type="module">
        
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider, signInWithEmailAndPassword, onAuthStateChanged, signInWithCredential } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider, signInWithEmailAndPassword, onAuthStateChanged, signInWithCredential, sendEmailVerification  } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
         import { firebaseConfig } from "./firebase.js";
 
         const app = initializeApp(firebaseConfig);
@@ -171,12 +171,13 @@
             const password = document.getElementById('password').value;
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-
+                    const user = userCredential.user;
                 if(userCredential.user.emailVerified){ //This will return true or false
                     console.log('email is verified')
-                    const user = userCredential.user;
                 }else{
-                    alert('Email not verified')
+                    console.error('Not Verified','Email not verified. New Verification Link sent to Email!')
+                    sendEmailVerification(user)
+                    window.location.reload('signUp.html');
                 }
                     
                 })
@@ -184,19 +185,18 @@
                     const errorCode = error.code;
                     const errorMessage = error.message;
                     console.error('Error signing in:', error.message);
-                    alert(errorMessage)
                 });
         });
 
-    onAuthStateChanged(auth, (user) => {
-        console.log(user)
-        if (user) {
-            console.log('User is logged in:', user.displayName);
-            window.location.assign("homePage.html")
-        } else {
-            console.log('User is logged out');
-        }
-    });
+        onAuthStateChanged(auth, (user) => {
+            console.log(user)
+            if (user) {
+                if (user.emailVerified)
+                    window.location.assign("homePage.html")
+            } else {
+                console.log('User is logged out');
+            }
+        });
     </script>
 </body>
 </html>
