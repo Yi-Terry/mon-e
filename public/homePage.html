@@ -55,12 +55,12 @@
               <span>></span>
             </a>
       
-            <a href="#" class="sub-menu-link">
+          <button id="logout"><a href="" class="sub-menu-link">
               <img src="images/logout.png">
               <p>Log Out</p>
               <span>></span>
             </a>
-      
+          </button> 
         </div>
       </div>
 
@@ -126,5 +126,22 @@
       // Call setTheme on page load
       setTheme();
   </script>
+<script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
+      import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
+      import { firebaseConfig } from "./firebase.js";
+
+    document.getElementById('logout').addEventListener('click', function (event) {
+      event.preventDefault();
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+          signOut(auth).then(() => {
+            window.location.assign("signUp.html")
+          }).catch((error) => {
+            const errorMessage = error.message;
+            console.error('Error signing in:', error.message);
+          });
+    });
+</script>
 </body>
 </html>
