@@ -95,11 +95,23 @@
     <script type="module">
        
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider, signInWithEmailAndPassword, onAuthStateChanged, signInWithCredential, sendEmailVerification  } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
+        import { getAuth, signInWithPopup, signOut, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider, signInWithEmailAndPassword, onAuthStateChanged, signInWithCredential, sendEmailVerification  } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
         import { firebaseConfig } from "./firebase.js";
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+
+        window.addEventListener('beforeunload', () => {
+        
+        console.log('Window is closing. Logging out of Firebase.');
+        signOut(auth)
+            .then(() => {
+                console.log('Logged out of Firebase');
+            })
+            .catch((error) => {
+                console.error('Error logging out of Firebase:', error.message);
+            });
+    });
         
         //google login
         document.getElementById('googleSignInBtn').addEventListener('click', async () => {
