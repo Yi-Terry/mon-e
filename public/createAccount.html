@@ -44,15 +44,15 @@
     </div>
 </body>
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
-    import { getDatabase, set, ref } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
-    import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged  } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
+    import { getDatabase, set, ref } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-database.js";
+    import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged  } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
     
     import { firebaseConfig } from "./firebase.js";  
 
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
-    document.getElementById("create").addEventListener('click', async () =>{
+    document.getElementById("create").addEventListener('click', function(){
 
         const auth = getAuth();
 
@@ -71,11 +71,10 @@
                 PhoneNumber: PhoneNumber,
                 email: email,
                 password: password,
-                created_at: Date.now()
-            })
-            alert('Account Created!')
+                created_at: Date.now(),
+            });
             sendEmailVerification(user);
-            window.location.assign("signUp.html")
+            window.location.assign("signUp.html");
         })
         .catch((error) => {
             const errorCode = error.code;
