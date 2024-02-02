@@ -111,6 +111,14 @@
             } catch (error) {
                 console.error('Error signing in:', error.message);
             }
+            onAuthStateChanged(auth, (user) => {
+            console.log(user)
+            if (user) {
+                    window.location.assign("homePage.html")
+            } else {
+                console.log('User is logged out');
+            }
+        });
         });
         
         //apple login
@@ -121,6 +129,14 @@
             } catch (error) {
                 console.error('Error signing in with Apple:', error.message);
             }
+            onAuthStateChanged(auth, (user) => {
+            console.log(user)
+            if (user) {
+                    window.location.assign("homePage.html")
+            } else {
+                console.log('User is logged out');
+            }
+        });
         });
 
         //Facebook login
@@ -172,31 +188,28 @@
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
-                if(userCredential.user.emailVerified){ //This will return true or false
-                    console.log('email is verified')
-                }else{
-                    console.error('Not Verified','Email not verified. New Verification Link sent to Email!')
-                    sendEmailVerification(user)
-                    window.location.reload('signUp.html');
-                }
-                    
-                })
+                    if (userCredential.user.emailVerified) {
+                        console.log('user signed in')
+                    } else {
+                        alert('Email not verified. New Verification Link sent to Email!')
+                        sendEmailVerification(user)
+                    }
+            })
                 .catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
                     console.error('Error signing in:', error.message);
                 });
-        });
+            onAuthStateChanged(auth, (user) => {
+                console.log(user)
+                if (user.emailVerified) {
+                        window.location.assign('homePage.html');
+                } else {
+                    console.log('User is logged out');
+                }
+        })
+    });
 
-        onAuthStateChanged(auth, (user) => {
-            console.log(user)
-            if (user) {
-                if (user.emailVerified)
-                    window.location.assign("homePage.html")
-            } else {
-                console.log('User is logged out');
-            }
-        });
     </script>
 </body>
 </html>
