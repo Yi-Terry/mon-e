@@ -10,12 +10,14 @@
   
     <script src="settings.js" defer></script>
   </head>
+  
   <body>
-    <nav class="sidebar locked">
+    <nav class="sidebar locked" id="sidebar">
       <div class="logo_items flex">
         <span class="nav_image">
          
         </span>
+        
         <span class="logo_name">Settings</span>
         
       </div>
@@ -63,5 +65,62 @@
        
 
     
+
+
+
+
+
+
+
+
+
+
+
+        <script>
+          // Function to set the theme based on the value stored in localStorage
+          function setTheme() {
+              var storedTheme = localStorage.getItem('theme');
+              if (storedTheme === 'darkTheme') {
+                  toggleTheme('darkTheme');
+              } else {
+                  toggleTheme('lightTheme');
+              }
+          }
+  
+          // Function to toggle the theme
+          function toggleTheme(theme) {
+              var body = document.body;
+              var sidebar = document.getElementById('sidebar');
+              var settingsText = document.querySelector('.logo_name');
+
+  
+              if (theme === 'lightTheme') {
+                  body.style.backgroundColor = 'white';
+                  body.style.color = 'black';
+                  sidebar.style.backgroundColor = 'rgb(240, 240, 242)';
+                  settingsText.style.color = 'black';
+              } else {
+                  body.style.backgroundColor = '#333';
+                  body.style.color = 'white';
+                  sidebar.style.backgroundColor = '#362441';
+                  settingsText.style.color = 'white';
+              }
+  
+              // Remove 'selected' class from all buttons
+              var buttons = document.querySelectorAll('.theme-button');
+              buttons.forEach(function (button) {
+                  button.classList.remove('selected');
+              });
+  
+              // Add 'selected' class to the clicked button
+              var clickedButton = document.getElementById(theme);
+              clickedButton.classList.add('selected');
+  
+              // Store the selected theme in localStorage
+              localStorage.setItem('theme', theme);
+              
+          }
+          setTheme();
+        </script>  
   </body>
 </html>
