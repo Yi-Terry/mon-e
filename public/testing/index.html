@@ -721,13 +721,19 @@
             // Function to toggle the theme
             function toggleTheme(theme) {
                 var body = document.body;
-    
+                var container = document.getElementById('content');
+                
                 if (theme === 'lightTheme') {
                     body.style.backgroundColor = 'white';
                     body.style.color = 'black';
+                   
+                    
                 } else {
-                    body.style.backgroundColor = '#333';
-                    body.style.color = 'white';
+                    body.style.backgroundColor= '#333';
+                    body.style.color = 'black';
+                    container.style.backgroundColor= '#333';
+                    
+               
                 }
     
                 // Remove 'selected' class from all buttons
