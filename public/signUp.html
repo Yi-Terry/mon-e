@@ -197,30 +197,8 @@
             event.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    if (userCredential.user.emailVerified) {
-                        console.log('user signed in')
-                    } else {
-                        alert('Email not verified. New Verification Link sent to Email!')
-                        sendEmailVerification(user)
-                    }
-            })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    console.error('Error signing in:', error.message);
-                });
-            onAuthStateChanged(auth, (user) => {
-                console.log(user)
-                if (user.emailVerified) {
-                        window.location.assign('homePage.html');
-                } else {
-                    console.log('User is logged out');
-                }
-        })
-    });
+            window.api.Login(email, password);    
+        });
 
     </script>
 </body>
