@@ -1,3 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+*{
+  font-family: "Poppins", sans-serif;
+}
 .accountPage{
   text-align: center;
 }
@@ -64,7 +68,7 @@ form {
   
   /* Set a style for all buttons */
   button {
-    background-color: #04AA6D;
+    background-color: green;
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
@@ -141,7 +145,7 @@ form {
     box-sizing: border-box;
     color: #1f1f1f;
     cursor: pointer;
-    font-family: 'Roboto', arial, sans-serif;
+    /* font-family: 'Roboto', arial, sans-serif; */
     font-size: 14px;
     height: 28px;
     letter-spacing: 0.25px;
@@ -183,7 +187,7 @@ form {
   .gsi-material-button .gsi-material-button-contents {
     -webkit-flex-grow: 1;
     flex-grow: 1;
-    font-family: 'Roboto', arial, sans-serif;
+    /* font-family: 'Roboto', arial, sans-serif; */
     font-weight: 500;
     overflow: hidden;
     text-overflow: ellipsis;
