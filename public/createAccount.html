@@ -8,7 +8,6 @@
 </head>
 <body>
     <div class="accountPage">
-        
         <h2 class="createAccount">Create an Account</h2>
 
         <label for="firstName">Enter First Name</h3>
@@ -43,46 +42,16 @@
         
     </div>
 </body>
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
-    import { getDatabase, set, ref } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-database.js";
-    import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged  } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
-    
-    import { firebaseConfig } from "./firebase.js";  
-
-    const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
+<script type="module" >
     document.getElementById("create").addEventListener('click', function(){
 
-        const auth = getAuth();
-
+        var password = document.getElementById('Password_input').value;
         var FirstName = document.getElementById('firstName').value;
         var LastName = document.getElementById('lastName').value;
         var PhoneNumber = document.getElementById('phoneNumber').value;
         var email = document.getElementById('email').value;
-        var password = document.getElementById('Password_input').value;
         
-       createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            set(ref(database, 'users/' + user.uid),{
-                FirstName: FirstName,
-                LastName: LastName,
-                PhoneNumber: PhoneNumber,
-                email: email,
-                password: password,
-                created_at: Date.now(),
-            });
-            sendEmailVerification(user);
-            window.location.assign("signUp.html");
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-
-            console.error('Error signing in:', error.message);
+        window.api.createAccount(email, password, FirstName, LastName, PhoneNumber);    
         });
-    });
-
 </script>
 </html>
