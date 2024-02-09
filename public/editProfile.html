@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="page">
+        <div class = "forgotPassword">
+            <h2>Reset Password</h2>
+            <label for="email">Enter Email Address
+                <input type="text" placeholder="Email" name="email" id="emailInp" required>
+                
+                <button id="sendAuthenicationCode" type="submit">Send reset email</button> 
+            <br>
+            
+            
+        </div>
+
+
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
+        import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
+        import { firebaseConfig } from "./firebase.js";  
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app)
+
+        let EmailInp = document.getElementById('emailInp') //get email from input box
+        let forgotPassBtn = document.getElementById('sendAuthenicationCode') //when send auth code button is clicked
+  
+
+      //function for reset email
+      //TODO: create a button on settings page for forgot password 
+        let ForgotPassword = () =>{
+        sendPasswordResetEmail(auth, EmailInp.value)
+        .then(() =>{
+            alert("A Password Reset Link has been sent to you Email");
+
+        })
+        .catch((error) =>{
+            console.log(error.message)
+        })    
+    }
+    forgotPassBtn.addEventListener('click', ForgotPassword); //runs function on click
+
+    </script>
+</body>
+</html>
