@@ -24,7 +24,9 @@
   <script type="text/javascript">
   (function($) {
     var handler = Plaid.create({
-      token: 'your-link-token-goes-here',
+      token: {
+    
+},
       onSuccess: function(public_token, metadata) {
         console.log('public token is:', public_token);
       },
