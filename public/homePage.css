@@ -123,3 +123,37 @@ nav ul li a{
 .sub-menu-link:hover p{
   font-weight: 600;
 }
+
+
+.team-section {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.team-box {
+  width: 45%; 
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  text-align: center;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+.team-member img {
+  width: 100px;
+  height: 100px; 
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.team-member h4 {
+  margin-bottom: 5px;
+}
+
+.team-member p {
+  text-align: center;
+}
+
