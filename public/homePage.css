@@ -53,6 +53,8 @@ nav ul li{
   display: inline-block;
   list-style: none;
   margin: 10 px 20px;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 nav ul li a{
