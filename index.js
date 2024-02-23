@@ -400,6 +400,7 @@ appServer.get('/api/auth', function (request, response, next) {
     .catch(next);
 });
 
+//TRANSACTIONS
 // Retrieve Transactions for an Item
 // https://plaid.com/docs/#transactions
 appServer.get('/api/transactions', function (request, response, next) {
@@ -463,6 +464,58 @@ appServer.get('/api/investments_transactions', function (request, response, next
     .catch(next);
 });
 
+//Retrieve transactions
+//https://plaid.com/docs/api/products/transactions/#transactionsget 
+appServer.get('/api/transactions_get', function(request, response, next) {
+  Promise.resolve()
+  
+    .then(async function (){
+      const response = await client.transactionsGet(request);
+      let transactions = response.data.transactions;
+      const total_transactions = response.data.total_transactions;
+      // Manipulate the offset parameter to paginate
+      // transactions and retrieve all available data
+      while (transactions.length < total_transactions) {
+        const paginatedRequest = {
+          access_token: ACCESS_TOKEN,
+          start_date: '2018-01-01',
+          end_date: '2020-02-01',
+          options: {
+            offset: transactions.length
+          },
+        };
+        const paginatedResponse = await client.transactionsGet(paginatedRequest);
+        transactions = transactions.concat(
+        paginatedResponse.data.transactions,
+      );
+      console.log(transactions);
+    }
+  })
+    .catch(next) 
+});
+
+//Retrieve Recurring transactions
+//https://plaid.com/docs/api/products/transactions/#transactionsrecurringget
+appServer.get('/api/recurring_transactions', function(request, response, next) {
+  Promise.resolve()
+    .then(async function (){
+      const transactions = await client.transactionsRecurringGet(request);
+
+      let inflowStreams = response.data.inflowStreams;
+      let outflowStreams = response.data.outflowStreams;
+
+      //Filter transactions for recurring ones
+      const recurringTransactions = transactions.filter(transaction => {
+          //logic to determine if transaction is recurring
+          return transaction.merchant_name === 'Example Merchat' && transaction.catergory.includes('Groceries');
+      });
+      prettyPrintResponse(recurringTransactions);
+      response.json(recurringTransactions.data);
+    })
+    .catch(next)
+});
+
+//IDENTITY
 // Retrieve Identity for an Item
 // https://plaid.com/docs/#identity
 appServer.get('/api/identity', function (request, response, next) {
@@ -477,6 +530,7 @@ appServer.get('/api/identity', function (request, response, next) {
     .catch(next);
 });
 
+//BALANCE
 // Retrieve real-time Balances for each of an Item's accounts
 // https://plaid.com/docs/#balance
 appServer.get('/api/balance', function (request, response, next) {
@@ -490,6 +544,7 @@ appServer.get('/api/balance', function (request, response, next) {
     })
     .catch(next);
 });
+
 
 // Retrieve Holdings for an Item
 // https://plaid.com/docs/#investments
