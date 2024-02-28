@@ -1,57 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon-e</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="accountPage">
         <h2 class="createAccount">Create an Account</h2>
 
         <label for="firstName">Enter First Name</h3>
-        <input type="text" placeholder="First Name" name="firstName" id="firstName" required>
+            <input type="text" placeholder="First Name" name="firstName" id="firstName" required>
 
-        <br>
-        
-        
-         <label for="lastName">Enter Last Name</h3>
-         <input type="text" placeholder="Last Name" name="lastName" id="lastName" required>
-        
-         <br>
-            
-        <label for="phonenumber">Enter Phone Number</h3>
-            <input type="tel" minlength="10" maxlength="10" id="phoneNumber" name="phonenumber" title="10 digit mobile number" required>
-         <br>
+            <br>
 
 
-        <label for="email">Enter an Email</h3>
-        <input type="text" placeholder="Email" name="email" id="email" required>
+            <label for="lastName">Enter Last Name</h3>
+                <input type="text" placeholder="Last Name" name="lastName" id="lastName" required>
 
-        <br>
-        
+                <br>
 
-        <label for="Password_input">Create a Password</h3>
-        <input type="password" placeholder="Password" name="Password_input" id="Password_input" required>
+                <label for="phonenumber">Enter Phone Number</h3>
+                    <input type="tel" minlength="10" maxlength="10" id="phoneNumber" name="phonenumber"
+                        title="10 digit mobile number" required>
+                    <br>
 
-        <br>
-      
-        <button onclick = "window.location.href = 'signUp.html'" id="back" type="submit">Back</button> 
-        <button id="create">Create</button> 
-        
+
+                    <label for="email">Enter an Email</h3>
+                        <input type="text" placeholder="Email" name="email" id="email" required>
+
+                        <br>
+
+
+                        <label for="Password_input">Create a Password</h3>
+                            <input type="password" placeholder="Password" name="Password_input" id="Password_input"
+                                required>
+
+                            <br>
+
+                            <button onclick="window.location.href = 'signUp.html'" id="back" type="submit">Back</button>
+                            <button id="create">Create</button>
+
     </div>
 </body>
-<script type="module" >
-    document.getElementById("create").addEventListener('click', function(){
+<script type="module">
+    document.getElementById("create").addEventListener('click', function () {
 
         var password = document.getElementById('Password_input').value;
         var FirstName = document.getElementById('firstName').value;
         var LastName = document.getElementById('lastName').value;
         var PhoneNumber = document.getElementById('phoneNumber').value;
         var email = document.getElementById('email').value;
-        
-        window.api.createAccount(email, password, FirstName, LastName, PhoneNumber);    
-        });
+
+        window.api.createAccount(email, password, FirstName, LastName, PhoneNumber);
+    });
 </script>
+
 </html>

@@ -5,6 +5,9 @@ const WINDOW_API = {
   Login: (email, password) => ipcRenderer.send("Login", email, password)
 }
 
+const PLAID_API = {
+  sendTokenData: (accesstoken, itemid) => ipcRenderer.send("Tokens", accesstoken, itemid)
+}
 
 window.electronAPI = {
   getMainWindow: () => {
@@ -18,3 +21,4 @@ window.addEventListener('beforeunload', () => {
 });
 
 contextBridge.exposeInMainWorld("api", WINDOW_API);
+contextBridge.exposeInMainWorld("plaid", PLAID_API);
