@@ -89,6 +89,20 @@ app.on('activate', () => {
   }
 });
 
+ipcMain.on("sendTokens", (event, accesstoken, itemid) =>{
+  onAuthStateChanged(auth, (user) => {
+    userName = user.displayName;
+    if (user) {
+      set(ref(database, 'plaidToken/' + user.uid),{
+        Name: userName,
+        Access_Token: accesstoken,
+        Item_Id: itemid
+    })
+    } else {
+      console.log('error storing token')
+    }
+  })
+});
 
 ipcMain.on("createAccount", (event, email, password, FirstName, LastName, PhoneNumber) =>{
 createUserWithEmailAndPassword(auth, email, password)
