@@ -58,7 +58,7 @@ function createWindow() {
     }
   });
 
-  win.loadURL(`http://localhost:${serverPort}/html-files/signUp.html`);
+  win.loadURL(`http://localhost:${serverPort}/signUp.html`);
 
   win.on('closed', () => {
     session.defaultSession.clearStorageData({

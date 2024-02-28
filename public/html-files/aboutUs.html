@@ -203,7 +203,7 @@ setTheme();
 document.getElementById('logout').addEventListener('click', function (event) {
   event.preventDefault();
       signOut(auth).then(() => {
-        window.location.assign("/public/html-files/signUp.html")
+        window.location.assign("signUp.html")
       }).catch((error) => {
         const errorMessage = error.message;
         console.error('Error signing in:', error.message);
