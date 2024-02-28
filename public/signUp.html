@@ -195,6 +195,7 @@
         //login with account with us
         document.getElementById('login').addEventListener('click', function (event) {
             event.preventDefault();
+            
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             window.api.Login(email, password);    

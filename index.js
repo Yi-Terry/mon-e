@@ -524,6 +524,7 @@ appServer.get('/api/transactions/refresh', function(request, response, next){
       access_token: ACCESS_TOKEN,
     };
     await client.transactionsRefresh(request);
+    
   })
   .catch(next);
 });

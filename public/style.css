@@ -221,6 +221,7 @@ form {
   .gsi-material-button:disabled {
     cursor: default;
     background-color: #ffffff61;
+    
     border-color: #1f1f1f1f;
   }
 
