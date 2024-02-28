@@ -48,13 +48,14 @@
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({ public_token: publicToken }),
-            })
+            }) 
               .then(response => response.json())
               .then(data => {
+                accesstoken = data.access_token
+                itemid = data.item_id
                 console.log('Access Token:', data.access_token);
                 console.log('Item ID:', data.item_id);
-
-                
+                window.plaid.sendToken(accesstoken, itemid)
                 fetch('/api/transactions')
                   .then(response => response.json())
                   .then(data => {
