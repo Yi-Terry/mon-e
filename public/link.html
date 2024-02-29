@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Plaid Frontend</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
 </head>
 <body>
   <h1>Plaid Frontend</h1>
@@ -18,19 +35,18 @@
       const linkButton = document.getElementById('link-button');
       const transactionsContainer = document.getElementById('transactions-container');
 
-      
       const transformTransactionsData = (data) => {
         return data.latest_transactions.map((t) => {
           return {
             name: t.name,
             amount: t.amount, 
             date: t.date,
+            iso_currency_code: t.iso_currency_code,
           };
         });
       };
 
       linkButton.addEventListener('click', async () => {
-
         const linkTokenResponse = await fetch('/api/create_link_token', {
           method: 'POST',
         });
@@ -41,7 +57,6 @@
         const linkHandler = Plaid.create({
           token: linkToken,
           onSuccess: (publicToken, metadata) => {
-
             fetch('/api/set_access_token', {
               method: 'POST',
               headers: {
@@ -59,14 +74,27 @@
                 fetch('/api/transactions')
                   .then(response => response.json())
                   .then(data => {
-                    
                     const transformedTransactions = transformTransactionsData(data);
 
-                    
-                    transactionsContainer.innerHTML = `<h2>Transactions</h2>`;
-                    transformedTransactions.forEach(transaction => {
-                      transactionsContainer.innerHTML += `<p>${transaction.name}: ${transaction.amount} on ${transaction.date}</p>`;
-                    });
+                    transactionsContainer.innerHTML = `
+                      <h2>Transactions</h2>
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          ${transformedTransactions.map(transaction => `
+                            <tr>
+                              <td>${transaction.name}</td>
+                              <td>${transaction.amount} ${transaction.iso_currency_code}</td>
+                              <td>${transaction.date}</td>
+                            </tr>`).join('')}
+                        </tbody>
+                      </table>`;
                   })
                   .catch(error => console.error('Error fetching transactions:', error));
               })
@@ -83,5 +111,6 @@
   </script>
 </body>
 </html>
+
 
 
