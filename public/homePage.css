@@ -158,4 +158,13 @@ nav ul li a{
 .team-member p {
   text-align: center;
 }
+.card-body{
+  width: 300px;
+  height: 100px; 
+  border: 1px solid black;
+  border-radius: 3px;
+  text-align: center;
+  justify-content:center;
+  word-wrap: break-word;
 
+}

@@ -15,60 +15,52 @@
         <img src="images/logo2.png" class="logo">
 
         <ul>
-      <li><a href="promo.html">Mon-e</a></li>
-      
-      <li><a href="aboutUs.html">About Us</a></li>
-      
-      
-      <li> <a href="index.html" >My Account</a></li>
+          <li><a href="promo.html">Mon-e</a></li>
+          
+          <li><a href="aboutUs.html">About Us</a></li>
+          
+          <li> <a href="index.html" >My Account</a></li>
 
-      <li><a href="" >Receipt Scanner</a></li>
+          <li><a href="" >Receipt Scanner</a></li>
       
+        </ul>
+        <img src="images/account logo.jpg" class="user-pic" onclick="toggleMenu()">
 
+        <div class="sub-menu-wrap" id="subMenu">
+          <div class="sub-menu">
+              <div class="user-info">
+                <h2>User</h2>
+              </div>
+              
+              <hr>
+              
+              <a href="editProfile.html" class="sub-menu-link">
+                <img src="images/profile.png">
+                <p>Edit Profile</p>
+                <span>></span>
+              </a>
 
-    </ul>
-      <img src="images/account logo.jpg" class="user-pic" onclick="toggleMenu()">
-
-      <div class="sub-menu-wrap" id="subMenu">
-        <div class="sub-menu">
-            <div class="user-info">
-              <h2>User</h2>
-            </div>
-
-            <hr>
-            
-            <a href="editProfile.html" class="sub-menu-link">
-              <img src="images/profile.png">
-              <p>Edit Profile</p>
-              <span>></span>
-            </a>
-
-            <a href="settings.html" class="sub-menu-link">
-              <img src="images/setting.png">
-              <p>Settings and Privacy</p>
-              <span>></span>
-            </a>
-      
-            <a href="#" class="sub-menu-link">
-              <img src="images/help.png">
-              <p>Help and Support</p>
-              <span>></span>
-            </a>
-      
-          <button id="logout"><a href="" class="sub-menu-link">
-              <img src="images/logout.png">
-              <p>Log Out</p>
-              <span>></span>
-            </a>
-          </button> 
+              <a href="settings.html" class="sub-menu-link">
+                <img src="images/setting.png">
+                <p>Settings and Privacy</p>
+                <span>></span>
+              </a>
+        
+              <a href="#" class="sub-menu-link">
+                <img src="images/help.png">
+                <p>Help and Support</p>
+                <span>></span>
+              </a>
+        
+            <button id="logout"><a href="" class="sub-menu-link">
+                <img src="images/logout.png">
+                <p>Log Out</p>
+                <span>></span>
+              </a>
+            </button> 
+          </div>
         </div>
-      </div>
-
-     
-
-
-
-    </nav>
+      </nav>
     </div>
 
     <script>
@@ -77,17 +69,28 @@
       function toggleMenu() {
         subMenu.classList.toggle("open-menu");
       }
-
-
-
     </script>
 
-    
     <h1>Welcome User!</h1>
 
     <button id="addBank">
       <a href="link.html">Add a bank</a>
     </button>
+    <!-- Earnings Annual Box-->
+    <div id="earnings-monthly" class="card-body">
+      <h3>Earnings (Annual)</h3>
+      <br>
+      add stuff here about their annual earnings 
+    </div>
+    <br>
+
+    <!-- Another Box-->
+    <div id="" class="card-body">
+      <h3>Another Box</h3>
+
+    </div>
+    
+
 
     <script>
       // Function to set the theme based on the value stored in localStorage
