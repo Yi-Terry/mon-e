@@ -560,6 +560,7 @@ appServer.get('/api/identity', function (request, response, next) {
     .catch(next);
 });
 
+
 //BALANCE
 // Retrieve real-time Balances for each of an Item's accounts
 // https://plaid.com/docs/#balance
