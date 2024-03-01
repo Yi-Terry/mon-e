@@ -529,6 +529,37 @@ appServer.get('/api/recurring_transactions', function(request, response, next) {
     .catch(next)
 });
 
+//Refresh transactions
+//https://plaid.com/docs/api/products/transactions/#transactionsrefresh
+appServer.get('/api/transactions/refresh', function(request, response, next){
+  Promise.resolve()
+  .then(async function(){
+    const request = {
+      access_token: ACCESS_TOKEN,
+    };
+    await client.transactionsRefresh(request);
+  })
+  .catch(next);
+});
+
+//INCOME
+//refreshes the users bank income info
+//https://plaid.com/docs/api/products/income/#creditbank_incomerefresh
+appServer.get('/api/credit/bank_income/refresh', function(request, response, next){
+  Promise.resolve()
+  .then(async function (){
+    const request = {
+      access_token: ACCESS_TOKEN,
+      options: {
+        days_requested: 90,
+      },
+    };
+    response = await client.creditBankIncomeRefresh(request);
+  })
+  .catch(next);
+});
+
+
 //IDENTITY
 // Retrieve Identity for an Item
 // https://plaid.com/docs/#identity
