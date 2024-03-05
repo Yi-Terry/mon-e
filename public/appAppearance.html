@@ -4,14 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon-e</title>
-   
+    <link rel="stylesheet" href="settings.css">
     <link rel="stylesheet" href="appAppearance.css">
     <style>
         
     </style>
 </head>
 <body>
-    <a href="settings.html"> Return</a>
+
+    <nav class="sidebar locked" id="sidebar">
+        <div class="logo_items flex">
+          <span class="nav_image">
+           
+          </span>
+          
+          <span class="logo_name">Settings</span>
+          
+        </div>
+  
+        <br>
+        <br>
+  
+        
+              <li class="item">
+                <a href="#" class="link flex">
+                  <i class="bx bx-home-alt"></i>
+                  <span>Overview</span>
+                </a>
+              </li>
+              <li class="item">
+                <a href="notification.html" class="link flex">
+                  <i class="bx bx-grid-alt"></i>
+                  <span>Notification</span>
+                </a>
+              </li>
+            </ul>
+  
+          
+              <li class="item">
+                <a href="paymentmethod.html" class="link flex">
+                  <i class="bx bxs-magic-wand"></i>
+                  <span>Payment Methods</span>
+                </a>
+              </li>
+              <li class="item">
+                <a href="index.html" class="link flex">
+                  
+  
+                  <i class="bx bx-folder"></i>
+                  <span>TEST NEW LAYOUT</span>
+                </a>
+              </li>
+              <li class="item">
+                <a href="appAppearance.html" class="link flex">
+                  <i class="bx bx-cloud-upload"></i>
+                  <span>App Appearance</span>
+                </a>
+              </li>
+              <li class="item">
+                <a href="homePage.html" class="link flex">
+                  <i class="bx bx-cloud-upload"></i>
+                  <span>Home</span>
+                </a>
+              </li>
+          
+          </div>
+    </nav>
     <h1>Appearance</h1>
 
     <h3>Theme</h3>
@@ -34,13 +92,19 @@
         // Function to toggle the theme
         function toggleTheme(theme) {
             var body = document.body;
+            var sidebar = document.getElementById('sidebar');
+            var settingsText = document.querySelector('.logo_name');
 
             if (theme === 'lightTheme') {
                 body.style.backgroundColor = 'white';
                 body.style.color = 'black';
+                sidebar.style.backgroundColor = 'rgb(240, 240, 242)';
             } else {
                 body.style.backgroundColor = '#333';
+                sidebar.style.backgroundColor = '#352F44';
                 body.style.color = 'white';
+                settingsText.style.color = 'white';
+                
             }
 
             // Remove 'selected' class from all buttons
