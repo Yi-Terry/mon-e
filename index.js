@@ -1,10 +1,10 @@
-const { app, BrowserWindow, session, ipcMain, dialog, ipcRenderer} = require('electron');
+const { app, BrowserWindow, session, ipcMain, dialog, ipcRenderer } = require('electron');
 const express = require('express');
 const path = require('node:path');
 const bcrypt = require("bcryptjs");
 const firebase = require("firebase/app");
 const { getDatabase, set, ref } = require("firebase/database");
-const {getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, onAuthStateChanged} = require("firebase/auth");
+const { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, onAuthStateChanged } = require("firebase/auth");
 
 const firebaseConfig = {
   apiKey: "AIzaSyAuj-AVSSgdL9QKDvCr6C4WBfb_o_RhiR8",
@@ -54,7 +54,7 @@ function createWindow() {
       contextIsolation: true,
       webSecurity: true,
       allowRunningInsecureContent: true,
-      preload: path.join(__dirname, 'preload.js'), 
+      preload: path.join(__dirname, 'preload.js'),
     }
   });
 
@@ -89,70 +89,87 @@ app.on('activate', () => {
   }
 });
 
-ipcMain.on("sendTokens", (event, accesstoken, itemid) =>{
-  onAuthStateChanged(auth, (user) => {
-    userName = user.displayName;
-    if (user) {
-      set(ref(database, 'plaidToken/' + user.uid),{
-        Name: userName,
+ipcMain.on("sendTokensGoogle", (event, accesstoken, itemid, currentUserGoogle) => {
+      set(ref(database, 'plaidToken/' + currentUserGoogle), {
         Access_Token: accesstoken,
         Item_Id: itemid
-    })
+      });
+  });
+
+ipcMain.on("sendTokens", (event, accesstoken, itemid) => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      set(ref(database, 'plaidToken/' + user.uid), {
+        Access_Token: accesstoken,
+        Item_Id: itemid
+      })
     } else {
-      console.log('error storing token')
     }
-  })
+  });
 });
 
-ipcMain.on("createAccount", (event, email, password, FirstName, LastName, PhoneNumber) =>{
-createUserWithEmailAndPassword(auth, email, password)
-.then((userCredential) => {
-  const user = userCredential.user;
-  hash = bcrypt.hashSync(password, 12);
-  password = hash
-  set(ref(database, 'users/' + user.uid),{
-      FirstName: FirstName,
-      LastName: LastName,
-      PhoneNumber: PhoneNumber,
-      email: email,
-      password: password,
-      created_at: Date.now(),
-  })
-  .then(() => {
-      sendEmailVerification(user);
-      dialog.showMessageBox({
-          type: 'question',
-          buttons: ['Ok'],
-          defaultId: 2,
-          message: 'Account Created!',
-          detail: 'Email Verification Link has been sent',
-        });
-        win.loadURL(`http://localhost:${serverPort}/signUp.html`);
-  })
-  .catch((error) => {
-  });
-})
-    .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
+ipcMain.on("GoogleSignIn", (event, user) => {
+  if (user) {
+    appServer.get('/GoogleUsers', (req, res) => {
+      res.json(user)
+    });
+    console.log('user signed in');
+    win.loadURL(`http://localhost:${serverPort}/homePage.html`)
+  } else {
+    console.log('User is logged out');
+  }
+});
 
-    dialog.showMessageBox({
+ipcMain.on("createAccount", (event, email, password, FirstName, LastName, PhoneNumber) => {
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      hash = bcrypt.hashSync(password, 12);
+      password = hash
+      set(ref(database, 'users/' + user.uid), {
+        FirstName: FirstName,
+        LastName: LastName,
+        PhoneNumber: PhoneNumber,
+        email: email,
+        password: password,
+        created_at: Date.now(),
+      })
+        .then(() => {
+          sendEmailVerification(user);
+          dialog.showMessageBox({
+            type: 'question',
+            buttons: ['Ok'],
+            defaultId: 2,
+            message: 'Account Created!',
+            detail: 'Email Verification Link has been sent',
+          });
+          win.loadURL(`http://localhost:${serverPort}/signUp.html`);
+        })
+        .catch((error) => {
+        });
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+
+      dialog.showMessageBox({
         type: 'question',
         buttons: ['Ok'],
         title: 'Error Creating Account.',
         cancelId: 99,
         message: errorMessage
-    });
-  })
+      });
+    })
 });
 
-ipcMain.on("Login", (event, email, password) =>{
+
+
+ipcMain.on("Login", (event, email, password) => {
   signInWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
+    .then((userCredential) => {
       const user = userCredential.user;
       if (user.emailVerified) {
-          console.log('user signed in')
-          win.loadURL(`http://localhost:${serverPort}/homePage.html`);
+        console.log('user signed in')
       } else {
         dialog.showMessageBox({
           type: 'question',
@@ -161,24 +178,24 @@ ipcMain.on("Login", (event, email, password) =>{
           cancelId: 99,
           message: 'Email not verified. New Verification Link sent to Email!'
         });
-          sendEmailVerification(user)
+        sendEmailVerification(user)
       }
-})
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    dialog.showMessageBox({
-      type: 'question',
-      buttons: ['Ok'],
-      title: 'Error Logging In.',
-      cancelId: 99,
-      message: errorMessage
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      dialog.showMessageBox({
+        type: 'question',
+        buttons: ['Ok'],
+        title: 'Error Logging In.',
+        cancelId: 99,
+        message: errorMessage
+      });
     });
-  });
   onAuthStateChanged(auth, (user) => {
     if (user) {
       var isVerified = user.emailVerified;
-      if(isVerified){
+      if (isVerified) {
         win.loadURL(`http://localhost:${serverPort}/homePage.html`);
       }
     } else {
@@ -192,7 +209,7 @@ ipcMain.on("Login", (event, email, password) =>{
 
 // read env vars from .env file
 require('dotenv').config();
-const { Configuration, PlaidApi, Products, PlaidEnvironments} = require('plaid');
+const { Configuration, PlaidApi, Products, PlaidEnvironments } = require('plaid');
 const util = require('util');
 const { v4: uuidv4 } = require('uuid');
 const bodyParser = require('body-parser');
@@ -450,7 +467,7 @@ appServer.get('/api/transactions', function (request, response, next) {
       const compareTxnsByDateAscending = (a, b) => (a.date > b.date) - (a.date < b.date);
       // Return the 8 most recent transactions
       const recently_added = [...added].sort(compareTxnsByDateAscending).slice(-8);
-      response.json({latest_transactions: recently_added});
+      response.json({ latest_transactions: recently_added });
     })
     .catch(next);
 });
@@ -480,10 +497,10 @@ appServer.get('/api/investments_transactions', function (request, response, next
 
 //Retrieve transactions
 //https://plaid.com/docs/api/products/transactions/#transactionsget 
-appServer.get('/api/transactions_get', function(request, response, next) {
+appServer.get('/api/transactions_get', function (request, response, next) {
   Promise.resolve()
-  
-    .then(async function (){
+
+    .then(async function () {
       const response = await client.transactionsGet(request);
       let transactions = response.data.transactions;
       const total_transactions = response.data.total_transactions;
@@ -500,19 +517,19 @@ appServer.get('/api/transactions_get', function(request, response, next) {
         };
         const paginatedResponse = await client.transactionsGet(paginatedRequest);
         transactions = transactions.concat(
-        paginatedResponse.data.transactions,
-      );
-      console.log(transactions);
-    }
-  })
-    .catch(next) 
+          paginatedResponse.data.transactions,
+        );
+        console.log(transactions);
+      }
+    })
+    .catch(next)
 });
 
 //Retrieve Recurring transactions
 //https://plaid.com/docs/api/products/transactions/#transactionsrecurringget
-appServer.get('/api/recurring_transactions', function(request, response, next) {
+appServer.get('/api/recurring_transactions', function (request, response, next) {
   Promise.resolve()
-    .then(async function (){
+    .then(async function () {
       const transactions = await client.transactionsRecurringGet(request);
 
       let inflowStreams = response.data.inflowStreams;
@@ -520,8 +537,8 @@ appServer.get('/api/recurring_transactions', function(request, response, next) {
 
       //Filter transactions for recurring ones
       const recurringTransactions = transactions.filter(transaction => {
-          //logic to determine if transaction is recurring
-          return transaction.merchant_name === 'Example Merchat' && transaction.catergory.includes('Groceries');
+        //logic to determine if transaction is recurring
+        return transaction.merchant_name === 'Example Merchat' && transaction.catergory.includes('Groceries');
       });
       prettyPrintResponse(recurringTransactions);
       response.json(recurringTransactions.data);
@@ -702,14 +719,14 @@ appServer.get('/api/payment', function (request, response, next) {
 // For Income best practices, see https://github.com/plaid/income-sample instead
 appServer.get('/api/income/verification/paystubs', function (request, response, next) {
   Promise.resolve()
-  .then(async function () {
-    const paystubsGetResponse = await client.incomeVerificationPaystubsGet({
-      access_token: ACCESS_TOKEN
-    });
-    prettyPrintResponse(paystubsGetResponse);
-    response.json({ error: null, paystubs: paystubsGetResponse.data})
-  })
-  .catch(next);
+    .then(async function () {
+      const paystubsGetResponse = await client.incomeVerificationPaystubsGet({
+        access_token: ACCESS_TOKEN
+      });
+      prettyPrintResponse(paystubsGetResponse);
+      response.json({ error: null, paystubs: paystubsGetResponse.data })
+    })
+    .catch(next);
 })
 
 appServer.use('/api', function (error, request, response, next) {
