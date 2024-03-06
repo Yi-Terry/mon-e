@@ -184,6 +184,7 @@ const { v4: uuidv4 } = require('uuid');
 const bodyParser = require('body-parser');
 const moment = require('moment');
 const cors = require('cors');
+const { start } = require('node:repl');
 
 
 const PLAID_CLIENT_ID = process.env.PLAID_CLIENT_ID;
@@ -439,6 +440,25 @@ appServer.get('/api/transactions', function (request, response, next) {
       response.json({latest_transactions: recently_added});
     })
     .catch(next);
+});
+
+//Retrieve Recurring transactions
+//https://plaid.com/docs/api/products/transactions/#transactionsrecurringget
+appServer.get('/api/recurring_transactions', function(request, response, next) {
+  Promise.resolve()
+    .then(async function () {
+      const request = {
+        access_token: ACCESS_TOKEN,
+        account_id:ACCOUNT_ID
+      };
+      const recurringTransactionsResponse = await client.transactionsRecurringGet(request);
+      prettyPrintResponse(recurringTransactionsResponse);
+      response.json({
+        error:null,
+        recurring_transactions: recurringTransactionsResponse.data,
+      });
+      })
+    .catch(next);  
 });
 
 // Retrieve Investment Transactions for an Item
