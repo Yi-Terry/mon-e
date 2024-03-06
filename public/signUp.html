@@ -124,12 +124,7 @@
                 console.error('Error signing in:', error.message);
             }
             onAuthStateChanged(auth, (user) => {
-            console.log(user)
             window.api.GoogleLogIN(user.uid);
-            if (user) {
-            } else {
-                console.log('User is logged out');
-            }
         });
         });
         
@@ -142,12 +137,7 @@
                 console.error('Error signing in with Apple:', error.message);
             }
             onAuthStateChanged(auth, (user) => {
-            console.log(user)
-            if (user) {
-                    window.location.assign("homePage.html")
-            } else {
-                console.log('User is logged out');
-            }
+            window.api.AppleLogIN(user.uid);
         });
         });
 

@@ -7,8 +7,7 @@ const WINDOW_API = {
 }
 
 const PLAID_API = {
-  sendToken: (accesstoken, itemid) => ipcRenderer.send("sendTokens", accesstoken, itemid),
-  sendTokenGoogle: (access_token, item_id, currentUserGoogle) => ipcRenderer.send("sendTokensGoogle", access_token, item_id, currentUserGoogle),
+  sendToken: (accesstoken, itemid, currentUser) => ipcRenderer.send("sendTokenCurrentUser", accesstoken, itemid, currentUser),
 }
 
 
