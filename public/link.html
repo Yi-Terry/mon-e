@@ -26,6 +26,17 @@
       const transactionsContainer = document.getElementById('transactions-container');
 
       let accessToken = null;
+      let currentUserGoogle = null;
+
+      fetch('/GoogleUsers')
+        .then(response => response.json())
+        .then(user => {
+          currentUserGoogle = user; // Assign user data to the variable
+          console.log(currentUserGoogle); // You can log it here if needed
+        })
+        .catch(error => {
+          console.error('Error fetching user data:', error);
+        });
 
       linkButton.addEventListener('click', async () => {
         const linkTokenResponse = await fetch('/api/create_link_token', {
@@ -47,10 +58,14 @@
             }) 
               .then(response => response.json())
               .then(data => {
-                accessToken = data.access_token;
+                const accessToken = data.access_token;
                 const itemId = data.item_id;
-
-                window.plaid.sendToken(accessToken, itemId);
+                const googleUser = currentUserGoogle;
+                if (googleUser != null) {
+                  window.plaid.sendTokenGoogle(accessToken, itemId, googleUser)
+                } else {
+                  window.plaid.sendToken(accessToken, itemId)
+                }
                 
                 transactionsButton.style.display = 'block';
               })
