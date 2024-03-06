@@ -89,28 +89,35 @@ app.on('activate', () => {
   }
 });
 
-ipcMain.on("sendTokensGoogle", (event, accesstoken, itemid, currentUserGoogle) => {
-  set(ref(database, 'plaidToken/' + currentUserGoogle), {
-    Access_Token: accesstoken,
-    Item_Id: itemid
-  });
+ipcMain.on("sendTokenCurrentUser", (event, accesstoken, itemid, currentUser) => {
+  if(currentUser != null){
+    set(ref(database, 'plaidToken/' + currentUser), {
+      Access_Token: accesstoken,
+      Item_Id: itemid
+    });
+  } else {
+    console.log("error storing tokens")
+  }
 });
 
-ipcMain.on("sendTokens", (event, accesstoken, itemid) =>{
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      set(ref(database, 'plaidToken/' + user.uid),{
-        Access_Token: accesstoken,
-        Item_Id: itemid
-    })
-    } else {
-    }
-  })
+
+
+ipcMain.on("AppleSignIn", (event, user) => {
+  if (user) {
+    appServer.get('/CurrentUsers', (req, res) => {
+      res.json(user)
+    });
+    console.log('user signed in');
+    win.loadURL(`http://localhost:${serverPort}/homePage.html`)
+  } else {
+    console.log('User is logged out');
+  }
 });
+
 
 ipcMain.on("GoogleSignIn", (event, user) => {
   if (user) {
-    appServer.get('/GoogleUsers', (req, res) => {
+    appServer.get('/CurrentUsers', (req, res) => {
       res.json(user)
     });
     console.log('user signed in');
@@ -168,6 +175,9 @@ ipcMain.on("Login", (event, email, password) =>{
       const user = userCredential.user;
       if (user.emailVerified) {
           console.log('user signed in')
+          appServer.get('/CurrentUsers', (req, res) => {
+            res.json(user.uid)
+          });
           win.loadURL(`http://localhost:${serverPort}/homePage.html`);
       } else {
         dialog.showMessageBox({

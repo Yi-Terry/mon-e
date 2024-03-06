@@ -3,13 +3,14 @@ const { contextBridge, ipcRenderer } = require('electron');
 const WINDOW_API = {
   createAccount: (email, password, FirstName, LastName, PhoneNumber) => ipcRenderer.send("createAccount", email, password, FirstName, LastName, PhoneNumber),
   Login: (email, password) => ipcRenderer.send("Login", email, password),
-  GoogleLogIN: (user) => ipcRenderer.send("GoogleSignIn", user)
+  GoogleLogIN: (user) => ipcRenderer.send("GoogleSignIn", user),
+  AppleLogIN: (user) => ipcRenderer.send("AppleSignIn", user)
 }
 
 const PLAID_API = {
-  sendToken: (accesstoken, itemid) => ipcRenderer.send("sendTokens", accesstoken, itemid),
-  sendTokenGoogle: (access_token, item_id, currentUserGoogle) => ipcRenderer.send("sendTokensGoogle", access_token, item_id, currentUserGoogle),
+  sendToken: (accesstoken, itemid, currentUser) => ipcRenderer.send("sendTokenCurrentUser", accesstoken, itemid, currentUser),
 }
+
 
 
 

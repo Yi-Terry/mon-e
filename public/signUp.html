@@ -142,9 +142,8 @@
                 console.error('Error signing in with Apple:', error.message);
             }
             onAuthStateChanged(auth, (user) => {
-            console.log(user)
+            window.api.AppleLogIN(user.uid);
             if (user) {
-                    window.location.assign("homePage.html")
             } else {
                 console.log('User is logged out');
             }
