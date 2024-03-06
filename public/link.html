@@ -82,13 +82,13 @@
           return;
         }
 
-        fetch('/api/transactions')
+        fetch('/api/transactions/get')
           .then(response => response.json())
           .then(data => {
             transactionsContainer.innerHTML = `
               <h2>Transactions</h2>
               <ul>
-                ${data.latest_transactions.map(transaction => `
+                ${data.all_transactions.map(transaction => `
                   <li>
                     <strong>Name:</strong> ${transaction.name} |
                     <strong>Amount:</strong> ${transaction.amount} ${transaction.iso_currency_code} |
