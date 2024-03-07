@@ -14,6 +14,12 @@
   <h1>Plaid Frontend</h1>
   
   <button id="link-button">Connect with Plaid</button>
+  <div id="date-range-container" style="display: none;">
+    <select id="date-range">
+      <option value="30">Past 30 days</option>
+      <option value="90">Past 90 days</option>
+    </select>
+  </div>
   <button id="transactions-button" style="display: none;">Retrieve Transactions</button>
   <button id="recurring-transactions-button" style="display: none;">Retrieve Recurring Transactions</button>
 
@@ -23,6 +29,8 @@
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
       const linkButton = document.getElementById('link-button');
+      const dateRangeContainer = document.getElementById('date-range-container');
+      const dateRangeSelector = document.getElementById('date-range');
       const transactionsButton = document.getElementById('transactions-button');
       const recurringTransactionsButton = document.getElementById('recurring-transactions-button');
       const transactionsContainer = document.getElementById('transactions-container');
@@ -64,7 +72,8 @@
                 const itemId = data.item_id;
                 window.plaid.sendToken(accessToken, itemId, currentUser);
                 transactionsButton.style.display = 'block';
-                recurringTransactionsButton.style.display = 'block';  // Display the new button
+                recurringTransactionsButton.style.display = 'block'; 
+                dateRangeContainer.style.display = 'block'; 
               })
               .catch(error => console.error('Error setting access token:', error));
           },
@@ -76,13 +85,15 @@
         linkHandler.open();
       });
 
-      transactionsButton.addEventListener('click', () => {
+      transactionsButton.addEventListener('click', async () => {
         if (!accessToken) {
           console.error('Access Token is not available. Please link your account first.');
           return;
         }
 
-        fetch('/api/transactions/get')
+        const dateRange = dateRangeSelector.value;
+
+        fetch(`/api/transactions/get?dateRange=${dateRange}`)
           .then(response => response.json())
           .then(data => {
             transactionsContainer.innerHTML = `
@@ -106,33 +117,34 @@
         }
 
         fetch('/api/transactions/recurring')
-    .then(response => response.json())
-    .then(data => {
-      const recurringTransactions = data.recurring_Transactions || [];
+          .then(response => response.json())
+          .then(data => {
+            const recurringTransactions = data.recurring_Transactions || [];
 
-      transactionsContainer.innerHTML = `
-        <h2>Recurring Transactions</h2>
-        <ul>
-          ${recurringTransactions.inflow_streams.map(stream => `
-            <li>
-              <strong>Category:</strong> ${stream.category.join(', ')} |
-              <strong>Description:</strong> ${stream.description} |
-              <strong>Frequency:</strong> ${stream.frequency}
-            </li>`).join('')}
-          ${recurringTransactions.outflow_streams.map(stream => `
-            <li>
-              <strong>Category:</strong> ${stream.category.join(', ')} |
-              <strong>Description:</strong> ${stream.description} |
-              <strong>Frequency:</strong> ${stream.frequency}
-            </li>`).join('')}
-        </ul>`;
-    })
-    .catch(error => console.error('Error fetching recurring transactions:', error));
-});
+            transactionsContainer.innerHTML = `
+              <h2>Recurring Transactions</h2>
+              <ul>
+                ${recurringTransactions.inflow_streams.map(stream => `
+                  <li>
+                    <strong>Category:</strong> ${stream.category.join(', ')} |
+                    <strong>Description:</strong> ${stream.description} |
+                    <strong>Frequency:</strong> ${stream.frequency}
+                  </li>`).join('')}
+                ${recurringTransactions.outflow_streams.map(stream => `
+                  <li>
+                    <strong>Category:</strong> ${stream.category.join(', ')} |
+                    <strong>Description:</strong> ${stream.description} |
+                    <strong>Frequency:</strong> ${stream.frequency}
+                  </li>`).join('')}
+              </ul>`;
+          })
+          .catch(error => console.error('Error fetching recurring transactions:', error));
+      });
     });
   </script>
 </body>
 </html>
+
 
 
 

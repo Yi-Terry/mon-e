@@ -479,52 +479,52 @@ appServer.get('/api/transactions', function (request, response, next) {
     .catch(next)
 })
 
-appServer.get('/api/transactions/get', function (request, response, next) {
-  Promise.resolve()
-    .then(async function () {
-      // Set the start and end dates for historical transactions
-      const startDate = '2018-01-01';
-      const endDate = '2024-03-01';
+appServer.get('/api/transactions/get', async function (request, response, next) {
+  try {
+    
+    const endDate = new Date();  
+    let startDate;
 
-      // Initial request to get all transactions
-      const initialRequest = {
+    const dateRange = parseInt(request.query.dateRange) || 30;
+
+    startDate = new Date();
+    startDate.setDate(startDate.getDate() - dateRange);
+
+    const startDateString = startDate.toISOString().split('T')[0];
+    const endDateString = endDate.toISOString().split('T')[0];
+
+    const initialRequest = {
+      access_token: ACCESS_TOKEN,
+      start_date: startDateString,
+      end_date: endDateString,
+    };
+
+    const initialResponse = await client.transactionsGet(initialRequest);
+    let transactions = initialResponse.data.transactions;
+    const total_transactions = initialResponse.data.total_transactions;
+
+
+    while (transactions.length < total_transactions) {
+      const paginatedRequest = {
         access_token: ACCESS_TOKEN,
-        start_date: startDate,
-        end_date: endDate,
+        start_date: startDateString,
+        end_date: endDateString,
+        options: {
+          offset: transactions.length,
+        },
       };
 
-      const initialResponse = await client.transactionsGet(initialRequest);
-      let transactions = initialResponse.data.transactions;
-      const total_transactions = initialResponse.data.total_transactions;
+      const paginatedResponse = await client.transactionsGet(paginatedRequest);
+      transactions = transactions.concat(paginatedResponse.data.transactions);
+    }
 
-      // Paginate through transactions if there are more than one page
-      while (transactions.length < total_transactions) {
-        // Use the offset parameter to paginate
-        const paginatedRequest = {
-          access_token: ACCESS_TOKEN,
-          start_date: startDate,
-          end_date: endDate,
-          options: {
-            offset: transactions.length,
-          },
-        };
-
-        const paginatedResponse = await client.transactionsGet(paginatedRequest);
-        transactions = transactions.concat(paginatedResponse.data.transactions);
-      }
-
-      console.log(transactions.date)
-
-      // Respond with the complete list of transactions
-      response.json({ all_transactions: transactions });
-    })
-    .catch(function (error) {
-      // Handle errors
-      console.error('Error fetching all transactions:', error);
-      response.status(500).json({
-        error: 'Internal Server Error',
-      });
+    response.json({ all_transactions: transactions });
+  } catch (error) {
+    console.error('Error fetching all transactions:', error);
+    response.status(500).json({
+      error: 'Internal Server Error',
     });
+  }
 });
 
 appServer.get(
