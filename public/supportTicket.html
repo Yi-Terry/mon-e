@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Submission</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        form {
+            text-align: center;
+        }
+
+        label, select, textarea, button {
+            display: block;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <form>
+        <label for="issueType" id ="titleSup">Issue Type:</label>
+        <select id="issueType" name="issueType">
+            <option value="general">Gneral Information</option>
+            <option value="bank">Banking</option>
+            <option value="other">Other</option>
+        </select>
+
+        <label for="details">Details:</label>
+        <textarea id="details" name="details" rows="4" cols="50" placeholder="Enter details..."></textarea>
+
+        <button type="submit">Submit</button>
+        <a href="homePage.html"><button type="button">Return</button></a>
+    </form>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
+<script>
+    
+    // Function to set the theme based on the value stored in localStorage
+    function setTheme() {
+        var storedTheme = localStorage.getItem('theme');
+        if (storedTheme === 'darkTheme') {
+            toggleTheme('darkTheme');
+        } else {
+            toggleTheme('lightTheme');
+        }
+    }
+
+    // Function to toggle the theme
+    function toggleTheme(theme) {
+        var body = document.body;
+        
+        
+
+        if (theme === 'lightTheme') {
+            body.style.backgroundColor = 'white';
+            body.style.color = 'black';
+            
+        } else {
+            body.style.backgroundColor = '#333';
+            
+            body.style.color = 'white';
+         
+            
+        }
+
+        // Remove 'selected' class from all buttons
+        var buttons = document.querySelectorAll('.theme-button');
+        buttons.forEach(function (button) {
+            button.classList.remove('selected');
+        });
+
+        // Add 'selected' class to the clicked button
+        var clickedButton = document.getElementById(theme);
+        clickedButton.classList.add('selected');
+
+        // Store the selected theme in localStorage
+        localStorage.setItem('theme', theme);
+    
+    }
+    
+    // Call setTheme on page load
+    setTheme();
+</script>
+
+</body>
+</html>
