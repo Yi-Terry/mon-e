@@ -8,13 +8,73 @@
     <link rel="stylesheet" href="editProfile.css">
 </head>
 <body>
+
+    <nav class="sidebar locked" id="sidebar">
+        <div class="logo_items flex">
+          <span class="nav_image">
+           
+          </span>
+          
+          <span class="logo_name">Settings</span>
+          
+        </div>
+  
+        <br>
+        <br>
+  
+        
+              <li class="item">
+                <a href="#" class="link flex">
+                  <i class="bx bx-home-alt"></i>
+                  <span>Overview</span>
+                </a>
+              </li>
+              <li class="item">
+                <a href="notification.html" class="link flex">
+                  <i class="bx bx-grid-alt"></i>
+                  <span>Notification</span>
+                </a>
+              </li>
+            </ul>
+  
+          
+              <li class="item">
+                <a href="paymentmethod.html" class="link flex">
+                  <i class="bx bxs-magic-wand"></i>
+                  <span>Payment Methods</span>
+                </a>
+              </li>
+              <li class="item">
+                <a href="index.html" class="link flex">
+                  
+  
+                  <i class="bx bx-folder"></i>
+                  <span>TEST NEW LAYOUT</span>
+                </a>
+              </li>
+              <li class="item">
+                <a href="appAppearance.html" class="link flex">
+                  <i class="bx bx-cloud-upload"></i>
+                  <span>App Appearance</span>
+                </a>
+              </li>
+              <li class="item">
+                <a href="homePage.html" class="link flex">
+                  <i class="bx bx-cloud-upload"></i>
+                  <span>Home</span>
+                </a>
+              </li>
+          
+          </div>
+        </nav>
    
-    <h2>Edit Profile</h2>
+    
     <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
         <div class="card h-100">
             <div class="card-body">
                 <div class="row gutters">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <h2>Edit Profile</h2>
                         <h6 class="mb-2 text-primary">Personal Details</h6>
                     </div>
                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -68,23 +128,25 @@
                 <div class="row gutters">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="text-right">
-                            <button type="button" id="submit" name="submit" class="btn btn-secondary">Cancel</button>
+                      
+                            <button type="button" id="submit" name="submit" class="btn btn-secondary">Back</button>
                             <button type="button" id="submit" name="submit" class="btn btn-primary">Update</button>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="page">
+                <div class = "forgotPassword">
+                    <h3>Reset Password</h3>
+                    <label for="email">Enter Email Address
+                        <input type="text" placeholder="Email" name="email" id="emailInp" required>
+                        
+                        <button id="sendAuthenicationCode" type="submit">Send reset email</button> 
+                    <br>   
+                </div>
+            </div>
         </div>
-    <div class="page">
-        <div class = "forgotPassword">
-            <h3>Reset Password</h3>
-            <label for="email">Enter Email Address
-                <input type="text" placeholder="Email" name="email" id="emailInp" required>
-                
-                <button id="sendAuthenicationCode" type="submit">Send reset email</button> 
-            <br>   
-        </div>
-    </div>
+  
 
 
 
