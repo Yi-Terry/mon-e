@@ -4,48 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ticket Submission</title>
-    <style>
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
+    <link rel="stylesheet" href="supportTicket.css">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;600&display=swap" rel="stylesheet">
 
-        form {
-            text-align: center;
-        }
-
-        label, select, textarea, button {
-            display: block;
-            margin: 10px 0;
-        }
-    </style>
 </head>
 <body>
 
-    <form>
-        <label for="issueType" id ="titleSup">Issue Type:</label>
-        <select id="issueType" name="issueType">
-            <option value="general">Gneral Information</option>
-            <option value="bank">Banking</option>
-            <option value="other">Other</option>
-        </select>
-
-        <label for="details">Details:</label>
-        <textarea id="details" name="details" rows="4" cols="50" placeholder="Enter details..."></textarea>
-
-        <button type="submit">Submit</button>
-        <a href="homePage.html"><button type="button">Return</button></a>
-    </form>
-
-    <script>
-        function goBack() {
-            window.history.back();
-        }
-    </script>
-
+    <form action="">
+        <div class="title">
+          <h2>Ticket Submission</h2>
+        </div>
+        <div class="half">
+          <div class="item">
+            <label for="name">NAME</label>
+            <input type="text" id = "name">
+          </div>
+          <div class="item">
+            <label for="email">EMAIL</label>
+            <input type="text" id = "email">
+          </div>
+        </div>
+        <div class="full">
+          <label for="message">MESSAGE</label>
+          <textarea name="" id = "message"></textarea>
+        </div>
+        <div class="action">
+          <input type="submit" value = "Send Ticket">
+          <input type="reset" value = "Clear">
+        </div>
+     
+      </form>
 <script>
     
     // Function to set the theme based on the value stored in localStorage
