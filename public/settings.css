@@ -100,7 +100,7 @@ body {
 }
 .link:hover {
   color: #fff;
-  background-color: green;
+  background-color: #87e76d;
 }
 .link span {
   white-space: nowrap;

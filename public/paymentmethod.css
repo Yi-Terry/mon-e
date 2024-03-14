@@ -100,7 +100,7 @@ body {
 }
 .link:hover {
   color: #fff;
-  background-color: green;
+  background-color: #87e76d;
 }
 .link span {
   white-space: nowrap;
@@ -159,7 +159,7 @@ body {
 .paymentbutton{
   align-self: flex-end; /* Positions the button to the bottom right corner */
   margin-top: 10px; /* Adds some spacing between the input fields and the button */
-  background-color: #007bff;
+  background-color: #87e76d;
   color: #fff;
   padding: 10px;
   border: none;
@@ -168,7 +168,7 @@ body {
 }
 
 .content form button:hover {
-  background-color: #0056b3;
+  background-color: #87e76d;
 }
 
 

@@ -3,17 +3,17 @@
   font-family: "Poppins", sans-serif;
 }
 button{
-    background-color: green;
-    border: green;
+    background-color: #87e76d;
+    border: #87e76d;
     color: white;
     border-radius: 3px;
 }
 button#submit.btn.btn-primary{
-    background-color:green;
-    border: green;
+    background-color:#87e76d;
+    border: #87e76d;
 }
 .text-primary{
-    color: green !important;
+    color: #87e76d !important;
 }
 
 body{
@@ -71,7 +71,7 @@ body {
 }
 .logo_name {
   font-size: 22px;
-  color:green;
+  color:#87e76d;
   font-weight: 500px;
   transition: all 0.3s ease;
 }
@@ -126,7 +126,7 @@ body {
 }
 .link:hover {
   color: #fff;
-  background-color: green;
+  background-color: #87e76d;
 }
 .link span {
   white-space: nowrap;

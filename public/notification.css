@@ -100,7 +100,7 @@ body {
 }
 .link:hover {
   color: #fff;
-  background-color: green;
+  background-color: #87e76d;
 }
 .link span {
   white-space: nowrap;
@@ -163,11 +163,11 @@ body {
   }
   
   input:checked + .slider {
-    background-color: green;
+    background-color: #87e76d;
   }
   
   input:focus + .slider {
-    box-shadow: 0 0 1px green;
+    box-shadow: 0 0 1px #87e76d;
   }
   
   input:checked + .slider:before {
