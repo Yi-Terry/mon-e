@@ -540,9 +540,9 @@
                                             aria-labelledby="dropdownMenuLink">
                                             <div class="dropdown-header">Dropdown Header:</div>
                                             <a class="dropdown-item" data-toggle="modal" data-target="#createBudgetModal">Create Budget</a>
-                                            <a class="dropdown-item" href="#">Edit Budget</a>
+                                            <a class="dropdown-item" data-toggle="modal" data-target="#editBudgetModal">Edit Budget</a>
                                             <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Delete Budget</a>
+                                            <a class="dropdown-item" data-toggle="modal" data-target="#deleteBudgetModal">Delete Budget</a>
                                         </div>
                                     </div>
                                 </div>
@@ -708,6 +708,44 @@
             </div>
         </div>
     </div>
+    <!-- edit Modal-->
+    <div class="modal fade" id="editBudgetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document" id = "signOutPop">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Budget</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">--</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" data-dismiss="modal">Confirm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+     <!-- delete Modal-->
+     <div class="modal fade" id="deleteBudgetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+     <div class="modal-dialog" role="document" id = "signOutPop">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h5 class="modal-title" id="exampleModalLabel">Delete Budget</h5>
+                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">×</span>
+                 </button>
+             </div>
+             <div class="modal-body">--</div>
+             <div class="modal-footer">
+                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                 <a class="btn btn-primary" data-dismiss="modal">Confirm</a>
+             </div>
+         </div>
+     </div>
+ </div>
 
     <!-- Bootstrap core JavaScript-->
     <script src="jquery.min.js"></script>
