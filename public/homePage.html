@@ -349,11 +349,18 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
+                    <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+
+                    <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                        <a href="link.html" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Add a Bank</a>
-                    </div>
+                        <button id="add-bank-button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                          <i class="fas fa-download fa-sm text-white-50"></i> Add a Bank
+                        </button>
+                      </div>
+                      <!-- Any other content of your dashboard -->
+                      <script src="plaidlink.js"></script>
+
 
                     <!-- Content Row -->
                     <div class="row">
@@ -587,8 +594,7 @@
                         </div>
 
                         <div class="col-lg-6 mb-4">
-
-                            <!-- Transations -->
+                            <!-- Transactions -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Transactions</h6>
@@ -608,16 +614,19 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div class="text-center">
-                                        Test
+                                    <!-- Date Range Selector -->
+                                    <div class="form-group">
+                                        <label for="date-range">Date Range:</label>
+                                        <select id="date-range" class="form-control">
+                                            <option value="30" selected>Past 30 days</option>
+                                            <option value="90">Past 90 days</option>
+                                        </select>
                                     </div>
-                                    <p>Test</p>
+                                    <!-- Transactions Container (will be filled by JavaScript) -->
+                                    <div id="transactions-container"></div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                </div>
                 <!-- /.container-fluid -->
 
             </div>
