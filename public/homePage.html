@@ -43,7 +43,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="homePage".html">
+                <a class="nav-link" href="homePage.html">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -367,6 +367,7 @@
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
                                         </div>
                                         <div class="col-auto">
+                                            <!---BOX awesome font dont work-->
                                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
@@ -536,13 +537,15 @@
                                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                             aria-labelledby="dropdownMenuLink">
                                             <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Create Budget</a>
+                                            <a class="dropdown-item" data-toggle="modal" data-target="#createBudgetModal">Create Budget</a>
                                             <a class="dropdown-item" href="#">Edit Budget</a>
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" href="#">Delete Budget</a>
                                         </div>
                                     </div>
                                 </div>
+
+
                                 <div class="card-body">
                                     <h4 class="small font-weight-bold">Server Migration <span
                                             class="float-right">20%</span></h4>
@@ -654,6 +657,51 @@
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                     <a class="btn btn-primary" href="signUp.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- create Budget Modal-->
+    <div class="modal fade" id="createBudgetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document" id = "signOutPop">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create a Budget</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Please enter amount and description.
+                    <form>
+                        <div class="form-group">
+                            <label for="budgetName">Budget Name:</label>
+                            <input type="text" class="form-control" id="budgetName" name="budgetName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="amount">Amount:</label>
+                            <input type="number" class="form-control" id="amount" name="amount" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category:</label>
+                            <select class="form-control" id="category" name="category">
+                                <option value="food">Food</option>
+                                <option value="entertainment">Entertainment</option>
+                                <option value="transportation">Transportation</option>
+                                <option value="misc">Miscellaneous</option>
+                                <!-- Add more options as needed -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description:</label>
+                            <textarea class="form-control" id="description" name="description" rows="4" placeholder="Enter description..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary"  data-dismiss="modal">Create</a>
                 </div>
             </div>
         </div>
