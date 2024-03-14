@@ -4943,7 +4943,7 @@
   
   .badge-warning {
     color: #fff;
-    background-color: #f6c23e;
+    background-color: greenyellow;
   }
   
   a.badge-warning:hover, a.badge-warning:focus {
@@ -4958,7 +4958,7 @@
   
   .badge-danger {
     color: #fff;
-    background-color: #e74a3b;
+    background-color: greenyellow;
   }
   
   a.badge-danger:hover, a.badge-danger:focus {
@@ -6415,7 +6415,7 @@
   }
   
   .bg-primary {
-    background-color: #4e73df !important;
+    background-color: #1cc88a !important;
   }
   
   a.bg-primary:hover, a.bg-primary:focus,
@@ -10127,7 +10127,7 @@
   .dropdown .dropdown-menu .dropdown-header {
     font-weight: 800;
     font-size: 0.65rem;
-    color: #b7b9cc;
+    color: #87E76D;
   }
   
   .dropdown.no-arrow .dropdown-toggle::after {
@@ -10235,8 +10235,8 @@
   }
   
   .topbar .dropdown-list .dropdown-header {
-    background-color: #4e73df;
-    border: 1px solid #4e73df;
+    background-color: #87E76D;
+    border: 1px solid #87E76D;
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
     color: #fff;
