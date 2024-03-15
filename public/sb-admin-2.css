@@ -2352,6 +2352,9 @@
   
   .btn:not(:disabled):not(.disabled) {
     cursor: pointer;
+    float:
+    display: flex;
+    flex-wrap: wrap;
   }
   
   a.btn.disabled,
@@ -6664,7 +6667,7 @@
     display: inline-flex !important;
   }
   
-  @media (min-width: 576px) {
+  @media (min-width: 400px) {
     .d-sm-none {
       display: none !important;
     }
