@@ -594,63 +594,37 @@
                         </div>
 
                         <div class="col-lg-6 mb-4">
+                            <!-- Recurring Transactions -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Recurring Transactions</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div id="recurring-transactions-container"></div>                                  
+                                    <button id="fetch-recurring-transactions" class="btn btn-primary">Fetch Recurring Transactions</button>
+                                </div>
+                            </div>
+                        
                             <!-- Transactions -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Transactions</h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                            aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="card-body">
-                                    <!-- Date Range Selector -->
+                                  
                                     <div class="form-group">
-                                        <label for="date-range">Date Range:</label>
-                                        <select id="date-range" class="form-control">
-                                            <option value="30" selected>Past 30 days</option>
+                                        <label for="date-range">Select Date Range:</label>
+                                        <select id="date-range">
+                                            <option value="30">Past 30 days</option>
                                             <option value="90">Past 90 days</option>
                                         </select>
                                     </div>
-                                    <!-- Transactions Container (will be filled by JavaScript) -->
+                                    
                                     <div id="transactions-container"></div>
                                 </div>
                             </div>
                         </div>
-                <!-- /.container-fluid -->
-
-                <div class="col-lg-6 mb-4">
-                    <!-- Transactions -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-primary">Recurring Transactions</h6>
-                            <div class="dropdown no-arrow">
-                               
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <!-- Date Range Selector -->
-                            <div class="form-group">
-                               
-                            </div>
-                            <!-- Transactions Container (will be filled by JavaScript) -->
-                            <div id="transactions-container"></div>
-                        </div>
-                    </div>
-                </div>
-
-    
-            </div>
+                        
             <!-- End of Main Content -->
 
             <!-- Footer -->
