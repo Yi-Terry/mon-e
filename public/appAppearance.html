@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon-e</title>
-   
+    <link rel="stylesheet" href="settings.css">
     <link rel="stylesheet" href="appAppearance.css">
     <style>
         
     </style>
 </head>
 <body>
-    
     <a href="homePage.html"> Return</a>
     <h1>Appearance</h1>
 
@@ -35,13 +34,19 @@
         // Function to toggle the theme
         function toggleTheme(theme) {
             var body = document.body;
+            var sidebar = document.getElementById('sidebar');
+            var settingsText = document.querySelector('.logo_name');
 
             if (theme === 'lightTheme') {
                 body.style.backgroundColor = 'white';
                 body.style.color = 'black';
+                sidebar.style.backgroundColor = 'rgb(240, 240, 242)';
             } else {
                 body.style.backgroundColor = '#333';
+                sidebar.style.backgroundColor = '#352F44';
                 body.style.color = 'white';
+                settingsText.style.color = 'white';
+                
             }
 
             // Remove 'selected' class from all buttons

@@ -33,7 +33,7 @@
         <form id="loginForm" action="#" method="post">
 
             <div class="imageContainer">
-                <img src="images/logo2.png" alt="Mon-e_logo" class="logo">
+                <img src="images/newLogo-noBackground.png" alt="Mon-e_logo" class="logo">
             </div>
     
             <div class="login">
@@ -86,7 +86,7 @@
                     <div class="fb-login-button" data-width="200" data-size="medium" data-button-type="" data-layout="" data-auto-logout-link="false" data-use-continue-as="false" id="faceBookBtn"></div>
                 </div>
                 <hr>
-                <label>Don't Have an Account? </label><a href="createAccount.html">Sign up Here</a>
+                <label>Don't Have an Account? </label><a href="createAccount.html">Create An Account</a>
             </div>
         </form>
     </div>
@@ -124,12 +124,7 @@
                 console.error('Error signing in:', error.message);
             }
             onAuthStateChanged(auth, (user) => {
-            console.log(user)
-            if (user) {
-                    window.location.assign("homePage.html")
-            } else {
-                console.log('User is logged out');
-            }
+            window.api.GoogleLogIN(user.uid);
         });
         });
         
@@ -142,12 +137,7 @@
                 console.error('Error signing in with Apple:', error.message);
             }
             onAuthStateChanged(auth, (user) => {
-            console.log(user)
-            if (user) {
-                    window.location.assign("homePage.html")
-            } else {
-                console.log('User is logged out');
-            }
+            window.api.AppleLogIN(user.uid);
         });
         });
 
@@ -190,6 +180,13 @@
             // .catch ((error) => {
             //     console.error('Error signing in with Facebook:', error.message);
             // });
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', function (event) {
+            event.preventDefault(); 
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            window.api.Login(email, password);
         });
 
         //login with account with us

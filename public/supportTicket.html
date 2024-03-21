@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Submission</title>
+    <link rel="stylesheet" href="supportTicket.css">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;600&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+    <form action="">
+        <div class="title">
+          <h2>Ticket Submission</h2>
+        </div>
+        <div class="half">
+          <div class="item">
+            <label for="name">NAME</label>
+            <input type="text" id = "name">
+          </div>
+          <div class="item">
+            <label for="email">EMAIL</label>
+            <input type="text" id = "email">
+          </div>
+        </div>
+        <div class="full">
+          <label for="message">MESSAGE</label>
+          <textarea name="" id = "message"></textarea>
+        </div>
+        <div class="action">
+          <input type="submit" value = "Send Ticket">
+          <input type="reset" value = "Clear">
+          <input type="submit" href="oldhomePage.html" value="Back" class="backButton" >
+        </div>
+     
+      </form>
+<script>
+    
+    // Function to set the theme based on the value stored in localStorage
+    function setTheme() {
+        var storedTheme = localStorage.getItem('theme');
+        if (storedTheme === 'darkTheme') {
+            toggleTheme('darkTheme');
+        } else {
+            toggleTheme('lightTheme');
+        }
+    }
+
+    // Function to toggle the theme
+    function toggleTheme(theme) {
+        var body = document.body;
+        
+        
+
+        if (theme === 'lightTheme') {
+            body.style.backgroundColor = 'white';
+            body.style.color = 'black';
+            
+        } else {
+            body.style.backgroundColor = '#333';
+            
+            body.style.color = 'white';
+         
+            
+        }
+
+        // Remove 'selected' class from all buttons
+        var buttons = document.querySelectorAll('.theme-button');
+        buttons.forEach(function (button) {
+            button.classList.remove('selected');
+        });
+
+        // Add 'selected' class to the clicked button
+        var clickedButton = document.getElementById(theme);
+        clickedButton.classList.add('selected');
+
+        // Store the selected theme in localStorage
+        localStorage.setItem('theme', theme);
+    
+    }
+    
+    // Call setTheme on page load
+    setTheme();
+</script>
+
+</body>
+</html>

@@ -1,12 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
 
 
 nav{
-  background: green;;
+  background: #87E76D;
   width: 100%;
   padding: 10px 10%;
   display: flex;
@@ -52,6 +54,8 @@ nav ul li{
   display: inline-block;
   list-style: none;
   margin: 10 px 20px;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 nav ul li a{
@@ -74,7 +78,7 @@ nav ul li a{
 }
 
 .sub-menu{
-  background: green;
+  background: #87E76D;
   padding: 20px;
   margin: 10px;
 }
@@ -121,4 +125,47 @@ nav ul li a{
 
 .sub-menu-link:hover p{
   font-weight: 600;
+}
+
+
+.team-section {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.team-box {
+  width: 45%; 
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  text-align: center;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+.team-member img {
+  width: 100px;
+  height: 100px; 
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.team-member h4 {
+  margin-bottom: 5px;
+}
+
+.team-member p {
+  text-align: center;
+}
+.card-body{
+  width: 300px;
+  height: 100px; 
+  border: 1px solid black;
+  border-radius: 3px;
+  text-align: center;
+  justify-content:center;
+  word-wrap: break-word;
+
 }

@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Settings Page</title>
     <link rel="stylesheet" href="settings.css" />
+    <link rel="stylesheet" href="paymentmethod.css">
   
     <script src="settings.js" defer></script>
   </head>
@@ -47,14 +48,7 @@
                 <span>Payment Methods</span>
               </a>
             </li>
-            <li class="item">
-              <a href="oldhomePage.html" class="link flex">
-                
-
-                <i class="bx bx-folder"></i>
-                <span>old LAYOUT</span>
-              </a>
-            </li>
+            
             <li class="item">
               <a href="appAppearance.html" class="link flex">
                 <i class="bx bx-cloud-upload"></i>
@@ -66,21 +60,31 @@
                 <i class="bx bx-cloud-upload"></i>
                 <span>Home</span>
               </a>
-              
             </li>
         
         </div>
-
-       
-
+      </nav>
+      <h1 class="header">Payment Method</h1>
+        <div class="content">
+          
+          
+          <!-- Add your payment method form or content here -->
+          <form>
+            
+            <label for="cardNumber">Card Number:</label>
+            <input type="text" id="cardNumber" name="cardNumber" required>
+            
+            <label for="expiryDate">Expiry Date:</label>
+            <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" required>
+            
+            <label for="cvv">CVV:</label>
+            <input type="text" id="cvv" name="cvv" required>
+            
+            <button type="submit" class="paymentbutton">Submit Payment</button>
+          </form>
+        </div>
+        
     
-
-
-
-
-
-
-
 
 
 
@@ -129,6 +133,12 @@
               
           }
           setTheme();
-        </script>  
+        </script>
+        
+       
+        
+  
+     
+        
   </body>
 </html>

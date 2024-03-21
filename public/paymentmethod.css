@@ -1,3 +1,4 @@
+
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 * {
   margin: 0;
@@ -58,7 +59,6 @@ body {
   height: calc(100% - 82px);
 }
 .menu_container::-webkit-scrollbar {
-  
   display: none;
 }
 .menu_title {
@@ -115,5 +115,60 @@ body {
   border-radius: 4px;
 }
 
+.header{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* This ensures that the content takes the full height of the viewport */
+}
+
+.content form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 400px; /* Adjust as needed */
+  width: 100%;
+  padding: 20px;
+  
+}
+
+.content h1 {
+  text-align: center;
+}
+
+.content form label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.content form input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+}
+
+.paymentbutton{
+  align-self: flex-end; /* Positions the button to the bottom right corner */
+  margin-top: 10px; /* Adds some spacing between the input fields and the button */
+  background-color: #87e76d;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.content form button:hover {
+  background-color: #87e76d;
+}
 
 

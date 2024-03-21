@@ -1,121 +1,50 @@
-<html>
-<!--=================================================
-    STYLES AND PAGE INSTRUCTIONS. IGNORE THIS STUFF
-    =================================================-->
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plaid Frontend</title>
   <style>
-    .outer { justify-self: center; margin: 20% auto 120px auto; width: 60%; ; font-family: 'Roboto', sans-serif;} a { text-decoration: underline; } li { padding-left: 1rem;}
+    #transactions-container {
+      margin-top: 20px;
+    }
   </style>
 </head>
-<body>
-  <h1>Plaid Frontend</h1>
-  
-  <button id="link-button">Connect with Plaid</button>
-  <button id="transactions-button" style="display: none;">Retrieve Transactions</button>
-  <button id="recurring-Transactions-button" style="display: none;">Retrieve Recurring Transactions</button>
+<body style="background-color:#B1EEFC;">
+    <div class="outer">
+      This HTML file is designed to be used with Plaid's <a href="https://github.com/plaid/plaid-postman">Postman Collection</a>. Please note the "Link Account" button below will not work until you've followed the steps in the <a href="https://github.com/plaid/plaid-postman">README</a>.
+      <button id="link-button" style="background-color: white;border: #0A85EA;color: black;padding: 12px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)">Link Account</button>
 
-  <div id="transactions-container"></div>
-
-  <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      const linkButton = document.getElementById('link-button');
-      const transactionsButton = document.getElementById('transactions-button');
-      const recurringTransactionsButton = document.getElementById("recurring-Transactions-button");
-      const transactionsContainer = document.getElementById('transactions-container');
-
-      let accessToken = null;
-
-      linkButton.addEventListener('click', async () => {
-        const linkTokenResponse = await fetch('/api/create_link_token', {
-          method: 'POST',
-        });
-
-        const linkTokenData = await linkTokenResponse.json();
-        const linkToken = linkTokenData.link_token;
-
-        const linkHandler = Plaid.create({
-          token: linkToken,
-          onSuccess: (publicToken, metadata) => {
-            fetch('/api/set_access_token', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ public_token: publicToken }),
-            }) 
-              .then(response => response.json())
-              .then(data => {
-                accessToken = data.access_token;
-                const itemId = data.item_id;
-
-                window.plaid.sendToken(accessToken, itemId);
-                
-                transactionsButton.style.display = 'block';
-              })
-              .catch(error => console.error('Error setting access token:', error));
-          },
-          onExit: (err, metadata) => {
-            console.error('Plaid Link exited:', err, metadata);
-          },
-        });
-
-        linkHandler.open();
-      });
-
-//get transactions
-      transactionsButton.addEventListener('click', () => {
-        if (!accessToken) {
-          console.error('Access Token is not available. Please link your account first.');
-          return;
-        }
-
-        fetch('/api/transactions')
-          .then(response => response.json())
-          .then(data => {
-            transactionsContainer.innerHTML = `
-              <h2>Transactions</h2>
-              <ul>
-                ${data.latest_transactions.map(transaction => `
-                  <li>
-                    <strong>Name:</strong> ${transaction.name} |
-                    <strong>Amount:</strong> ${transaction.amount} ${transaction.iso_currency_code} |
-                    <strong>Date:</strong> ${transaction.date}
-                  </li>`).join('')}
-              </ul>`;
-          })
-          .catch(error => console.error('Error fetching transactions:', error));
-      });
-    
-
-      recurringTransactionsButton.addEventListener('click', () => {
-        if (!accessToken) {
-          console.error('Access Token is not available. Please link your account first.');
-          return;
-        }
-        fetch('api/recurring_transactions')
-          .then(response => response.json())
-          .then(data => {
-            transactionsContainer.innerHTML = `
-              <h2>Recurring Transactions</h2>
-              <ul>
-                ${data.recurring_transactions.map(transaction => `
-                  console.log(data);
-                  <li>
-                    <strong>Name:</strong> ${transaction.name} |
-                    <strong>Amount:</strong> ${transaction.amount} ${transaction.iso_currency_code} |
-                    <strong>Date:</strong> ${transaction.interval}
-                  </li>`).join('')}
-              </ul>`;
-          })
-          .catch(error => console.error('Error fetching recurring transactions:', error));
-
-
-        });
-      });
-  </script>
+    </div>
 ​
+<!--=================================================
+    PLAID SCRIPTS. HERE'S THE STUFF YOU'LL EDIT!
+    =================================================-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+  <script type="text/javascript">
+  (function($) {
+    var handler = Plaid.create({
+      token: "link-development-46db8c7a-4219-43d2-be41-84b5f01e666c",
+      
+      onSuccess: function(public_token, metadata) {
+        console.log('public token is:', public_token);
+      },
+      onExit: function(err, metadata) {
+        console.log('onexit invoked');
+      },
+      onEvent: function(eventName, metadata) {
+        console.log('event name is:', eventName);
+      }
+    });
+    $('#link-button').on('click', function(e) { handler.open() });
+  })(jQuery);
+  </script>
 </body>
 </html>
+
+
+
+
+
+
