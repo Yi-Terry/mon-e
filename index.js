@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('node:path');
 const bcrypt = require("bcryptjs");
 const firebase = require("firebase/app");
-const { getDatabase, set, ref } = require("firebase/database");
+const { getDatabase, set, ref, onValue } = require("firebase/database");
 const { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, onAuthStateChanged } = require("firebase/auth");
 
 const firebaseConfig = {
@@ -23,7 +23,12 @@ const auth = getAuth(fapp)
 const appServer = express()
 const serverPort = 3000
 
+
+
 appServer.use(express.static(path.join(__dirname, 'public')))
+
+
+let ACCESS_TOKEN = null
 
 appServer.get('/createAccount.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'createAccount.html'))
@@ -103,12 +108,15 @@ ipcMain.on("sendTokenCurrentUser", (event, accesstoken, itemid, currentUser) => 
   }
 });
 
-
-
 ipcMain.on("AppleSignIn", (event, user) => {
   if (user) {
     appServer.get('/CurrentUsers', (req, res) => {
       res.json(user)
+    });
+    const Access_Token = ref(database, 'plaidToken/' + user + '/Access_Token');
+    onValue(Access_Token, (snapshot) => {
+      const data = snapshot.val();
+      ACCESS_TOKEN = data
     });
     console.log('user signed in');
     win.loadURL(`http://localhost:${serverPort}/homePage.html`)
@@ -122,6 +130,11 @@ ipcMain.on('GoogleSignIn', (event, user) => {
     appServer.get('/CurrentUsers', (req, res) => {
       res.json(user)
     })
+    const Access_Token = ref(database, 'plaidToken/' + user + '/Access_Token');
+    onValue(Access_Token, (snapshot) => {
+      const data = snapshot.val();
+      ACCESS_TOKEN = data
+    });
     console.log('user signed in')
     win.loadURL(`http://localhost:${serverPort}/homePage.html`)
   } else {
@@ -129,47 +142,49 @@ ipcMain.on('GoogleSignIn', (event, user) => {
   }
 })
 
-ipcMain.on('createAccount',(event, email, password, FirstName, LastName, PhoneNumber) => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user
-        hash = bcrypt.hashSync(password, 12)
-        password = hash
-        set(ref(database, 'users/' + user.uid), {
-          FirstName: FirstName,
-          LastName: LastName,
-          PhoneNumber: PhoneNumber,
-          email: email,
-          password: password,
-          created_at: Date.now(),
-        })
-          .then(() => {
-            sendEmailVerification(user)
-            dialog.showMessageBox({
-              type: 'question',
-              buttons: ['Ok'],
-              defaultId: 2,
-              message: 'Account Created!',
-              detail: 'Email Verification Link has been sent',
-            })
-            win.loadURL(`http://localhost:${serverPort}/signUp.html`)
+ipcMain.on('createAccount', (event, email, password, FirstName, LastName, PhoneNumber) => {
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user
+      hash = bcrypt.hashSync(password, 12)
+      password = hash
+      set(ref(database, 'users/' + user.uid), {
+        FirstName: FirstName,
+        LastName: LastName,
+        PhoneNumber: PhoneNumber,
+        email: email,
+        password: password,
+        created_at: Date.now(),
+      })
+        .then(() => {
+          sendEmailVerification(user)
+          dialog.showMessageBox({
+            type: 'question',
+            buttons: ['Ok'],
+            defaultId: 2,
+            message: 'Account Created!',
+            detail: 'Email Verification Link has been sent',
           })
-          .catch((error) => { })
-      })
-      .catch((error) => {
-        const errorCode = error.code
-        const errorMessage = error.message
-
-        dialog.showMessageBox({
-          type: 'question',
-          buttons: ['Ok'],
-          title: 'Error Creating Account.',
-          cancelId: 99,
-          message: errorMessage,
+          win.loadURL(`http://localhost:${serverPort}/signUp.html`)
         })
+        .catch((error) => { })
+    })
+    .catch((error) => {
+      const errorCode = error.code
+      const errorMessage = error.message
+
+      dialog.showMessageBox({
+        type: 'question',
+        buttons: ['Ok'],
+        title: 'Error Creating Account.',
+        cancelId: 99,
+        message: errorMessage,
       })
-  },
+    })
+},
 )
+
+
 
 ipcMain.on('Login', (event, email, password) => {
   signInWithEmailAndPassword(auth, email, password)
@@ -179,6 +194,11 @@ ipcMain.on('Login', (event, email, password) => {
         console.log('user signed in')
         appServer.get('/CurrentUsers', (req, res) => {
           res.json(user.uid)
+        });
+        const Access_Token = ref(database, 'plaidToken/' + user.uid + '/Access_Token');
+        onValue(Access_Token, (snapshot) => {
+          const data = snapshot.val();
+          ACCESS_TOKEN = data
         });
         win.loadURL(`http://localhost:${serverPort}/homePage.html`)
       } else {
@@ -260,7 +280,6 @@ const PLAID_ANDROID_PACKAGE_NAME = process.env.PLAID_ANDROID_PACKAGE_NAME || ''
 
 // We store the access_token in memory - in production, store it in a secure
 // persistent data store
-let ACCESS_TOKEN = null
 let PUBLIC_TOKEN = null
 let ITEM_ID = null
 let ACCOUNT_ID = null
@@ -481,8 +500,8 @@ appServer.get('/api/transactions', function (request, response, next) {
 
 appServer.get('/api/transactions/get', async function (request, response, next) {
   try {
-    
-    const endDate = new Date();  
+
+    const endDate = new Date();
     let startDate;
 
     const dateRange = parseInt(request.query.dateRange) || 30;
