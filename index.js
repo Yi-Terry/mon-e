@@ -142,6 +142,17 @@ ipcMain.on('GoogleSignIn', (event, user) => {
   }
 })
 
+ipcMain.on("ErrorMessage", (event, message) => {
+  dialog.showMessageBox({
+    type: 'question',
+    buttons: ['Ok'],
+    defaultId: 2,
+    message: 'Invalid Password',
+    detail: message,
+  })
+});
+
+
 ipcMain.on('createAccount', (event, email, password, FirstName, LastName, PhoneNumber) => {
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
