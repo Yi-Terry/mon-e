@@ -251,6 +251,8 @@ const {
   PlaidApi,
   Products,
   PlaidEnvironments,
+  SandboxItemFireWebhookRequestWebhookCodeEnum,
+  WebhookType,
 } = require('plaid')
 const util = require('util')
 const { v4: uuidv4 } = require('uuid')
@@ -940,3 +942,16 @@ appServer.get('/api/transfer_create', function (request, response, next) {
     })
     .catch(next)
 })
+
+appServer.post('/server/handle_webhook', async function (request, response, next) {
+  try {
+    const { webhook_type, webhook_code } = request.body;
+    if (webhook_type === 'TRANSACTIONS' && webhook_code === 'INITIAL_UPDATE') {
+      response.json({ transactionsReady: true });
+    } else {    
+      response.json({ received: true });
+    }
+  } catch (error) {
+    next(error); 
+  }
+});

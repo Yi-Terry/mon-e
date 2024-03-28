@@ -184,7 +184,6 @@
                                 </form>
                             </div>
                         </li>
-
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
@@ -402,17 +401,17 @@
                             </div>
                         </div>
 
-                        <!-- Earnings (Monthly) Card Example -->
+                        <!-- Budget Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Budget
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                                    <div id="h5 mb-0 mr-3 font-weight-bold text-gray-800"></div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="progress progress-sm mr-2">
@@ -600,8 +599,7 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Recurring Transactions</h6>
                                 </div>
                                 <div class="card-body">
-                                    <div id="recurring-transactions-container"></div>                                  
-                                    <button id="fetch-recurring-transactions" class="btn btn-primary">Fetch Recurring Transactions</button>
+                                    <div id="recurring-transactions-container"></div>
                                 </div>
                             </div>
                         
@@ -611,7 +609,6 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Transactions</h6>
                                 </div>
                                 <div class="card-body">
-                                  
                                     <div class="form-group">
                                         <label for="date-range">Select Date Range:</label>
                                         <select id="date-range">
@@ -619,11 +616,22 @@
                                             <option value="90">Past 90 days</option>
                                         </select>
                                     </div>
-                                    
+                        
                                     <div id="transactions-container"></div>
                                 </div>
                             </div>
-                        </div>
+
+                            <!-- Budget -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Add Budget</h6>
+                                </div>
+                                <div class="card-body">
+                                <input type="text" id="budgetInput">
+                                <span></span>
+                                <button id="budgetBtn">Add</button>
+                                </div>
+                            </div>
                         
             <!-- End of Main Content -->
 
@@ -636,7 +644,7 @@
                 </div>
             </footer>
             <!-- End of Footer -->
-
+            
         </div>
         <!-- End of Content Wrapper -->
 
@@ -707,11 +715,12 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary"  data-dismiss="modal">Create</a>
+                    <a class="btn btn-primary" data-dismiss="modal">Create</a>
                 </div>
             </div>
         </div>
     </div>
+    
     <!-- edit Modal-->
     <div class="modal fade" id="editBudgetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">

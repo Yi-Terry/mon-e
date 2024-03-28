@@ -6,10 +6,12 @@ var cashSpentData = [2500, 3200, 4100, 5300, 6800, 9500, 13000, 1400, 12100, 110
 // Calculate cash flow for each month
 var cashFlowData = revenueData.map((revenue, index) => revenue - cashSpentData[index]);
 
+
 var myBarChart = new Chart(ctx, {
   type: 'bar',
   data: {
-    labels: ["January", "February", "March", "April", "May", "June","July","August","September","October","November","December"],
+    labels: ["January", "February", "March", "April", "May", "June","July","August","September","October","November","December"], 
+    
     datasets: [
       {
         label: "Revenue",
@@ -31,6 +33,7 @@ var myBarChart = new Chart(ctx, {
         hoverBackgroundColor: "#17a673", //green hover
         borderColor: "#1cc88a", //green border
         data: cashFlowData,
+        
       }
     ],
   },
@@ -82,24 +85,19 @@ var myBarChart = new Chart(ctx, {
     legend: {
       display: false
     },
-    tooltips: {
-      titleMarginBottom: 10,
-      titleFontColor: '#6e707e',
-      titleFontSize: 14,
-      backgroundColor: "rgb(255,255,255)",
-      bodyFontColor: "#858796",
-      borderColor: '#dddfeb',
-      borderWidth: 1,
-      xPadding: 15,
-      yPadding: 15,
-      displayColors: false,
-      caretPadding: 10,
+     tooltips: {
       callbacks: {
-        label: function(tooltipItem, chart) {
-          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-          return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+        label: function(tooltipItem, data) {
+          var datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
+          var value = tooltipItem.yLabel;
+          if (datasetLabel === "Cash Flow") {
+            return datasetLabel + ': $' + number_format(value);
+          } else {
+            return datasetLabel + ': $' + number_format(value) + ' | Cash Flow: $' + number_format(cashFlowData[tooltipItem.index]);
+          }
         }
       }
-    },
+    }
+   
   }
 });
