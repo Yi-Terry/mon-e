@@ -1,58 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon-e</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="accountPage">
         <h2 class="createAccount">Create an Account</h2>
 
-        <label for="firstName">Enter First Name</h3>
-        <input type="text" placeholder="First Name" name="firstName" id="firstName" required>
+        <label for="firstName">First Name</h3>
+            <input type="text" placeholder="First Name" name="firstName" id="firstName" required>
 
-        <br>
-        
-        
-         <label for="lastName">Enter Last Name</h3>
-         <input type="text" placeholder="Last Name" name="lastName" id="lastName" required>
-        
-         <br>
-            
-        <label for="phonenumber">Enter Phone Number</h3>
-            <input type="tel" minlength="10" maxlength="10" id="phoneNumber" name="phonenumber" title="10 digit mobile number" required>
-         <br>
+            <br>
 
 
-        <label for="email">Enter an Email</h3>
-        <input type="text" placeholder="Email" name="email" id="email" required>
+            <label for="lastName">Last Name</h3>
+                <input type="text" placeholder="Last Name" name="lastName" id="lastName" required>
 
-        <br>
-        
+                <br>
 
-        <label for="Password_input">Create a Password</h3>
-        <input type="password" placeholder="Password" name="Password_input" id="Password_input" required>
+                <label for="psw">Password</label>
+                <input type="password"  placeholder="Password" id="psw" name="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                    title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                    required>
 
-        <br>
-      
-        <button onclick = "window.location.href = 'signUp.html'" id="back" type="submit">Back</button> 
-        <button id="create">Create</button> 
-        
+                <br>
+
+                <label for="email">Email Address</h3>
+                    <input type="text" placeholder="Email" name="email" id="email" required>
+
+                    <br>
+
+                <label for="phonenumber">Phone Number</h3>
+                    <input type="tel" placeholder="Phone Number" minlength="10" maxlength="10" id="phoneNumber" name="phonenumber"
+                        title="10 digit mobile number" required>
+                    <br>
+                        <style>
+                            /* The message box is shown when the user clicks on the password field */
+                            #message {
+                                display: none;
+                                background: #f1f1f1;
+                                color: #000;
+                                position: relative;
+                                padding: 10px;
+                                margin-top: 30px;
+                            }
+
+                            #message p {
+                                padding: 10px 35px;
+                                font-size: 15px;
+                            }
+
+                            /* Add a green text color and a checkmark when the requirements are right */
+                            .valid {
+                                color: green;
+                            }
+
+                            .valid:before {
+                                position: relative;
+                                left: -35px;
+                                content: "✔";
+                            }
+
+                            /* Add a red text color and an "x" when the requirements are wrong */
+                            .invalid {
+                                color: red;
+                            }
+
+                            .invalid:before {
+                                position: relative;
+                                left: -35px;
+                                content: "✖";
+                            }
+                        </style>
+                        <div id="message">
+                            <h3>Password must contain the following:</h3>
+                            <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+                            <p id="number" class="invalid">A <b>number</b></p>
+                            <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+                        </div>
+                        <br>
+
+                        <button onclick="window.location.href = 'signUp.html'" id="back" type="submit">Back</button>
+                        <button id="create">Create</button>
+
     </div>
-</body>
-<script type="module" >
-    document.getElementById("create").addEventListener('click', function(){
 
-        var password = document.getElementById('Password_input').value;
+</body>
+<script type="module">
+    var myInput = document.getElementById("psw");
+    var letter = document.getElementById("letter");
+    var capital = document.getElementById("capital");
+    var number = document.getElementById("number");
+    var length = document.getElementById("length");
+    var upperCaseLetters = /[A-Z]/g;
+    var numbers = /[0-9]/g;
+
+    // When the user clicks on the password field, show the message box
+    myInput.onfocus = function () {
+        document.getElementById("message").style.display = "block";
+    }
+
+    // When the user clicks outside of the password field, hide the message box
+    myInput.onblur = function () {
+        document.getElementById("message").style.display = "none";
+    }
+
+    // When the user starts to type something inside the password field
+    myInput.onkeyup = function () {
+        // Validate capital letters
+        if (myInput.value.match(upperCaseLetters)) {
+            capital.classList.remove("invalid");
+            capital.classList.add("valid");
+        } else {
+            capital.classList.remove("valid");
+            capital.classList.add("invalid");
+        }
+
+        // Validate numbers
+        if (myInput.value.match(numbers)) {
+            number.classList.remove("invalid");
+            number.classList.add("valid");
+        } else {
+            number.classList.remove("valid");
+            number.classList.add("invalid");
+        }
+
+        // Validate length
+        if (myInput.value.length >= 8) {
+            length.classList.remove("invalid");
+            length.classList.add("valid");
+        } else {
+            length.classList.remove("valid");
+            length.classList.add("invalid");
+        }
+    }
+
+    document.getElementById("create").addEventListener('click', function () {
+
+        var password = document.getElementById('psw').value;
         var FirstName = document.getElementById('firstName').value;
         var LastName = document.getElementById('lastName').value;
         var PhoneNumber = document.getElementById('phoneNumber').value;
         var email = document.getElementById('email').value;
+<<<<<<< HEAD
         
         window.api.createAccount(email, password, FirstName, LastName, PhoneNumber);   
          
         });
+=======
+        if (myInput.value.match(upperCaseLetters)) {
+            if (myInput.value.match(numbers)){
+                if (myInput.value.length >= 8) {
+                    window.api.createAccount(email, password, FirstName, LastName, PhoneNumber);
+            }
+        }
+    } else {
+        var message = "Password Requirements not met."
+        window.api.Error(message);
+    }
+    });
+>>>>>>> 340d2d4dfed9b5e20d067ae321c1cf37074fae9e
 </script>
+
 </html>

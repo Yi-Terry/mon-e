@@ -94,14 +94,14 @@
     margin-right: 10px;
   }
   
-  form .action input[type="submit"]{
+  form .action  input[type="submit"]{
     background: white;
     color: black;
   }
   
  
   
-  form .half .item input:focus, form .full textarea:focus, form .action input[type="reset"]:hover, form .icons a:hover{
+  form .half .item .a input:focus, form .full textarea:focus, form .action input[type="reset"]:hover, form .icons a:hover{
     background: rgba(255,255,255,0.075);
   }
   

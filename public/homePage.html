@@ -189,7 +189,7 @@
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="images/notification-icon.png" width= "20" height="20">
+                                <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
                                 <span class="badge badge-danger badge-counter">3+</span>
                             </a>
@@ -241,7 +241,7 @@
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="images/message-icon.png" width="20" height="20"></img>
+                                <i class="fas fa-envelope fa-fw"></i>
                                 <!-- Counter - Messages -->
                                 <span class="badge badge-danger badge-counter">7</span>
                             </a>
@@ -478,8 +478,8 @@
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    <div class="chart-area">
-                                        <canvas id="myAreaChart"></canvas>
+                                    <div class="chart-bar">
+                                        <canvas id="myBarChart"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -797,6 +797,7 @@
       function toggleTheme(theme) {
           var body = document.body;
 
+<<<<<<< HEAD
           if (theme === 'lightTheme') {
               body.style.backgroundColor = 'white';
               body.style.color = 'black';
@@ -841,6 +842,12 @@
             console.error('Error signing in:', error.message);
           });
     });
+=======
+    <!--Page level custom scripts -->
+    <script src="chart-area-demo.js"></script>
+    <script src="chart-pie-demo.js"></script> 
+    <script src="chart-bar-demo.js"></script>
+>>>>>>> 340d2d4dfed9b5e20d067ae321c1cf37074fae9e
 
 
 
