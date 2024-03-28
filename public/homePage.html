@@ -402,17 +402,17 @@
                             </div>
                         </div>
 
-                        <!-- Earnings (Monthly) Card Example -->
+                        <!-- Budget Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Budget
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                                    <div id="h5 mb-0 mr-3 font-weight-bold text-gray-800"></div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="progress progress-sm mr-2">
@@ -623,7 +623,20 @@
                                     <div id="transactions-container"></div>
                                 </div>
                             </div>
+
+                            <!-- Budget -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Add Budget</h6>
+                                </div>
+                                <div class="card-body">
+                                  <input type="text" id="budgetInput">
+                                  <span></span>
+                                  <button id="budgetBtn">Add</button>
+                                </div>
+                            </div>
                         </div>
+
                         
             <!-- End of Main Content -->
 
@@ -770,81 +783,95 @@
 
 
 
-        <script>
-    
-            // Function to set the theme based on the value stored in localStorage
-            function setTheme() {
-                var storedTheme = localStorage.getItem('theme');
-                
-                if (storedTheme === 'darkTheme') {
-                    toggleTheme('darkTheme');
-                } else {
-                    toggleTheme('lightTheme');
-                }
-            }
-    
-            // Function to toggle the theme
-            function toggleTheme(theme) {
-                var body = document.body;
-                var container = document.getElementById('content');
-                var footw = document.getElementById('foot')
-               
-                
-                
-                
-                if (theme === 'lightTheme') {
-                    body.style.backgroundColor = 'white';
-                    body.style.color = 'black';
-                   
-                    
-                } else {
-                    body.style.backgroundColor= '#333';
-                    body.style.color = 'black';
-                    container.style.backgroundColor= '#333';
-                    footw.style.backgroundColor='#333';
-                    
-                    
-                   
-                    
-               
-                }
-    
-                // Remove 'selected' class from all buttons
-                var buttons = document.querySelectorAll('.theme-button');
-                buttons.forEach(function (button) {
-                    button.classList.remove('selected');
-                });
-    
-                // Add 'selected' class to the clicked button
-                var clickedButton = document.getElementById(theme);
-                clickedButton.classList.add('selected');
-    
-                // Store the selected theme in localStorage
-                localStorage.setItem('theme', theme);
-            
-            }
-            
-            // Call setTheme on page load
-            setTheme();
-        </script>
+    <script>
+      // Function to set the theme based on the value stored in localStorage
+      function setTheme() {
+          var storedTheme = localStorage.getItem('theme');
+          if (storedTheme === 'darkTheme') {
+              toggleTheme('darkTheme');
+          } else {
+              toggleTheme('lightTheme');
+          }
+      }
 
-    <!--Page level plugins-->
-   <script src="Chart.js"></script> 
+      // Function to toggle the theme
+      function toggleTheme(theme) {
+          var body = document.body;
 
+<<<<<<< HEAD
+          if (theme === 'lightTheme') {
+              body.style.backgroundColor = 'white';
+              body.style.color = 'black';
+          } else {
+              body.style.backgroundColor = '#333';
+              body.style.color = 'white';
+          }
+
+          // Remove 'selected' class from all buttons
+          var buttons = document.querySelectorAll('.theme-button');
+          buttons.forEach(function (button) {
+              button.classList.remove('selected');
+          });
+
+          // Add 'selected' class to the clicked button
+          var clickedButton = document.getElementById(theme);
+          clickedButton.classList.add('selected');
+
+          // Store the selected theme in localStorage
+          localStorage.setItem('theme', theme);
+      
+      }
+      
+      // Call setTheme on page load
+      setTheme();
+  </script>
+<script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
+      import { getAuth, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
+      import { firebaseConfig } from "./firebase.js";
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      
+    document.getElementById('logout').addEventListener('click', function (event) {
+      event.preventDefault();
+          signOut(auth).then(() => {
+            window.location.assign("signUp.html")
+          }).catch((error) => {
+            const errorMessage = error.message;
+            console.error('Error signing in:', error.message);
+          });
+    });
+=======
     <!--Page level custom scripts -->
     <script src="chart-area-demo.js"></script>
     <script src="chart-pie-demo.js"></script> 
     <script src="chart-bar-demo.js"></script>
+>>>>>>> 340d2d4dfed9b5e20d067ae321c1cf37074fae9e
 
 
 
 
+//   let EmailInp = document.getElementById('fill in this') //get email from input box
+//   let forgotPassBtn = document.getElementById('fill in this') //when send auth code button is clicked
+  
 
+//       //function for reset email
+//       //TODO: create a button on settings page for forgot password 
+//   let ForgotPassword = () =>{
+//   sendPasswordResetEmail(auth, EmailInp.value)
+//   .then(() =>{
+//       alert("A Password Reset Link has been sent to you Email");
 
+//   })
+//   .catch((error) =>{
+//       console.log(error.message)
+//   })    
+// }
+// forgotPassBtn.addEventListener('click', ForgotPassword); //runs function on click
+// </script>
 
-
-
-    
 
 </body>
 

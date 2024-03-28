@@ -58,6 +58,7 @@ body {
   height: calc(100% - 82px);
 }
 .menu_container::-webkit-scrollbar {
+  
   display: none;
 }
 .menu_title {
