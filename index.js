@@ -243,9 +243,6 @@ ipcMain.on('Login', (event, email, password) => {
     } else {
     }
   })
-<<<<<<< HEAD
-});
-=======
 })
 
   ; ('use strict')
@@ -961,4 +958,3 @@ appServer.post('/server/handle_webhook', async function (request, response, next
     next(error); 
   }
 });
->>>>>>> 340d2d4dfed9b5e20d067ae321c1cf37074fae9e
