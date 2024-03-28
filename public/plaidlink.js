@@ -118,9 +118,25 @@ document.addEventListener('DOMContentLoaded', async () => {
       .catch((error) => console.error('Error fetching recurring transactions:', error));
   }
 
-  const dateRangeSelector = document.getElementById('date-range');
-  dateRangeSelector.addEventListener('change', displayTransactions);
+  function displayBudget(){
+    const budgetContainer = document.getElementById('h5 mb-0 mr-3 font-weight-bold text-gray-800');
+    const budgetData = document.getElementById('budgetInput');
+    const budgetValue = budgetData.value;
+    const formattedBudget = `$${budgetValue}`;
+    budgetContainer.innerHTML = formattedBudget;
+    console.log(budgetValue);
+}
 
-  displayTransactions();
+
+
+  const dateRangeSelector = document.getElementById('date-range')
+  dateRangeSelector.addEventListener('change', displayTransactions)
+
+  const budgetSubmitBtn = document.getElementById("budgetBtn");
+  budgetSubmitBtn.addEventListener('click', displayBudget)
+  
+  
+  displayTransactions()
+  displayBudget()
   displayRecurringTransactions();
 });
