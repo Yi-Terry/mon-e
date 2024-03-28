@@ -119,7 +119,6 @@ ipcMain.on("AppleSignIn", (event, user) => {
       ACCESS_TOKEN = data
     });
     console.log('user signed in');
-    win.loadURL(`http://localhost:${serverPort}/homePage.html`)
   } else {
     console.log('User is logged out');
   }
@@ -136,7 +135,6 @@ ipcMain.on('GoogleSignIn', (event, user) => {
       ACCESS_TOKEN = data
     });
     console.log('user signed in')
-    win.loadURL(`http://localhost:${serverPort}/homePage.html`)
   } else {
     console.log('User is logged out')
   }
@@ -211,7 +209,6 @@ ipcMain.on('Login', (event, email, password) => {
           const data = snapshot.val();
           ACCESS_TOKEN = data
         });
-        win.loadURL(`http://localhost:${serverPort}/homePage.html`)
       } else {
         dialog.showMessageBox({
           type: 'question',

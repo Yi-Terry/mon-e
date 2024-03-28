@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             accessToken = data.access_token
             localStorage.setItem('accessToken', accessToken)
             const itemId = data.item_id
+            window.plaid.sendToken(accessToken, itemId, currentUser)
             displayTransactions()
             displayRecurringTransactions()
           })
