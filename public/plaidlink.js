@@ -119,13 +119,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       .catch((error) => console.error('Error fetching recurring transactions:', error));
   }
 
-  function displayBudget(){
+
+
+ function displayBudget(){
     const budgetContainer = document.getElementById('h5 mb-0 mr-3 font-weight-bold text-gray-800');
-    const budgetData = document.getElementById('budgetInput');
+    const budgetData = document.getElementById('amount');
     const budgetValue = budgetData.value;
     const formattedBudget = `$${budgetValue}`;
     budgetContainer.innerHTML = formattedBudget;
-    console.log(budgetValue);
 }
 
 
@@ -133,7 +134,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const dateRangeSelector = document.getElementById('date-range')
   dateRangeSelector.addEventListener('change', displayTransactions)
 
-  const budgetSubmitBtn = document.getElementById("budgetBtn");
+  const budgetSubmitBtn = document.getElementById("Create");
   budgetSubmitBtn.addEventListener('click', displayBudget)
   
   
