@@ -61,33 +61,33 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Components</span>
+                    <i class="fa-solid fa-barcode"></i>
+                    <span>Receipt Scanner</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item" href="#">Buttons</a>
-                        <a class="collapse-item" href="cards.html">Cards</a>
+                        <h6 class="collapse-header">Receipt Scanner</h6>
+                        <a class="collapse-item" href="#">Receipt Scanner</a>
+                        <a class="collapse-item" data-toggle="modal" data-target="#manualModal">Enter Manually</a>
                     </div>
                 </div>
             </li>
 
-            <!-- Nav Item - Utilities Collapse Menu -->
+            <!-- Nav Item - budget Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Utilities</span>
+                    <i class="fa-solid fa-piggy-bank"></i>
+                    <span>Budget</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Utilities:</h6>
-                        <a class="collapse-item" href="utilities-color.html">Colors</a>
-                        <a class="collapse-item" href="utilities-border.html">Borders</a>
-                        <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                        <a class="collapse-item" href="utilities-other.html">Other</a>
+                        <a class="collapse-item" data-toggle="modal" data-target="#createBudgetModal">Create</a>
+                        <a class="collapse-item" data-toggle="modal" data-target= "#editBudgetModal">Edit</a>
+                        <a class="collapse-item" data-toggle="modal" data-target="#deleteBudgetModal">Delete</a>
+                        
                     </div>
                 </div>
             </li>
@@ -773,6 +773,50 @@
                         </div>
                     </div>
 
+
+
+                    <!-- Manual input receipt Modal-->
+                    <div class="modal fade" id="manualModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Manual Receipt Entry</h5>
+                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="manualForm">
+                                        <div class="form-group">
+                                            <label for="storeName">Store Name:</label>
+                                            <input type="text" class="form-control" id="storeName" name="storeName" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="date">Date:</label>
+                                            <input type="date" class="form-control" id="date" name="date" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="time">Time:</label>
+                                            <input type="text" class="form-control" id="time" name="time" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="amount">Amount:</label>
+                                            <input type="number" class="form-control" id="amount" name="amount" required>
+                                        </div>
+                                    
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-primary" id="submitManualBtn">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
                     <!-- Bootstrap core JavaScript-->
                     <script src="jquery.min.js"></script>
                     <script src="bootstrap.bundle.min.js"></script>
@@ -782,9 +826,6 @@
 
                     <!-- Custom scripts for all pages-->
                     <script src="sb-admin-2.min.js"></script>
-
-
-
 
 
 
@@ -861,24 +902,15 @@
                             var container = document.getElementById('content');
                             var footw = document.getElementById('foot')
 
-
-
-
                             if (theme === 'lightTheme') {
                                 body.style.backgroundColor = 'white';
                                 body.style.color = 'black';
-
 
                             } else {
                                 body.style.backgroundColor = '#333';
                                 body.style.color = 'black';
                                 container.style.backgroundColor = '#333';
                                 footw.style.backgroundColor = '#333';
-
-
-
-
-
                             }
 
                             // Remove 'selected' class from all buttons
@@ -907,6 +939,8 @@
                     <script src="chart-area-demo.js"></script>
                     <script src="chart-pie-demo.js"></script>
                     <script src="chart-bar-demo.js"></script>
+
+                    <script src="chartjs-plugin-doughnutlabel.js"></script>
 
 
 
