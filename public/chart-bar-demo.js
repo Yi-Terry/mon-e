@@ -15,16 +15,16 @@ var myBarChart = new Chart(ctx, {
     datasets: [
       {
         label: "Revenue",
-        backgroundColor: "#4e73df",
-        hoverBackgroundColor: "#2e59d9",
+        backgroundColor: "#006400", //dark green
+        hoverBackgroundColor: "#15F5BA",
         borderColor: "#4e73df",
         data: revenueData,
       },
       {
         label: "Cash Spent",
-        backgroundColor: "#e74a3b", //red color
-        hoverBackgroundColor: "#e74a3b", //red hover
-        borderColor: "#e74a3b", //red border
+        backgroundColor: "#FF204E", //red color
+        hoverBackgroundColor: "#FF204E", //red hover
+        borderColor: "#FF204E", //red border
         data: cashSpentData,
       },
       {

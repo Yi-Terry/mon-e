@@ -6,6 +6,9 @@
   font-family: "Poppins", sans-serif;
 }
 
+button{
+
+}
 
 nav{
   background: #87E76D;
@@ -168,3 +171,5 @@ nav ul li a{
   word-wrap: break-word;
 
 }
+
+
