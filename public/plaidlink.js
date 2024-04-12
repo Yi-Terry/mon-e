@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const itemId = data.item_id;
             window.plaid.sendToken(accessToken, itemId, currentUser)
             displayTransactions();
-            displayRecurringTransactions();  // Fetch recurring transactions automatically
+            displayRecurringTransactions();  
           })
           .catch((error) => console.error('Error setting access token:', error));
       },
@@ -52,9 +52,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   let transactionCategories = {};
 
-function displayTransactions() {
+  function displayTransactions() {
     const dateRangeSelector = document.getElementById('date-range');
     const transactionsContainer = document.getElementById('transactions-container');
+
+    transactionCategories = {};
 
     if (!accessToken) {
         console.error('Access Token is not available. Please link your account first.');
@@ -71,23 +73,24 @@ function displayTransactions() {
                     ${data.all_transactions
                         .map(
                             (transaction) => {
-                                if (transactionCategories[transaction.category]) {
-                                    transactionCategories[transaction.category] += transaction.amount;
+                                const mainCategory = String(transaction.category).split(',')[0].trim();
+                                
+                                if (transactionCategories[mainCategory]) {
+                                    transactionCategories[mainCategory] += transaction.amount;
                                 } else {
-                                    transactionCategories[transaction.category] = transaction.amount;
+                                    transactionCategories[mainCategory] = transaction.amount;
                                 }
                                 return `
                                     <li>
                                         <strong>Name:</strong> ${transaction.name} |
                                         <strong>Amount:</strong> ${transaction.amount} ${transaction.iso_currency_code} |
-                                        <strong>Date:</strong> ${transaction.date}
-                                        <strong>Category:</strong> ${transaction.category}
+                                        <strong>Date:</strong> ${transaction.date} |
+                                        <strong>Category:</strong> ${mainCategory}
                                     </li>`;
                             }
                         )
                         .join('')}
                 </ul>`;
-            
             
             displayPieChart();
         })
@@ -175,8 +178,6 @@ function displayTransactions() {
     const formattedBudget = `$${budgetValue} `;
     budgetContainer.innerHTML = formattedBudget;
 }
-
-
 
   const dateRangeSelector = document.getElementById('date-range')
   dateRangeSelector.addEventListener('change', displayTransactions)
