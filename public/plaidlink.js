@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const itemId = data.item_id;
             window.plaid.sendToken(accessToken, itemId, currentUser)
             displayTransactions();
-            displayRecurringTransactions();  // Fetch recurring transactions automatically
+            displayRecurringTransactions();  
           })
           .catch((error) => console.error('Error setting access token:', error));
       },
@@ -50,36 +50,53 @@ document.addEventListener('DOMContentLoaded', async () => {
     linkHandler.open();
   });
 
+  let transactionCategories = {};
+
   function displayTransactions() {
     const dateRangeSelector = document.getElementById('date-range');
     const transactionsContainer = document.getElementById('transactions-container');
 
+    transactionCategories = {};
+
     if (!accessToken) {
-      console.error('Access Token is not available. Please link your account first.');
-      return;
+        console.error('Access Token is not available. Please link your account first.');
+        return;
     }
 
     const dateRange = dateRangeSelector.value;
 
     fetch(`/api/transactions/get?dateRange=${dateRange}`)
-      .then((response) => response.json())
-      .then((data) => {
-        transactionsContainer.innerHTML = `
-          <ul>
-            ${data.all_transactions
-              .map(
-                (transaction) => `
-                  <li>
-                    <strong>Name:</strong> ${transaction.name} |
-                    <strong>Amount:</strong> ${transaction.amount} ${transaction.iso_currency_code} |
-                    <strong>Date:</strong> ${transaction.date}
-                  </li>`
-              )
-              .join('')}
-          </ul>`;
-      })
-      .catch((error) => console.error('Error fetching transactions:', error));
-  }
+        .then((response) => response.json())
+        .then((data) => {
+            transactionsContainer.innerHTML = `
+                <ul>
+                    ${data.all_transactions
+                        .map(
+                            (transaction) => {
+                                const mainCategory = String(transaction.category).split(',')[0].trim();
+                                
+                                if (transactionCategories[mainCategory]) {
+                                    transactionCategories[mainCategory] += transaction.amount;
+                                } else {
+                                    transactionCategories[mainCategory] = transaction.amount;
+                                }
+                                return `
+                                    <li>
+                                        <strong>Name:</strong> ${transaction.name} |
+                                        <strong>Amount:</strong> ${transaction.amount} ${transaction.iso_currency_code} |
+                                        <strong>Date:</strong> ${transaction.date} |
+                                        <strong>Category:</strong> ${mainCategory}
+                                    </li>`;
+                            }
+                        )
+                        .join('')}
+                </ul>`;
+            
+            displayPieChart();
+        })
+        .catch((error) => console.error('Error fetching transactions:', error));
+}
+
 
   function displayRecurringTransactions() {
     const recurringTransactionsContainer = document.getElementById('recurring-transactions-container');
@@ -119,7 +136,40 @@ document.addEventListener('DOMContentLoaded', async () => {
       .catch((error) => console.error('Error fetching recurring transactions:', error));
   }
 
+  function displayPieChart() {
+    const ctx = document.getElementById('myPieChart').getContext('2d');
+    
+    const labels = Object.keys(transactionCategories);
+    const data = Object.values(transactionCategories);
 
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#4BC0C0',
+                    '#FF8A80',
+                    '#A1887F',
+                    '#7986CB',
+                    '#81C784',
+                    '#FFD54F',
+                    '#64B5F6'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'right'
+            }
+        }
+    });
+}
 
  function displayBudget(){
     const budgetContainer = document.getElementById('h5 mb-0 mr-3 font-weight-bold text-gray-800');
@@ -128,8 +178,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const formattedBudget = `$${budgetValue} `;
     budgetContainer.innerHTML = formattedBudget;
 }
-
-
 
   const dateRangeSelector = document.getElementById('date-range')
   dateRangeSelector.addEventListener('change', displayTransactions)
