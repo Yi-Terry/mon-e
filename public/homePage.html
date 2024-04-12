@@ -624,7 +624,7 @@
                                 </div>
                             </div>
 
-                            <!-- Budget -->
+                            <!-- Budget set section-->
                             <div class="card shadow mb-4">
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -636,6 +636,22 @@
                                     <button id="budgetBtn" data-toggle="modal" data-target="#createBudgetModal"
                                         class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                                         <i class="fas fa-download fa-sm text-white-50"></i> Add Budget
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Sub Budget adder section -->
+                            <div class="card shadow mb-4">
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Add Sub-Budget</h6>
+                                </div>
+                                <div class="card-body">
+
+                                    <span></span>
+                                    <button id="budgetBtn" data-toggle="modal" data-target="#addExpenseModal"
+                                        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                        <i class="fas fa-download fa-sm text-white-50"></i> Add Sub-Budget
                                     </button>
                                 </div>
                             </div>
@@ -690,7 +706,37 @@
                         <div class="modal-dialog" role="document" id="signOutPop">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Create a Budget</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Create Budget</h5>
+                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">Please enter amount and a date range.
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="amount">Amount:</label>
+                                            <input type="number" class="form-control" id="amount" name="amount"
+                                                required>
+                                        </div>
+                                        <label for="Date">End Date:</label>
+                                        <input type="date" id="date">
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                    <a class="btn btn-primary" id="Create" data-dismiss="modal">Create</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- create Sub Budget Modal -->
+                    <div class="modal fade" id="addExpenseModal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document" id="signOutPop">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Add a Sub Budget</h5>
                                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">×</span>
                                     </button>
@@ -699,7 +745,7 @@
                                     <form>
                                         <div class="form-group">
                                             <label for="budgetName">Budget Name:</label>
-                                            <input type="text" class="form-control" id="budgetName" name="budgetName"
+                                            <input type="text" class="form-control" id="expenseName" name="expenseName"
                                                 required>
                                         </div>
                                         <div class="form-group">
@@ -728,7 +774,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                    <a class="btn btn-primary" id="Create" data-dismiss="modal">Create</a>
+                                    <a class="btn btn-primary" id="Add" data-dismiss="modal">Add</a>
                                 </div>
                             </div>
                         </div>
@@ -772,7 +818,6 @@
                             </div>
                         </div>
                     </div>
-
 
 
                     <!-- Manual input receipt Modal-->
@@ -866,8 +911,8 @@
                         }
                         var formattedDate = yyyy + '-' + mm + '-' + dd;
 
-                        document.getElementById('Create').addEventListener('click', function (event) {
-                            const budgetName = document.getElementById('budgetName').value;
+                        document.getElementById('Add').addEventListener('click', function (event) {
+                            const budgetName = document.getElementById('expenseName').value;
                             const amount = document.getElementById('amount').value;
                             const category = document.getElementById('category').value;
                             const description = document.getElementById('description').value;

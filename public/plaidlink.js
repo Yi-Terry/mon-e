@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const budgetContainer = document.getElementById('h5 mb-0 mr-3 font-weight-bold text-gray-800');
     const budgetData = document.getElementById('amount');
     const budgetValue = budgetData.value;
-    const formattedBudget = `$${budgetValue}`;
+    const formattedBudget = `$${budgetValue} `;
     budgetContainer.innerHTML = formattedBudget;
 }
 
