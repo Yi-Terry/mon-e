@@ -3,13 +3,16 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  
 }
 
 /* Base styles */
 body {
   font-family: 'Source Sans Pro', sans-serif;
-  background: url(./bg.png) no-repeat fixed;
+  background-color: #00008B;
+
   background-size: cover;
+  
 }
 
 form {
@@ -108,4 +111,30 @@ form .action input:hover {
       margin-bottom: 10px;
       width: 100%;
   }
+}
+/* Style the navigation bar */
+.navbar {
+  width: 100%;
+  background-color: #00008B;
+  overflow: auto;
+}
+
+/* Style the navigation links */
+.navbar a {
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 30px;
+  text-decoration: none;
+}
+
+/* Add hover effect to the links */
+.navbar a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.navbar a[href="homePage.html"] {
+  float: right;
 }
