@@ -24,9 +24,7 @@
   <!--owl slider stylesheet -->
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
 
-  <!-- font awesome style -->
-  <link href="css/font-awesome.min.css" rel="stylesheet" />
-
+  
   <!-- Custom styles for this template -->
   <link href="stylePromo.css" rel="stylesheet" />
   <!-- responsive style -->
@@ -64,16 +62,16 @@
                 <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="about.html"> About</a>
+                <a class="nav-link" href="#aboutSec"> About</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="service.html">Services</a>
+                <a class="nav-link" href="#services">Services</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="why.html">Why Us</a>
+                <a class="nav-link" href="#why">Why Us</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="team.html">Team</a>
+                <a class="nav-link" href="#teamSec">Team</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="signUp.html"> <i class="fa fa-user" aria-hidden="true"></i> Login</a>
@@ -115,70 +113,9 @@
               </div>
             </div>
           </div>
-          <div class="carousel-item ">
-            <div class="container ">
-              <div class="row">
-                <div class="col-md-6 ">
-                  <div class="detail-box">
-                    <h1>
-                      Mon-E <br>
-                      Financial Management
-                    </h1>
-                    <p>
-                      Explicabo esse amet tempora quibusdam laudantium, laborum eaque magnam fugiat hic? Esse dicta aliquid error repudiandae earum suscipit fugiat molestias, veniam, vel architecto veritatis delectus repellat modi impedit sequi.
-                    </p>
-                    <div class="btn-box">
-                      <a href="createAccount.html" class="btn1">
-                        Sign Up
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="img-box">
-                    <img src="images/newLogo-noBackground.png" alt="">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-         <!--#3?-->
-         <div class="carousel-item ">
-          <div class="container ">
-            <div class="row">
-              <div class="col-md-6 ">
-                <div class="detail-box">
-                  <h1>
-                    Mon-E <br>
-                    Fainancial Management
-                  </h1>
-                  <p>
-                    Explicabo esse amet tempora quibusdam laudantium, laborum eaque magnam fugiat hic? Esse dicta aliquid error repudiandae earum suscipit fugiat molestias, veniam, vel architecto veritatis delectus repellat modi impedit sequi.
-                  </p>
-                  <div class="btn-box">
-                    <a href="createAccount.html" class="btn1">
-                      Sign Up
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="img-box">
-                  <img src="images/newLogo-noBackground.png" alt="">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        </div>
+         
 
-        <!-----carousel-->
-        <ol class="carousel-indicators">
-          <li data-target="#customCarousel1" data-slide-to="0" class="active"></li>
-          <li data-target="#customCarousel1" data-slide-to="1"></li>
-          <li data-target="#customCarousel1" data-slide-to="2"></li>
-        </ol>
-      </div>
+     
 
     </section>
     <!-- end slider section -->
@@ -187,7 +124,7 @@
 
   <!-- service section -->
 
-  <section class="service_section layout_padding">
+  <section id="services" class="service_section layout_padding">
     <div class="service_container">
       <div class="container ">
         <div class="heading_container heading_center">
@@ -259,12 +196,28 @@
               </div>
             </div>
           </div>
+          <div class="col-md-4 ">
+            <div class="box ">
+              <div class="img-box">
+                <img src="images/s3.png" alt="">
+              </div>
+              <div class="detail-box">
+                <h5>
+                  Expert Support
+                </h5>
+                <p>
+                  fact that a reader will be distracted by the readable content of a page when looking at its layout.
+                  The
+                  point of using
+                </p>
+                <a href="">
+                  Read More
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="btn-box">
-          <a href="">
-            View All
-          </a>
-        </div>
+        
       </div>
     </div>
   </section>
@@ -274,7 +227,7 @@
 
   <!-- about section -->
 
-  <section class="about_section layout_padding">
+  <section id="aboutSec" class="about_section layout_padding">
     <div class="container  ">
       <div class="heading_container heading_center">
         <h2>
@@ -317,7 +270,7 @@
 
   <!-- why section -->
 
-  <section class="why_section layout_padding">
+  <section id="why" class="why_section layout_padding">
     <div class="container">
       <div class="heading_container heading_center">
         <h2>
@@ -393,7 +346,7 @@
   <!-- end why section -->
 
   <!-- team section -->
-  <section class="team_section layout_padding">
+  <section id ="teamSec" class="team_section layout_padding">
     <div class="container">
       <div class="heading_container heading_center">
         <h2 class="">
@@ -621,12 +574,8 @@
       </div>
     </div>
   </section>
-  <!-- end team section -->
-
-
- 
-
-  <!-- end info section -->
+  
+  
 
   <!-- footer section -->
   <section class="footer_section">
@@ -638,6 +587,21 @@
     </div>
   </section>
   <!-- footer section -->
+
+
+   <!-- JavaScript for smooth scrolling -->
+   <script>
+    // Smooth scrolling function
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+  </script>
 
   <!-- jQery -->
   <script type="text/javascript" src="jquery-3.4.1.min.js"></script>
