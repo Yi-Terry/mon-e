@@ -28,7 +28,9 @@ const serverPort = 3000
 appServer.use(express.static(path.join(__dirname, 'public')))
 
 
-let ACCESS_TOKEN = null
+let ACCESS_TOKEN = null;
+let currentUser = null;
+let First_Name = null;
 
 appServer.get('/createAccount.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'createAccount.html'))
@@ -112,12 +114,22 @@ ipcMain.on("AppleSignIn", (event, user) => {
   if (user) {
     appServer.get('/CurrentUsers', (req, res) => {
       res.json(user)
+      currentUser = user
     });
     const Access_Token = ref(database, 'plaidToken/' + user + '/Access_Token');
     onValue(Access_Token, (snapshot) => {
       const data = snapshot.val();
       ACCESS_TOKEN = data
     });
+    const User_Token = ref(database, 'userToken/' + user.uid + '/User_Token');
+    onValue(User_Token, (snapshot) => {
+      const data = snapshot.val();
+      USER_TOKEN = data
+      console.log(USER_TOKEN)
+    });
+    if (USER_TOKEN == null) {
+      createUserToken()
+    }
     console.log('user signed in');
   } else {
     console.log('User is logged out');
@@ -134,6 +146,15 @@ ipcMain.on('GoogleSignIn', (event, user) => {
       const data = snapshot.val();
       ACCESS_TOKEN = data
     });
+    const User_Token = ref(database, 'userToken/' + user.uid + '/User_Token');
+    onValue(User_Token, (snapshot) => {
+      const data = snapshot.val();
+      USER_TOKEN = data
+      console.log(USER_TOKEN)
+    });
+    if (USER_TOKEN == null) {
+      createUserToken()
+    }
     console.log('user signed in')
   } else {
     console.log('User is logged out')
@@ -199,6 +220,7 @@ ipcMain.on('Login', (event, email, password) => {
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user
+      currentUser = user.uid
       if (user.emailVerified) {
         console.log('user signed in')
         appServer.get('/CurrentUsers', (req, res) => {
@@ -208,7 +230,25 @@ ipcMain.on('Login', (event, email, password) => {
         onValue(Access_Token, (snapshot) => {
           const data = snapshot.val();
           ACCESS_TOKEN = data
+        })
+        const User_Token = ref(database, 'userToken/' + user.uid + '/User_Token');
+        onValue(User_Token, (snapshot) => {
+          const data = snapshot.val();
+          USER_TOKEN = data
+          console.log(USER_TOKEN)
+          if (USER_TOKEN == null) {
+            createUserToken(currentUser);
+          } else if (USER_TOKEN == null){
+            getUserToken(currentUser)
+          };
+        })
+        const Name = ref(database, 'users/' + user.uid + '/FirstName');
+        onValue(Name, (snapshot) => {
+          const data = snapshot.val();
+          First_Name = data
+          console.log(First_Name)
         });
+        win.loadURL(`http://localhost:${serverPort}/homePage.html`)
       } else {
         dialog.showMessageBox({
           type: 'question',
@@ -230,17 +270,22 @@ ipcMain.on('Login', (event, email, password) => {
         cancelId: 99,
         message: errorMessage,
       })
-    })
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      var isVerified = user.emailVerified
-      if (isVerified) {
-        win.loadURL(`http://localhost:${serverPort}/homePage.html`)
-      }
+    });
+});
+
+function getUserToken(currentUser) {
+  const User_Token = ref(database, 'userToken/' + currentUser + '/User_Token');
+  onValue(User_Token, (snapshot) => {
+    const data = snapshot.val();
+    USER_TOKEN = data
+    console.log(USER_TOKEN)
+    if (USER_TOKEN == null) {
+      createUserToken(currentUser);
     } else {
-    }
+      return;
+    };
   })
-})
+};
 
   ; ('use strict')
 
@@ -302,6 +347,8 @@ let PAYMENT_ID = null
 // persistent data store
 let AUTHORIZATION_ID = null
 let TRANSFER_ID = null
+let USER_TOKEN = null
+let USER_ID = null
 
 // Initialize the Plaid client
 // Find your API keys in the Dashboard (https://dashboard.plaid.com/account/keys)
@@ -365,6 +412,41 @@ appServer.post('/api/create_link_token', function (request, response, next) {
     .catch(next)
 })
 
+appServer.post('/api/link/token/create', function (req, res, next) {
+  Promise.resolve()
+    .then(async function () {
+      const incomeTokenObject = {
+        user: { client_user_id: PLAID_CLIENT_ID },
+        client_name: First_Name,
+        language: "en",
+        products: ["income_verification"],
+        user_token: USER_TOKEN,
+        income_verification: {
+          income_source_types: ["payroll"],
+        },
+        country_codes: ["US"],
+      };
+      const response = await client.linkTokenCreate(incomeTokenObject);
+      res.json(response.data)
+    })
+    .catch(next)
+})
+
+async function createUserToken(currentUser) {
+  try {
+    const response = await client.userCreate({
+      client_user_id: PLAID_CLIENT_ID
+    });
+    USER_TOKEN = response.data.user_token
+    USER_ID = response.data.user_id;
+    set(ref(database, 'userToken/' + currentUser), {
+      User_Token: USER_TOKEN,
+      User_ID: USER_ID
+    })
+  } catch (error) {
+    console.error(error);
+  }
+};
 // Create a link token with configs which we can then use to initialize Plaid Link client-side
 // for a 'payment-initiation' flow.
 // See:
@@ -637,22 +719,28 @@ appServer.get('/api/transactions/refresh', function (request, response, next) {
 //INCOME
 //refreshes the users bank income info
 //https://plaid.com/docs/api/products/income/#creditbank_incomerefresh
-appServer.get(
-  '/api/credit/bank_income/refresh',
-  function (request, response, next) {
-    Promise.resolve()
-      .then(async function () {
-        const request = {
-          access_token: ACCESS_TOKEN,
-          options: {
-            days_requested: 90,
-          },
-        }
-        response = await client.creditBankIncomeRefresh(request)
+appServer.get('/api/credit/payroll_income/get', function (request, response, next) {
+  Promise.resolve()
+    .then(async function () {
+      const bankdata = await client.creditPayrollIncomeGet({
+        user_token: USER_TOKEN,
       })
-      .catch(next)
-  },
-)
+      response.json(bankdata.data);
+    }).catch(next)
+})
+
+appServer.get('/api/credit/bank_income/get', function (request, response, next) {
+  Promise.resolve()
+    .then(async function () {
+      const bankdata = await client.creditBankIncomeGet({
+        user_token: USER_TOKEN,
+        options: {
+          count: 10,
+        },
+      })
+      response.json(bankdata.data);
+    }).catch(next)
+})
 
 //IDENTITY
 // Retrieve Identity for an Item

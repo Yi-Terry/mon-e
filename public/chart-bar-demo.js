@@ -1,6 +1,35 @@
+let revenueData = []
+
+function getIncomeAndUpdateChart() {
+  fetch('/api/credit/payroll_income/get')
+    .then((response) => response.json())
+    .then((data) => {
+      // Extract net pay YTD amounts
+      let incomeData = data.items[0].payroll_income[0].pay_stubs
+        .filter((_, index) => index < 2)
+        .map(pay_stub => pay_stub.net_pay.ytd_amount);
+
+      // Calculate monthly income
+      let monthlyIncome = incomeData.reduce((income, currentValue) => income + currentValue, 0);
+
+      // Push monthly income into revenueData array
+      for (let i = 0; i < 12; i++) {
+        revenueData.push(monthlyIncome);
+      }
+
+      // Update the chart with new revenueData
+      myBarChart.data.datasets[0].data = revenueData;
+      myBarChart.update();
+    });
+}
+
+// Example call to getIncomeAndUpdateChart
+getIncomeAndUpdateChart();
+
+
+
 // Bar Chart Example
 var ctx = document.getElementById("myBarChart");
-var revenueData = [4215, 5312, 6251, 7841, 9821, 2484, 1000, 1911, 10911, 11311, 11311, 13191];
 var cashSpentData = [2500, 3200, 4100, 5300, 6800, 9500, 13000, 1400, 12100, 1100, 9800, 8200];
 
 // Calculate cash flow for each month
