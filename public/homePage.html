@@ -555,35 +555,36 @@
                                 </div>
 
 
+                                <!-- Sub-budget Data -->
                                 <div class="card-body">
-                                    <h4 class="small font-weight-bold">Server Migration <span
-                                            class="float-right">20%</span></h4>
+                                    <h4 class="small font-weight-bold">Food <span
+                                            class="float-right">0%</span></h4>
                                     <div class="progress mb-4">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 20%"
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 0%"
                                             aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
-                                    <h4 class="small font-weight-bold">Sales Tracking <span
-                                            class="float-right">40%</span></h4>
+                                    <h4 class="small font-weight-bold">Liesure <span
+                                            class="float-right">0%</span></h4>
                                     <div class="progress mb-4">
-                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 40%"
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 0%"
                                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
-                                    <h4 class="small font-weight-bold">Customer Database <span
-                                            class="float-right">60%</span></h4>
+                                    <h4 class="small font-weight-bold">Travel <span
+                                            class="float-right">0%</span></h4>
                                     <div class="progress mb-4">
-                                        <div class="progress-bar" role="progressbar" style="width: 60%"
+                                        <div class="progress-bar" role="progressbar" style="width: 0%"
                                             aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
-                                    <h4 class="small font-weight-bold">Payout Details <span
-                                            class="float-right">80%</span></h4>
+                                    <h4 class="small font-weight-bold">Groceries <span
+                                            class="float-right">0%</span></h4>
                                     <div class="progress mb-4">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 80%"
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 0%"
                                             aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
-                                    <h4 class="small font-weight-bold">Account Setup <span
-                                            class="float-right">Complete!</span></h4>
+                                    <h4 class="small font-weight-bold">utility <span
+                                            class="float-right">0%</span></h4>
                                     <div class="progress">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%"
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 0%"
                                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                 </div>
@@ -636,22 +637,6 @@
                                     <button id="budgetBtn" data-toggle="modal" data-target="#createBudgetModal"
                                         class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                                         <i class="fas fa-download fa-sm text-white-50"></i> Add Budget
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Sub Budget adder section -->
-                            <div class="card shadow mb-4">
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Add Sub-Budget</h6>
-                                </div>
-                                <div class="card-body">
-
-                                    <span></span>
-                                    <button id="budgetBtn" data-toggle="modal" data-target="#addExpenseModal"
-                                        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                                        <i class="fas fa-download fa-sm text-white-50"></i> Add Sub-Budget
                                     </button>
                                 </div>
                             </div>
@@ -720,61 +705,21 @@
                                         </div>
                                         <label for="Date">End Date:</label>
                                         <input type="date" id="date">
+                                        <div></div>
+                                        <label for="Category">Choose a Category: </label>
+                                        <select name="category" id="categories">
+                                            <option value="none">None</option>
+                                            <option value="food">Food</option>
+                                            <option value="Leisure">Leisure</option>
+                                            <option value="travel">Travel</option>
+                                            <option value="groceries">Groceries</option>
+                                            <option value="utilities">Utilities</option>
+                                        </select>
                                     </form>
                                 </div>
                                 <div class="modal-footer">
                                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                                     <a class="btn btn-primary" id="Create" data-dismiss="modal">Create</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- create Sub Budget Modal -->
-                    <div class="modal fade" id="addExpenseModal" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document" id="signOutPop">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Add a Sub Budget</h5>
-                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">×</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">Please enter amount and description.
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="budgetName">Budget Name:</label>
-                                            <input type="text" class="form-control" id="expenseName" name="expenseName"
-                                                required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="amount">Amount:</label>
-                                            <input type="number" class="form-control" id="amount" name="amount"
-                                                required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="category">Category:</label>
-                                            <select class="form-control" id="category" name="category">
-                                                <option value="food">Food</option>
-                                                <option value="entertainment">Entertainment</option>
-                                                <option value="transportation">Transportation</option>
-                                                <option value="misc">Miscellaneous</option>
-                                                <!-- Add more options as needed -->
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="description">Description:</label>
-                                            <textarea class="form-control" id="description" name="description" rows="4"
-                                                placeholder="Enter description..."></textarea>
-                                        </div>
-                                        <label for="Date">End Date:</label>
-                                        <input type="date" id="date">
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                    <a class="btn btn-primary" id="Add" data-dismiss="modal">Add</a>
                                 </div>
                             </div>
                         </div>
@@ -911,7 +856,7 @@
                         }
                         var formattedDate = yyyy + '-' + mm + '-' + dd;
 
-                        document.getElementById('Add').addEventListener('click', function (event) {
+                        document.getElementById('Create').addEventListener('click', function (event) {
                             const budgetName = document.getElementById('expenseName').value;
                             const amount = document.getElementById('amount').value;
                             const category = document.getElementById('category').value;
@@ -921,7 +866,6 @@
                             const newBudget = push(Budget)
                             set(newBudget, {
                                 User: currentUser,
-                                BudgetName: budgetName,
                                 Amount: amount,
                                 Category: category,
                                 Description: description,
@@ -929,6 +873,8 @@
                                 EndDate: date,
                             });
                         });
+
+
 
                         // Function to set the theme based on the value stored in localStorage
                         function setTheme() {
@@ -986,17 +932,6 @@
                     <script src="chart-bar-demo.js"></script>
 
                     <script src="chartjs-plugin-doughnutlabel.js"></script>
-
-
-
-
-
-
-
-
-
-
-
 </body>
 
 </html>
