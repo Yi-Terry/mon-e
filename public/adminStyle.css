@@ -1,0 +1,12 @@
+button {
+    background-color: #87E76D;
+    color: white;
+    padding: 6px;
+    margin: 4px 0;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;  
+}
+table{
+    text-align: center;
+}
