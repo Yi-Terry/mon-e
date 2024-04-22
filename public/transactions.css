@@ -1,0 +1,64 @@
+.transactions-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.date-row th {
+    background-color: #f2f2f2;
+    padding: 10px;
+    text-align: left;
+    border-bottom: 2px solid #ddd;
+}
+
+.transaction-row {
+    border-bottom: 1px solid #ddd;
+}
+
+.transaction-name,
+.transaction-amount,
+.transaction-logo {
+    padding: 10px;
+}
+
+.transaction-name {
+    width: 50%;
+    text-align: left;
+}
+
+.transaction-amount {
+    width: 30%;
+    text-align: right;
+}
+
+.transaction-logo {
+    width: 20%;
+    text-align: center;
+}
+
+.transaction-logo img {
+    width: 40px;
+    height: 40px;
+    display: block;
+}
+
+.recurring-transactions-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table-header th {
+    background-color: #f2f2f2;
+    padding: 10px;
+    text-align: left;
+    border-bottom: 2px solid #ddd;
+}
+
+.recurring-transactions-table tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.recurring-transactions-table td {
+    padding: 10px;
+}
