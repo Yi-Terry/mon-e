@@ -129,10 +129,16 @@ form .action input:hover {
   text-decoration: none;
 }
 
-/* Add hover effect to the links */
-.navbar a:hover {
-  background-color: #ddd;
+/* Add hover effect only to the Home link */
+.navbar a[href="homePage.html"]:hover {
+  background-color: lightgreen;
   color: black;
+}
+
+/* Remove hover effect from other links */
+.navbar a:not([href="homePage.html"]):hover {
+  background-color: transparent;
+  color: white;
 }
 
 .navbar a[href="homePage.html"] {
