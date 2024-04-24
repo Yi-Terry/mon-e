@@ -558,7 +558,7 @@
                                 <!-- Sub-budget Data -->
                                 <div class="card-body">
                                     <h4 class="small font-weight-bold">Food <span
-                                            class="float-right">0%</span></h4>
+                                            class="float-right" id="food-category-sub-budget" >0%</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-danger" role="progressbar" style="width: 0%"
                                             aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
@@ -707,7 +707,7 @@
                                         <input type="date" id="date">
                                         <div></div>
                                         <label for="Category">Choose a Category: </label>
-                                        <select name="category" id="categories">
+                                        <select name="category" id="category">
                                             <option value="none">None</option>
                                             <option value="food">Food</option>
                                             <option value="Leisure">Leisure</option>
@@ -855,12 +855,11 @@
                             dd = '0' + dd;
                         }
                         var formattedDate = yyyy + '-' + mm + '-' + dd;
-
+                        
+                        //saving data to database for budget
                         document.getElementById('Create').addEventListener('click', function (event) {
-                            const budgetName = document.getElementById('expenseName').value;
                             const amount = document.getElementById('amount').value;
                             const category = document.getElementById('category').value;
-                            const description = document.getElementById('description').value;
                             const date = document.getElementById('date').value;
                             const Budget = ref(database, 'budgets')
                             const newBudget = push(Budget)
@@ -868,11 +867,28 @@
                                 User: currentUser,
                                 Amount: amount,
                                 Category: category,
-                                Description: description,
                                 StartDate: formattedDate,
                                 EndDate: date,
                             });
+
+                            // Working on this currently
+                            // trying to get the amount and category for that sub-budget they created into the budgets table
+                            Budget.on('value', (snapshot) =>{
+                                const data = snapshot.val(); //Access data using snapshot.val
+                                const amountDB  = data?.amount;
+                                const categoryDB = data?.category;
+                                
+                                if(category == categoryDB)
+                                {
+                                    const categorySubBudget = document.getElementById("category-sub-budget");
+                                    categorySubBudget.innerHTML = amountDB;
+                                }
+
+                            });
                         });
+
+
+                        //
 
 
 
