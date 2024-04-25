@@ -1,218 +1,197 @@
 <!DOCTYPE html>
-
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings Page</title>
-    <link rel="stylesheet" href="settings.css" />
+    <link rel="stylesheet" href="settings.css">
     <link rel="stylesheet" href="notification.css">
     <link rel="shortcut icon" href="images/newLogo-noBackground.png" type="">
-  
+
     <script src="settings.js" defer></script>
-  </head>
-  
-  <body>
+</head>
+
+<body>
+  <div class="nav-container">
+
     <nav class="sidebar locked" id="sidebar">
-      <div class="logo_items flex">
-        <span class="nav_image">
-         
-        </span>
-        
-        <span class="logo_name">Settings</span>
-        
-      </div>
-
-      <br>
-      <br>
-
-      
-            <li class="item">
-              <a href="#" class="link flex">
-                <i class="bx bx-home-alt"></i>
-                <span>Overview</span>
-              </a>
-            </li>
-            <li class="item">
-              <a href="notification.html" class="link flex">
-                <i class="bx bx-grid-alt"></i>
-                <span>Notification</span>
-              </a>
-            </li>
-          </ul>
-
-        
-            <li class="item">
-              <a href="paymentmethod.html" class="link flex">
-                <i class="bx bxs-magic-wand"></i>
-                <span>Payment Methods</span>
-              </a>
-            </li>
-            
-            <li class="item">
-              <a href="editProfile.html" class="link flex">
-                
-
-                <i class="bx bx-grid-alt"></i>
-                <span>Edit Profile</span>
-              </a>
-            </li>
-
-            <li class="item">
-              <a href="appAppearance.html" class="link flex">
-                <i class="bx bx-cloud-upload"></i>
-                <span>App Appearance</span>
-              </a>
-            </li>
-            <li class="item">
-              <a href="homePage.html" class="link flex">
-                <i class="bx bx-cloud-upload"></i>
-                <span>Home</span>
-              </a>
-            </li>
-        
+        <div class="logo_items flex">
+            <span class="nav_image"></span>
+            <span class="logo_name">Settings</span>
         </div>
-      </nav>
-      
-      <div class="container">
-       
-            <div class="col-12 col-lg-10 col-xl-8 mx-auto">
-              <br>
-                <h2 class="h3 mb-4 page-title">Notification Settings</h2>
-                <div class="my-4">
-              
-                    <p>Select notification you want to receive</p>
-                    <hr class="my-4" />
-                    <strong class="mb-0">Security</strong>
-                    <p>Control security alert you will be notified.</p>
-                    <div class="list-group mb-5 shadow">
-                        <div class="list-group-item">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <strong class="mb-0">Unusual activity notifications</strong>
-                                    
-                                </div>
-                                <label class="switch">
-                                    <input type="checkbox">
-                                    <span class="slider round"></span>
-                                  </label>
+        <br><br>
+        <ul>
+            <li class="item">
+                <a href="#" class="link flex">
+                    <i class="bx bx-home-alt"></i>
+                    <span>Overview</span>
+                </a>
+            </li>
+            <li class="item">
+                <a href="notification.html" class="link flex">
+                    <i class="bx bx-grid-alt"></i>
+                    <span>Notification</span>
+                </a>
+            </li>
+            <li class="item">
+                <a href="paymentmethod.html" class="link flex">
+                    <i class="bx bxs-magic-wand"></i>
+                    <span>Payment Methods</span>
+                </a>
+            </li>
+            <li class="item">
+                <a href="editProfile.html" class="link flex">
+                    <i class="bx bx-grid-alt"></i>
+                    <span>Edit Profile</span>
+                </a>
+            </li>
+            <li class="item">
+                <a href="appAppearance.html" class="link flex">
+                    <i class="bx bx-cloud-upload"></i>
+                    <span>App Appearance</span>
+                </a>
+            </li>
+            <li class="item">
+                <a href="homePage.html" class="link flex">
+                    <i class="bx bx-cloud-upload"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+  </div>
+
+    <div class="container">
+        <div class="col-12 col-lg-10 col-xl-8 mx-auto">
+            <br>
+            <h2 class="h3 mb-4 page-title" id="top">Notification Settings</h2>
+            <div class="my-4">
+                <p id="test1">Select notification you want to receive</p>
+                <hr class="my-4">
+                <strong class="mb-0" id="sec">Security</strong>
+                <p id="top0">Control security alert you will be notified.</p>
+                <div class="list-group mb-5 shadow">
+                    <div class="list-group-item">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <strong class="mb-0">Unusual activity notifications</strong>
                             </div>
-                        </div>
-                        <div class="list-group-item">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <strong class="mb-0">Unauthorized financial activity</strong>
-                                   
-                                </div>
-                                <label class="switch">
-                                    <input type="checkbox">
-                                    <span class="slider round"></span>
-                                  </label>
-                            </div>
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
                         </div>
                     </div>
-                    <hr class="my-4" />
-                    <strong class="mb-0">System</strong>
-                    <p>Please enable system alert you will get.</p>
-                    <div class="list-group mb-5 shadow">
-                        <div class="list-group-item">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <strong class="mb-0">Notify me by text</strong>
-                                    
-                                </div>
-                                <label class="switch">
-                                    <input type="checkbox">
-                                    <span class="slider round"></span>
-                                  </label>
+                    <div class="list-group-item">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <strong class="mb-0">Unauthorized financial activity</strong>
                             </div>
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
                         </div>
-                        <div class="list-group-item">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <strong class="mb-0">Notify me by email </strong>
-                                    
-                                </div>
-                                <label class="switch">
-                                    <input type="checkbox">
-                                    <span class="slider round"></span>
-                                  </label>
+                    </div>
+                </div>
+                <hr class="my-4">
+                <strong class="mb-0" id="sys">System</strong>
+                <p id="plz">Please enable system alert you will get.</p>
+                <div class="list-group mb-5 shadow">
+                    <div class="list-group-item">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <strong class="mb-0">Notify me by text</strong>
                             </div>
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
                         </div>
-                        <div class="list-group-item">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <strong class="mb-0">Notify me about new features and updates</strong>
-                                  
-                                </div>
-                                <label class="switch">
-                                    <input type="checkbox">
-                                    <span class="slider round"></span>
-                                  </label>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <strong class="mb-0">Notify me by email</strong>
                             </div>
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <strong class="mb-0">Notify me about new features and updates</strong>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
                         </div>
                     </div>
                 </div>
             </div>
-        
-        
         </div>
-    
+    </div>
 
+    <script>
+        // Function to set the theme based on the value stored in localStorage
+        function setTheme() {
+            var storedTheme = localStorage.getItem('theme');
+            if (storedTheme === 'darkTheme') {
+                toggleTheme('darkTheme');
+            } else {
+                toggleTheme('lightTheme');
+            }
+        }
 
+        // Function to toggle the theme
+        function toggleTheme(theme) {
+            var body = document.body;
+            var sidebar = document.getElementById('sidebar');
+            var settingsText = document.querySelector('.logo_name');
+            var work = document.getElementById('plz');
+            var noti = document.getElementById('top');
+            var secr = document.getElementById('sec');
+            var system = document.getElementById('sys');
+            var cc = document.getElementById('top0');
+            var menu = document.getElementById('test1');
 
-        <script>
-          // Function to set the theme based on the value stored in localStorage
-          function setTheme() {
-              var storedTheme = localStorage.getItem('theme');
-              if (storedTheme === 'darkTheme') {
-                  toggleTheme('darkTheme');
-              } else {
-                  toggleTheme('lightTheme');
-              }
-          }
-  
-          // Function to toggle the theme
-          function toggleTheme(theme) {
-              var body = document.body;
-              var sidebar = document.getElementById('sidebar');
-              var settingsText = document.querySelector('.logo_name');
+            if (theme === 'lightTheme') {
+                body.style.backgroundColor = 'white';
+                body.style.color = 'black';
+                sidebar.style.backgroundColor = 'rgb(240, 240, 242)';
+                settingsText.style.color = 'black';
+            } else {
+                body.style.backgroundColor = '#333';
+                body.style.color = 'black';
+                sidebar.style.backgroundColor = '#352F44';
+                settingsText.style.color = 'white';
+                menu.style.color = 'white';
+                system.style.color = 'white';
+                noti.style.color = 'white';
+                secr.style.color = 'white';
+                cc.style.color = 'white';
+                work.style.color = 'white';
+            }
 
-  
-              if (theme === 'lightTheme') {
-                  body.style.backgroundColor = 'white';
-                  body.style.color = 'black';
-                  sidebar.style.backgroundColor = 'rgb(240, 240, 242)';
-                  settingsText.style.color = 'black';
-              } else {
-                  body.style.backgroundColor = '#333';
-                  body.style.color = 'white';
-                  sidebar.style.backgroundColor = '#352F44';
-                  settingsText.style.color = 'white';
-              }
-  
-              // Remove 'selected' class from all buttons
-              var buttons = document.querySelectorAll('.theme-button');
-              buttons.forEach(function (button) {
-                  button.classList.remove('selected');
-              });
-  
-              // Add 'selected' class to the clicked button
-              var clickedButton = document.getElementById(theme);
-              clickedButton.classList.add('selected');
-  
-              // Store the selected theme in localStorage
-              localStorage.setItem('theme', theme);
-              
-          }
-          setTheme();
-        </script>
-        
-       
-        
-  
-     
-        
-  </body>
+            // Remove 'selected' class from all buttons
+            var buttons = document.querySelectorAll('.theme-button');
+            buttons.forEach(function (button) {
+                button.classList.remove('selected');
+            });
+
+            // Add 'selected' class to the clicked button
+            var clickedButton = document.getElementById(theme);
+            clickedButton.classList.add('selected');
+
+            // Store the selected theme in localStorage
+            localStorage.setItem('theme', theme);
+        }
+        setTheme();
+    </script>
+</body>
 </html>
