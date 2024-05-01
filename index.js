@@ -346,47 +346,44 @@ ipcMain.on('createAccount', (event, email, password, FirstName, LastName, PhoneN
 ipcMain.on('Login', (event, email, password) => {
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-
-      let Admin = false;
-      const user = userCredential.user
-      currentUser = user.uid
+      const user = userCredential.user;
+      currentUser = user.uid;
+      
       const is_Admin = ref(database, 'users/' + user.uid + '/is_Admin');
       onValue(is_Admin, (snapshot) => {
-        if (snapshot.val() === true) {
-          Admin = true
+        const isAdmin = snapshot.val();
+        if (isAdmin === true) {
           // Load admin page and return to exit the function
-          win.loadURL(`http://localhost:${serverPort}/adminHomePage.html`)
+          win.loadURL(`http://localhost:${serverPort}/adminHomePage.html`);
           return;
         }
-      });
-      if (Admin === false) {
         if (user.emailVerified) {
-          console.log('user signed in')
+          console.log('user signed in');
           appServer.get('/CurrentUsers', (req, res) => {
-            res.json(user.uid)
+            res.json(user.uid);
           });
           const Access_Token = ref(database, 'plaidToken/' + user.uid + '/Access_Token');
           onValue(Access_Token, (snapshot) => {
             const data = snapshot.val();
-            ACCESS_TOKEN = data
-          })
+            ACCESS_TOKEN = data;
+          });
           const User_Token = ref(database, 'userToken/' + user.uid + '/User_Token');
           onValue(User_Token, (snapshot) => {
             const data = snapshot.val();
-            USER_TOKEN = data
-            console.log(USER_TOKEN)
+            USER_TOKEN = data;
+            console.log(USER_TOKEN);
             if (USER_TOKEN == null) {
               createUserToken(currentUser);
             } else if (USER_TOKEN == null) {
-              getUserToken(currentUser)
-            };
-          })
+              getUserToken(currentUser);
+            }
+          });
           const Name = ref(database, 'users/' + user.uid + '/FirstName');
           onValue(Name, (snapshot) => {
             const data = snapshot.val();
-            First_Name = data
+            First_Name = data;
           });
-          win.loadURL(`http://localhost:${serverPort}/homePage.html`)
+          win.loadURL(`http://localhost:${serverPort}/homePage.html`);
         } else {
           dialog.showMessageBox({
             type: 'question',
@@ -394,21 +391,20 @@ ipcMain.on('Login', (event, email, password) => {
             title: 'Error Logging In.',
             cancelId: 99,
             message: 'Email not verified. New Verification Link sent to Email!',
-          })
-          sendEmailVerification(user)
+          });
+          sendEmailVerification(user);
         }
-      }
+      });
     })
     .catch((error) => {
-      const errorCode = error.code
-      const errorMessage = error.message
+      const errorMessage = error.message;
       dialog.showMessageBox({
         type: 'question',
         buttons: ['Ok'],
         title: 'Error Logging In.',
         cancelId: 99,
         message: errorMessage,
-      })
+      });
     });
 });
 
