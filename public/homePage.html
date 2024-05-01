@@ -565,6 +565,8 @@
 
 
                                 <div class="card-body">
+                                    <div class="card-body-budgets"></div>
+                                    <!--
                                     <h4 class="small font-weight-bold">Server Migration <span
                                             class="float-right">20%</span></h4>
                                     <div class="progress mb-4">
@@ -594,7 +596,9 @@
                                     <div class="progress">
                                         <div class="progress-bar bg-success" role="progressbar" style="width: 100%"
                                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
+                                    </div> 
+                                    -->
+                                </div>
                                 </div>
                             </div>
 
@@ -905,6 +909,40 @@
                         const app = initializeApp(firebaseConfig);
                         const auth = getAuth(app);
                         const database = getDatabase(app);
+
+                        const userId = "naaQDxsZKoPOemJtzeDYmmXQbUQ2";
+
+                      
+                        function fetchBudgetsForCurrentUser(userId) {
+                            const budgetsRef = ref(database, 'budgets');
+                            onValue(budgetsRef, (snapshot) => {
+                            const budgets = snapshot.val();
+                            
+                            if (budgets) {
+                                const budgetsContainer = document.querySelector('.card-body-budgets');
+                             
+
+                               
+                                const userBudgets = Object.values(budgets).filter(budget => budget.User === userId);
+
+                               
+                                    userBudgets.forEach((budget) => {
+                                    const budgetName = budget.Category;
+                                    const amount = budget.Amount;
+                                
+
+                                    budgetsContainer.innerHTML = `
+                                        <h4 class="small font-weight-bold">${budgetName} <span class="float-right">$${amount}</span></h4><div class="progress mb-4">
+                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 20%" aria-valuenow="${amount}" aria-valuemin="0" aria-valuemax="100"></div></div>
+                                        `;
+
+                });
+            }
+        });
+    }
+
+    
+                        fetchBudgetsForCurrentUser(userId);
 
                         var today = new Date();
 
