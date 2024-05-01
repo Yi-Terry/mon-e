@@ -1,5 +1,5 @@
 let revenueData = []
-
+let revenueNumber;
 
 function getIncomeAndUpdateChart() {
   fetch('/api/credit/payroll_income/get')
@@ -18,15 +18,23 @@ function getIncomeAndUpdateChart() {
         revenueData.push(monthlyIncome);
       }
 
+      revenueNumber = monthlyIncome
+
+      let twentyPercentOfIncome = 0.2 * monthlyIncome;
+
+      // Add 20% of monthly income back to monthly income
+      revenueNumber += twentyPercentOfIncome;
+
       // Update the chart with new revenueData
-      myBarChart.data.datasets[0].data = revenueData;
-      myBarChart.update();
+
+      return revenueNumber;
     });
 }
 
 const dateRange = 365
 
 let cashSpentData = []
+
 
 function getTransactionAndUpdateChart() {
   fetch(`/api/transactions/get?dateRange=${dateRange}`)
@@ -65,6 +73,8 @@ function getTransactionAndUpdateChart() {
 
       // Output monthly total transaction amounts
       myBarChart.data.datasets[1].data = cashSpentData;
+      myBarChart.data.datasets[0].data = revenueData;
+      myBarChart.options.scales.yAxes[0].ticks.max = revenueNumber;
       myBarChart.update();
       calculateCashFlow()
     })
@@ -84,15 +94,14 @@ console.log(revenueData)
 let cashFlowData = [];
 
 function calculateCashFlow() {
-for (let i = 0; i < 12; i++) {
-  let revenue = revenueData[i] || 0;
-  let cashSpent = cashSpentData[i] || 0;
-  cashFlowData.push(revenue - cashSpent);
-}
+  for (let i = 0; i < 12; i++) {
+    let revenue = revenueData[i] || 0;
+    let cashSpent = cashSpentData[i] || 0;
+    cashFlowData.push(revenue - cashSpent);
+  }
 }
 
 console.log(cashFlowData)
-
 
 var myBarChart = new Chart(ctx, {
   type: 'bar',

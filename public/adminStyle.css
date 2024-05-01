@@ -1,16 +1,104 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-*{
+
+* {
   font-family: "Poppins", sans-serif;
 }
+
 button {
-    background-color: #87E76D;
-    color: white;
-    padding: 6px;
-    margin: 4px 0;
-    border: none;
-    cursor: pointer;
-    border-radius: 3px;  
+  background-color: #87E76D;
+  color: white;
+  padding: 6px;
+  margin: 4px 0;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
 }
-table{
-    text-align: center;
+
+table {
+  text-align: center;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 0.5;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: 20% auto;
+  padding: 40px 20px 20px;
+  border: 1px solid #888;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#user-information-table h1 {
+  text-align: center;
+}
+
+#closeModalBtn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+#closeModalBtn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #ffffff;
+  color: #000000;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.modal-input {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%;
+}
+
+#myModal input[type="email"],
+#myModal input[type="password"],
+#myModal input[type="text"],
+#myModal input[type="tel"] {
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.button-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.button-row button {
+  flex: 1;
+  margin-right: 5px;
 }
