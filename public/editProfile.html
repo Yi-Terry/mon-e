@@ -72,7 +72,7 @@
     
     <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
         <div style="position:relative; left:-120px; top:5px;"> 
-        <div class="card h-100">
+        <div class="card h-100" id="cardBody">
             <div class="card-body">
                 <div class="row gutters">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -179,5 +179,55 @@
     forgotPassBtn.addEventListener('click', ForgotPassword); //runs function on click
 
     </script>
+
+
+<script>
+    // Function to set the theme based on the value stored in localStorage
+    function setTheme() {
+        var storedTheme = localStorage.getItem('theme');
+        if (storedTheme === 'darkTheme') {
+            toggleTheme('darkTheme');
+        } else {
+            toggleTheme('lightTheme');
+        }
+    }
+
+    // Function to toggle the theme
+    function toggleTheme(theme) {
+        var body = document.body;
+        var sidebar = document.getElementById('sidebar');
+        var settingsText = document.querySelector('.logo_name');
+        var card = document.getElementById('cardBody')
+
+
+        if (theme === 'lightTheme') {
+            body.style.backgroundColor = 'white';
+            body.style.color = 'black';
+            sidebar.style.backgroundColor = 'rgb(240, 240, 242)';
+            settingsText.style.color = 'black';
+        } else {
+            body.style.backgroundColor = '#333';
+            body.style.color = 'white';
+            sidebar.style.backgroundColor = '#352F44';
+            settingsText.style.color = 'white';
+            card.style.backgroundColor='#333';
+        }
+
+        // Remove 'selected' class from all buttons
+        var buttons = document.querySelectorAll('.theme-button');
+        buttons.forEach(function (button) {
+            button.classList.remove('selected');
+        });
+
+        // Add 'selected' class to the clicked button
+        var clickedButton = document.getElementById(theme);
+        clickedButton.classList.add('selected');
+
+        // Store the selected theme in localStorage
+        localStorage.setItem('theme', theme);
+        
+    }
+    setTheme();
+  </script>  
 </body>
 </html>

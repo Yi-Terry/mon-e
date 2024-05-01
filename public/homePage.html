@@ -96,45 +96,14 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <!-- Heading -->
+            <!-- Heading
             <div class="sidebar-heading">
                 Addons
-            </div>
+            </div> -->
 
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Pages</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="#">Login</a>
-                        <a class="collapse-item" href="#">Register</a>
-                        <a class="collapse-item" href="#">Forgot Password</a>
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Other Pages:</h6>
-                        <a class="collapse-item" href="#">404 Page</a>
-                        <a class="collapse-item" href="#">Blank Page</a>
-                    </div>
-                </div>
-            </li>
+            
 
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Analytics</span></a>
-            </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span></a>
-            </li>
+            
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -325,10 +294,7 @@
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Help and Support
                                 </a>
-                                <a class="dropdown-item" href="teamP.html">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    About Us
-                                </a>
+                                
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -603,86 +569,87 @@
                             </div>
 
 
-
-                        </div>
-
-                        <div class="col-lg-6 mb-4">
-                            <!-- Recurring Transactions -->
-                            <div class="card shadow mb-4">
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Recurring Transactions</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div id="recurring-transactions-container"></div>
-                                </div>
-                            </div>
-
-                            <!-- Transactions -->
-                            <div class="card shadow mb-4">
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Transactions</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <label for="date-range">Select Date Range:</label>
-                                        <select id="date-range">
-                                            <option value="30">Past 30 days</option>
-                                            <option value="90">Past 90 days</option>
-                                        </select>
+                            <div class="col-lg-6 mb-4">
+                                <!-- Recurring Transactions -->
+                                <div class="card shadow mb-4">
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">Recurring Transactions</h6>
                                     </div>
-
-                                    <div id="transactions-container"></div>
-                                </div>
-                            </div>
-
-                            <!-- Budget set section-->
-                            <div class="card shadow mb-4">
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Add Budget</h6>
-                                </div>
-                                <div class="card-body">
-
-                                    <span></span>
-                                    <button id="budgetBtn" data-toggle="modal" data-target="#createBudgetModal"
-                                        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                                        <i class="fas fa-download fa-sm text-white-50"></i> Add Budget
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Sub Budget adder section -->
-                            <div class="card shadow mb-4">
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Add Sub-Budget</h6>
-                                </div>
-                                <div class="card-body">
-
-                                    <span></span>
-                                    <button id="budgetBtn" data-toggle="modal" data-target="#addExpenseModal"
-                                        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                                        <i class="fas fa-download fa-sm text-white-50"></i> Add Sub-Budget
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- End of Main Content -->
-
-                            <!-- Footer -->
-                            <footer class="sticky-footer " id="foot">
-                                <div class="container my-auto">
-                                    <div class="copyright text-center my-auto">
-                                        <span>Copyright &copy; Your Website 2021</span>
+                                    <div class="card-body">
+                                        <div id="recurring-transactions-container"></div>
                                     </div>
                                 </div>
-                            </footer>
-                            <!-- End of Footer -->
-
+    
+                                <!-- Transactions -->
+                                <div class="card shadow mb-4">
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">Transactions</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="date-range">Select Date Range:</label>
+                                            <select id="date-range">
+                                                <option value="30">Past 30 days</option>
+                                                <option value="90">Past 90 days</option>
+                                            </select>
+                                        </div>
+    
+                                        <div id="transactions-container"></div>
+                                    </div>
+                                </div>
+    
+                                <!-- Budget set section-->
+                                <div class="card shadow mb-4">
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">Add Budget</h6>
+                                    </div>
+                                    <div class="card-body">
+    
+                                        <span></span>
+                                        <button id="budgetBtn" data-toggle="modal" data-target="#createBudgetModal"
+                                            class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                            <i class="fas fa-download fa-sm text-white-50"></i> Add Budget
+                                        </button>
+                                    </div>
+                                </div>
+    
+                                <!-- Sub Budget adder section -->
+                                <div class="card shadow mb-4">
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">Add Sub-Budget</h6>
+                                    </div>
+                                    <div class="card-body">
+    
+                                        <span></span>
+                                        <button id="budgetBtn" data-toggle="modal" data-target="#addExpenseModal"
+                                            class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                            <i class="fas fa-download fa-sm text-white-50"></i> Add Sub-Budget
+                                        </button>
+                                    </div>
+                                </div>
+    
+                                <!-- End of Main Content -->
+    
+                                <!-- Footer -->
+                                <footer class="sticky-footer " id="foot">
+                                    <div class="container my-auto">
+                                        <div class="copyright text-center my-auto">
+                                            <span>Copyright &copy; Your Website 2021</span>
+                                        </div>
+                                    </div>
+                                </footer>
+                                <!-- End of Footer -->
+    
+                            </div>
+                            <!-- End of Content Wrapper -->
+                            <!--- Place Cards under budget if needed-->
                         </div>
-                        <!-- End of Content Wrapper -->
+
+                      
 
                     </div>
                     <!-- End of Page Wrapper -->
