@@ -18,6 +18,7 @@
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
     <script src="https://kit.fontawesome.com/fc6d452ce7.js" crossorigin="anonymous"></script>
+    <script src="scanner.js"></script>
     <!-- Custom styles for this template-->
     <link href="sb-admin-2.css" rel="stylesheet">
     <link rel="shortcut icon" href="images/newLogo-noBackground.png" type="">
@@ -59,20 +60,21 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fa-solid fa-barcode"></i>
-                    <span>Receipt Scanner</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Receipt Scanner</h6>
-                        <a class="collapse-item" href="#">Receipt Scanner</a>
-                        <a class="collapse-item" data-toggle="modal" data-target="#manualModal">Enter Manually</a>
-                    </div>
-                </div>
-            </li>
+<li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+        aria-expanded="true" aria-controls="collapseTwo">
+        <i class="fa-solid fa-barcode"></i>
+        <span>Receipt Scanner</span>
+    </a>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Receipt Scanner</h6>
+            <a id="receiptScannerButton" class="collapse-item" href="#">Receipt Scanner</a>
+            <a class="collapse-item" data-toggle="modal" data-target="#manualModal">Enter Manually</a>
+        </div>
+    </div>
+</li>
+
 
             <!-- Nav Item - budget Collapse Menu -->
             <li class="nav-item">
@@ -819,30 +821,27 @@
                                             <input type="text" class="form-control" id="storeName" name="storeName" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="date">Date:</label>
-                                            <input type="date" class="form-control" id="date" name="date" required>
+                                            <label for="dateManual">Date:</label>
+                                            <input type="date" class="form-control" id="dateManual" name="dateManual" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="time">Time:</label>
-                                            <input type="text" class="form-control" id="time" name="time" required>
+                                            <label for="categoryManual">Category:</label>
+                                            <input type="text" class="form-control" id="categoryManual" name="categoryManual" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="amount">Amount:</label>
-                                            <input type="number" class="form-control" id="amount" name="amount" required>
+                                            <label for="amountManual">Amount:</label>
+                                            <input type="text" class="form-control" id="amountManual" name="amountManual" required>
                                         </div>
-                                    
+                                        <button class="btn btn-primary" type="submit">Submit</button>
                                     </form>
+                                    <p id="submissionMessage" style="display: none; color: green;">Transaction submitted successfully!</p>
                                 </div>
                                 <div class="modal-footer">
                                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                    <button class="btn btn-primary" id="submitManualBtn">Submit</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
-
 
                     <!-- Bootstrap core JavaScript-->
                     <script src="jquery.min.js"></script>
@@ -879,6 +878,42 @@
 
                         const userId = "naaQDxsZKoPOemJtzeDYmmXQbUQ2";
 
+
+                        document.getElementById("manualForm").addEventListener("submit", function(event) {
+                            event.preventDefault(); 
+
+                            // Get form data
+                            const storeName = document.getElementById("storeName").value;
+                            const date = document.getElementById("dateManual").value.toString();
+                            const category = document.getElementById("categoryManual").value; 
+                            const amount = document.getElementById("amountManual").value; 
+
+                            console.log(storeName, date, category, amount);
+
+                            if (storeName && date && category && amount) {
+                            
+                                const transactionsRef = ref(database, 'transactions');
+
+                                // Push new transaction data to Firebase
+                                push(transactionsRef, {
+                                    Amount: amount,
+                                    Category: category,
+                                    Date: date,
+                                    Merchant: storeName,
+                                    User: currentUser 
+                                }).then(() => {
+                                    console.log("Transaction posted successfully!");
+                                    document.getElementById("submissionMessage").style.display = "block";
+                                    document.getElementById("manualForm").reset();
+                                }).catch((error) => {
+                                    console.error("Error posting transaction:", error);
+                                });
+                            } else {
+                                console.error("Please fill all required fields.");
+                            }
+                        });
+
+
                       
                         function fetchBudgetsForCurrentUser(userId) {
                             const budgetsRef = ref(database, 'budgets');
@@ -887,28 +922,20 @@
                             
                             if (budgets) {
                                 const budgetsContainer = document.querySelector('.card-body-budgets');
-                             
-
-                               
                                 const userBudgets = Object.values(budgets).filter(budget => budget.User === userId);
-
                                
                                     userBudgets.forEach((budget) => {
                                     const budgetName = budget.Category;
                                     const amount = budget.Amount;
                                 
-
                                     budgetsContainer.innerHTML = `
                                         <h4 class="small font-weight-bold">${budgetName} <span class="float-right">$${amount}</span></h4><div class="progress mb-4">
                                         <div class="progress-bar bg-primary" role="progressbar" style="width: 20%" aria-valuenow="${amount}" aria-valuemin="0" aria-valuemax="100"></div></div>
                                         `;
-
-                });
-            }
-        });
-    }
-
-    
+                            });
+                        }
+                    });
+                } 
                         fetchBudgetsForCurrentUser(userId);
 
                         var today = new Date();
@@ -1002,16 +1029,6 @@
                     <script src="chart-bar-demo.js"></script>
 
                     <script src="chartjs-plugin-doughnutlabel.js"></script>
-
-
-
-
-
-
-
-
-
-
 
 </body>
 
