@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('node:path');
 const bcrypt = require("bcryptjs");
 const firebase = require("firebase/app");
-const { getDatabase, set, ref, onValue } = require("firebase/database");
+const { getDatabase, set, ref, onValue, update, push } = require("firebase/database");
 const { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, onAuthStateChanged } = require("firebase/auth");
 
 const firebaseConfig = {
@@ -15,7 +15,7 @@ const firebaseConfig = {
   appId: "1:983558902043:web:93b3e671eeafa0a99503be"
 };
 
-var fapp = firebase.initializeApp(firebaseConfig)
+const fapp = firebase.initializeApp(firebaseConfig, "NormalApp")
 const database = getDatabase(fapp)
 const auth = getAuth(fapp)
 
@@ -28,7 +28,9 @@ const serverPort = 3000
 appServer.use(express.static(path.join(__dirname, 'public')))
 
 
-let ACCESS_TOKEN = null
+let ACCESS_TOKEN = null;
+let currentUser = null;
+let First_Name = null;
 
 appServer.get('/createAccount.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'createAccount.html'))
@@ -97,6 +99,131 @@ app.on('activate', () => {
   }
 })
 
+//Admin Functionality
+
+var admin = require("firebase-admin");
+
+var serviceAccount = require("./ServiceAccountKey.json");
+
+const AdminApp = admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://mon-e-2dbd6-default-rtdb.firebaseio.com",
+}, "AdminApp");
+
+
+appServer.get("/listallusers", (req, res, next) => {
+  let allUsers = []; // Array to hold all user records
+
+  function listAllUsers(pageToken) {
+    AdminApp.auth().listUsers(1000, pageToken) // lists up to 1000 users
+      .then((listUsersResult) => {
+        listUsersResult.users.forEach((userRecord) => {
+          allUsers.push(userRecord.toJSON()); // Add user record to the array
+        });
+
+        if (listUsersResult.pageToken) {
+          // List next batch of users.
+          listAllUsers(listUsersResult.pageToken);
+        } else {
+          // Send all users to frontend
+          res.json(allUsers);
+        }
+      })
+      .catch((error) => {
+        console.log('Error listing users:', error);
+        res.status(500).json({ error: 'Failed to list users' }); // Send error response
+      });
+  }
+
+  // Start listing all users
+  listAllUsers();
+});
+
+ipcMain.on("MakeUser", (event, email, password, PhoneNumber, displayName) => {
+  AdminApp.auth().createUser({
+    email: email,
+    emailVerified: false,
+    phoneNumber: PhoneNumber,
+    password: password,
+    displayName: displayName,
+    disabled: false,
+  })
+    .then((userRecord) => {
+      // See the UserRecord reference doc for the contents of userRecord.
+      console.log('Successfully created new user:', userRecord.uid);
+    })
+    .catch((error) => {
+      console.log('Error creating new user:', error);
+    });
+});
+
+ipcMain.on("DeactivateUser", (event, userID) => {
+  AdminApp.auth()
+    .updateUser(userID, {
+      disabled: true,
+    })
+    .then((userRecord) => {
+      console.log('Successfully updated user', userRecord.toJSON());
+    })
+    .catch((error) => {
+      console.log('Error updating user:', error);
+    });
+});
+
+ipcMain.on("ActivateUser", (event, userID) => {
+  AdminApp.auth()
+    .updateUser(userID, {
+      disabled: false,
+    })
+    .then((userRecord) => {
+      console.log('Successfully updated user', userRecord.toJSON());
+    })
+    .catch((error) => {
+      console.log('Error updating user:', error);
+    });
+});
+
+ipcMain.on("UpdateUser", (event, userID, email, password, displayName) => {
+  const updateUserParams = {};
+
+  if (displayName !== null) {
+    updateUserParams.displayName = displayName;
+  }
+
+  if (email !== null) {
+    updateUserParams.email = email;
+  }
+
+  // Only add password to updateUserParams if it's provided and not empty
+  if (password !== null && password.trim() !== '') {
+    updateUserParams.password = password;
+  }
+
+  AdminApp.auth()
+    .updateUser(userID, updateUserParams)
+    .then((userRecord) => {
+      console.log('Successfully updated user', userRecord.toJSON());
+    })
+    .catch((error) => {
+      console.log('Error updating user:', error);
+    });
+});
+
+ipcMain.on("MakeUserAdmin", (event, userID) => {
+  const userRef = ref(database, 'users/' + userID);
+  update(userRef, {
+    is_Admin: true
+  })
+    .then(() => {
+      console.log("User is now admin");
+    })
+    .catch((error) => {
+      console.error("Error updating user:", error);
+    });
+});
+
+
+//Auth
 ipcMain.on("sendTokenCurrentUser", (event, accesstoken, itemid, currentUser) => {
   if (currentUser != null) {
     set(ref(database, 'plaidToken/' + currentUser), {
@@ -112,12 +239,23 @@ ipcMain.on("AppleSignIn", (event, user) => {
   if (user) {
     appServer.get('/CurrentUsers', (req, res) => {
       res.json(user)
+      currentUser = user
     });
     const Access_Token = ref(database, 'plaidToken/' + user + '/Access_Token');
     onValue(Access_Token, (snapshot) => {
       const data = snapshot.val();
       ACCESS_TOKEN = data
     });
+    const User_Token = ref(database, 'userToken/' + user.uid + '/User_Token');
+    onValue(User_Token, (snapshot) => {
+      const data = snapshot.val();
+      USER_TOKEN = data
+      console.log(USER_TOKEN)
+    });
+    First_Name = "AppleUser"
+    if (USER_TOKEN == null) {
+      createUserToken()
+    }
     console.log('user signed in');
   } else {
     console.log('User is logged out');
@@ -134,6 +272,16 @@ ipcMain.on('GoogleSignIn', (event, user) => {
       const data = snapshot.val();
       ACCESS_TOKEN = data
     });
+    const User_Token = ref(database, 'userToken/' + user.uid + '/User_Token');
+    onValue(User_Token, (snapshot) => {
+      const data = snapshot.val();
+      USER_TOKEN = data
+      console.log(USER_TOKEN)
+    });
+    First_Name = "GoogleUser"
+    if (USER_TOKEN == null) {
+      createUserToken()
+    }
     console.log('user signed in')
   } else {
     console.log('User is logged out')
@@ -164,6 +312,7 @@ ipcMain.on('createAccount', (event, email, password, FirstName, LastName, PhoneN
         email: email,
         password: password,
         created_at: Date.now(),
+        is_Admin: false
       })
         .then(() => {
           sendEmailVerification(user)
@@ -194,55 +343,86 @@ ipcMain.on('createAccount', (event, email, password, FirstName, LastName, PhoneN
 )
 
 
-
 ipcMain.on('Login', (event, email, password) => {
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      const user = userCredential.user
-      if (user.emailVerified) {
-        console.log('user signed in')
-        appServer.get('/CurrentUsers', (req, res) => {
-          res.json(user.uid)
-        });
-        const Access_Token = ref(database, 'plaidToken/' + user.uid + '/Access_Token');
-        onValue(Access_Token, (snapshot) => {
-          const data = snapshot.val();
-          ACCESS_TOKEN = data
-        });
-      } else {
-        dialog.showMessageBox({
-          type: 'question',
-          buttons: ['Ok'],
-          title: 'Error Logging In.',
-          cancelId: 99,
-          message: 'Email not verified. New Verification Link sent to Email!',
-        })
-        sendEmailVerification(user)
-      }
+      const user = userCredential.user;
+      currentUser = user.uid;
+      
+      const is_Admin = ref(database, 'users/' + user.uid + '/is_Admin');
+      onValue(is_Admin, (snapshot) => {
+        const isAdmin = snapshot.val();
+        if (isAdmin === true) {
+          // Load admin page and return to exit the function
+          win.loadURL(`http://localhost:${serverPort}/adminHomePage.html`);
+          return;
+        }
+        if (user.emailVerified) {
+          console.log('user signed in');
+          appServer.get('/CurrentUsers', (req, res) => {
+            res.json(user.uid);
+          });
+          const Access_Token = ref(database, 'plaidToken/' + user.uid + '/Access_Token');
+          onValue(Access_Token, (snapshot) => {
+            const data = snapshot.val();
+            ACCESS_TOKEN = data;
+          });
+          const User_Token = ref(database, 'userToken/' + user.uid + '/User_Token');
+          onValue(User_Token, (snapshot) => {
+            const data = snapshot.val();
+            USER_TOKEN = data;
+            console.log(USER_TOKEN);
+            if (USER_TOKEN == null) {
+              createUserToken(currentUser);
+            } else if (USER_TOKEN == null) {
+              getUserToken(currentUser);
+            }
+          });
+          const Name = ref(database, 'users/' + user.uid + '/FirstName');
+          onValue(Name, (snapshot) => {
+            const data = snapshot.val();
+            First_Name = data;
+          });
+          win.loadURL(`http://localhost:${serverPort}/homePage.html`);
+        } else {
+          dialog.showMessageBox({
+            type: 'question',
+            buttons: ['Ok'],
+            title: 'Error Logging In.',
+            cancelId: 99,
+            message: 'Email not verified. New Verification Link sent to Email!',
+          });
+          sendEmailVerification(user);
+        }
+      });
     })
     .catch((error) => {
-      const errorCode = error.code
-      const errorMessage = error.message
+      const errorMessage = error.message;
       dialog.showMessageBox({
         type: 'question',
         buttons: ['Ok'],
         title: 'Error Logging In.',
         cancelId: 99,
         message: errorMessage,
-      })
-    })
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      var isVerified = user.emailVerified
-      if (isVerified) {
-        win.loadURL(`http://localhost:${serverPort}/homePage.html`)
-      }
-    } else {
-    }
-  })
-})
+      });
+    });
+});
 
-  ; ('use strict')
+function getUserToken(currentUser) {
+  const User_Token = ref(database, 'userToken/' + currentUser + '/User_Token');
+  onValue(User_Token, (snapshot) => {
+    const data = snapshot.val();
+    USER_TOKEN = data
+    console.log(USER_TOKEN)
+    if (USER_TOKEN == null) {
+      createUserToken(currentUser);
+    } else {
+      return;
+    };
+  })
+};
+
+; ('use strict')
 
 // read env vars from .env file
 require('dotenv').config()
@@ -302,6 +482,8 @@ let PAYMENT_ID = null
 // persistent data store
 let AUTHORIZATION_ID = null
 let TRANSFER_ID = null
+let USER_TOKEN = null
+let USER_ID = null
 
 // Initialize the Plaid client
 // Find your API keys in the Dashboard (https://dashboard.plaid.com/account/keys)
@@ -365,6 +547,41 @@ appServer.post('/api/create_link_token', function (request, response, next) {
     .catch(next)
 })
 
+appServer.post('/api/link/token/create', function (req, res, next) {
+  Promise.resolve()
+    .then(async function () {
+      const incomeTokenObject = {
+        user: { client_user_id: PLAID_CLIENT_ID },
+        client_name: First_Name,
+        language: "en",
+        products: ["income_verification"],
+        user_token: USER_TOKEN,
+        income_verification: {
+          income_source_types: ["payroll"],
+        },
+        country_codes: ["US"],
+      };
+      const response = await client.linkTokenCreate(incomeTokenObject);
+      res.json(response.data)
+    })
+    .catch(next)
+})
+
+async function createUserToken(currentUser) {
+  try {
+    const response = await client.userCreate({
+      client_user_id: PLAID_CLIENT_ID
+    });
+    USER_TOKEN = response.data.user_token
+    USER_ID = response.data.user_id;
+    set(ref(database, 'userToken/' + currentUser), {
+      User_Token: USER_TOKEN,
+      User_ID: USER_ID
+    })
+  } catch (error) {
+    console.error(error);
+  }
+};
 // Create a link token with configs which we can then use to initialize Plaid Link client-side
 // for a 'payment-initiation' flow.
 // See:
@@ -637,22 +854,28 @@ appServer.get('/api/transactions/refresh', function (request, response, next) {
 //INCOME
 //refreshes the users bank income info
 //https://plaid.com/docs/api/products/income/#creditbank_incomerefresh
-appServer.get(
-  '/api/credit/bank_income/refresh',
-  function (request, response, next) {
-    Promise.resolve()
-      .then(async function () {
-        const request = {
-          access_token: ACCESS_TOKEN,
-          options: {
-            days_requested: 90,
-          },
-        }
-        response = await client.creditBankIncomeRefresh(request)
+appServer.get('/api/credit/payroll_income/get', function (request, response, next) {
+  Promise.resolve()
+    .then(async function () {
+      const bankdata = await client.creditPayrollIncomeGet({
+        user_token: USER_TOKEN,
       })
-      .catch(next)
-  },
-)
+      response.json(bankdata.data);
+    }).catch(next)
+})
+
+appServer.get('/api/credit/bank_income/get', function (request, response, next) {
+  Promise.resolve()
+    .then(async function () {
+      const bankdata = await client.creditBankIncomeGet({
+        user_token: USER_TOKEN,
+        options: {
+          count: 10,
+        },
+      })
+      response.json(bankdata.data);
+    }).catch(next)
+})
 
 //IDENTITY
 // Retrieve Identity for an Item
@@ -948,10 +1171,10 @@ appServer.post('/server/handle_webhook', async function (request, response, next
     const { webhook_type, webhook_code } = request.body;
     if (webhook_type === 'TRANSACTIONS' && webhook_code === 'INITIAL_UPDATE') {
       response.json({ transactionsReady: true });
-    } else {    
+    } else {
       response.json({ received: true });
     }
   } catch (error) {
-    next(error); 
+    next(error);
   }
 });

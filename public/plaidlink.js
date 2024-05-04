@@ -66,37 +66,52 @@ document.addEventListener('DOMContentLoaded', async () => {
     const dateRange = dateRangeSelector.value;
 
     fetch(`/api/transactions/get?dateRange=${dateRange}`)
-        .then((response) => response.json())
-        .then((data) => {
-            transactionsContainer.innerHTML = `
-                <ul>
-                    ${data.all_transactions
-                        .map(
-                            (transaction) => {
-                                const mainCategory = String(transaction.category).split(',')[0].trim();
-                                
-                                if (transactionCategories[mainCategory]) {
-                                    transactionCategories[mainCategory] += transaction.amount;
-                                } else {
-                                    transactionCategories[mainCategory] = transaction.amount;
-                                }
-                                return `
-                                    <li>
-                                        <strong>Name:</strong> ${transaction.name} |
-                                        <strong>Amount:</strong> ${transaction.amount} ${transaction.iso_currency_code} |
-                                        <strong>Date:</strong> ${transaction.date} |
-                                        <strong>Category:</strong> ${mainCategory}
-                                    </li>`;
-                            }
-                        )
-                        .join('')}
-                </ul>`;
-            
-            displayPieChart();
-        })
-        .catch((error) => console.error('Error fetching transactions:', error));
+    .then((response) => response.json())
+    .then((data) => {
+        const groupedTransactions = groupByDate(data.all_transactions);
+
+        let tableHTML = '<table class="transactions-table">';
+        Object.keys(groupedTransactions).forEach(date => {
+            tableHTML += `<tr class="date-row"><th colspan="3">${date}</th></tr>`;
+            groupedTransactions[date].forEach(transaction => {
+                const mainCategory = String(transaction.category).split(',')[0].trim();
+
+                if (transactionCategories[mainCategory]) {
+                    transactionCategories[mainCategory] += transaction.amount;
+                } else {
+                    transactionCategories[mainCategory] = transaction.amount;
+                }
+
+                const logoHTML = transaction.logo_url ? `<td class="transaction-logo"><img src="${transaction.logo_url}" alt="${transaction.name}"></td>` : '<td class="transaction-logo"></td>';
+
+                tableHTML += `
+                    <tr class="transaction-row">
+                        <td class="transaction-name">${transaction.name}</td>
+                        ${logoHTML}
+                        <td class="transaction-amount">${transaction.amount} ${transaction.iso_currency_code}</td>
+                    </tr>`;
+            });
+        });
+        tableHTML += '</table>';
+
+        transactionsContainer.innerHTML = tableHTML;
+
+        displayPieChart();
+    })
+    .catch((error) => console.error('Error fetching transactions:', error));
 }
 
+
+function groupByDate(transactions) {
+    const grouped = {};
+    transactions.forEach(transaction => {
+        if (!grouped[transaction.date]) {
+            grouped[transaction.date] = [];
+        }
+        grouped[transaction.date].push(transaction);
+    });
+    return grouped;
+}
 
   function displayRecurringTransactions() {
     const recurringTransactionsContainer = document.getElementById('recurring-transactions-container');
@@ -107,34 +122,38 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     fetch('/api/transactions/recurring')
-      .then((response) => response.json())
-      .then((data) => {
-        recurringTransactionsContainer.innerHTML = `
-          <ul>
-            ${data.recurring_Transactions.inflow_streams
-              .map(
-                (stream) => `
-                  <li>
-                    <strong>Category:</strong> ${stream.category.join(', ')} |
-                    <strong>Description:</strong> ${stream.description} |
-                    <strong>Frequency:</strong> ${stream.frequency}
-                  </li>`
-              )
-              .join('')}
-            ${data.recurring_Transactions.outflow_streams
-              .map(
-                (stream) => `
-                  <li>
-                    <strong>Category:</strong> ${stream.category.join(', ')} |
-                    <strong>Description:</strong> ${stream.description} |
-                    <strong>Frequency:</strong> ${stream.frequency}
-                  </li>`
-              )
-              .join('')}
-          </ul>`;
-      })
-      .catch((error) => console.error('Error fetching recurring transactions:', error));
-  }
+    .then((response) => response.json())
+    .then((data) => {
+      let tableHTML = '<table class="recurring-transactions-table">';
+      
+      tableHTML += '<tr class="table-header"><th>Description</th><th>Frequency</th><th>Amount</th></tr>';
+
+      data.recurring_Transactions.inflow_streams.forEach(stream => {
+        tableHTML += `
+          <tr>
+
+            <td>${stream.description}</td>
+            <td>${stream.frequency}</td>
+            <td>${stream.last_amount.amount}</td>
+          </tr>`;
+      });
+
+      data.recurring_Transactions.outflow_streams.forEach(stream => {
+        tableHTML += `
+          <tr>
+   
+            <td>${stream.description}</td>
+            <td>${stream.frequency}</td>
+            <td>${stream.last_amount.amount}</td>
+          </tr>`;
+      });
+
+      tableHTML += '</table>';
+
+      recurringTransactionsContainer.innerHTML = tableHTML;
+    })
+    .catch((error) => console.error('Error fetching recurring transactions:', error));
+}
 
   function displayPieChart() {
     const ctx = document.getElementById('myPieChart').getContext('2d');
@@ -190,3 +209,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   displayBudget()
   displayRecurringTransactions();
 });
+
+const linkElement = document.createElement('link');
+linkElement.rel = 'stylesheet';
+linkElement.href = 'transactions.css';
+document.head.appendChild(linkElement);

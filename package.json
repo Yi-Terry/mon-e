@@ -24,6 +24,6 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "prettier": "3.2.4"
+    "prettier": "^3.2.4"
   }
 }

@@ -26,15 +26,16 @@ form {
   
   
   
-  /* Full-width inputs */
-  input[type=text], input[type=password] {
-    width: 175px;
+  input[type=text], input[type=password], input[type=tel] {
+    width: 250px; /* Adjust width as needed */
     padding: 12px 20px;
-    margin: 8px 0;
+    margin: 8px; /* Adjust margins for spacing */
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
-  }
+}
+
+
   
   .group {
     width: 100%;
