@@ -59,7 +59,29 @@
                 Interface
             </div>
 
-            <!-- Nav Item - Pages Collapse Menu -->
+<!-- Modal for receipt scanner -->
+<div class="modal fade" id="receiptScannerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Receipt Scanner</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Please select a receipt file (PDF or DOC):</p>
+                <input type="file" id="receiptFileInput" accept=".pdf,.doc,.docx">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="uploadReceiptBtn">Upload Receipt</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Nav Item - Receipt Scanner -->
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
         aria-expanded="true" aria-controls="collapseTwo">
@@ -69,11 +91,12 @@
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Receipt Scanner</h6>
-            <a id="receiptScannerButton" class="collapse-item" href="#">Receipt Scanner</a>
+            <a id="receiptScannerButton" class="collapse-item" href="#" data-toggle="modal" data-target="#receiptScannerModal">Receipt Scanner</a>
             <a class="collapse-item" data-toggle="modal" data-target="#manualModal">Enter Manually</a>
         </div>
     </div>
 </li>
+
 
 
             <!-- Nav Item - budget Collapse Menu -->
