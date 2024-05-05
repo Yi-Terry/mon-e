@@ -5,6 +5,9 @@ const bcrypt = require("bcryptjs");
 const firebase = require("firebase/app");
 const { getDatabase, set, ref, onValue, update, push } = require("firebase/database");
 const { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, onAuthStateChanged } = require("firebase/auth");
+const AWS = require('aws-sdk');
+require('dotenv').config();
+const multer = require('multer');
 
 const firebaseConfig = {
   apiKey: "AIzaSyAuj-AVSSgdL9QKDvCr6C4WBfb_o_RhiR8",
@@ -15,6 +18,12 @@ const firebaseConfig = {
   appId: "1:983558902043:web:93b3e671eeafa0a99503be"
 };
 
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION,
+})
+
 const fapp = firebase.initializeApp(firebaseConfig, "NormalApp")
 const database = getDatabase(fapp)
 const auth = getAuth(fapp)
@@ -23,10 +32,7 @@ const auth = getAuth(fapp)
 const appServer = express()
 const serverPort = 3000
 
-
-
 appServer.use(express.static(path.join(__dirname, 'public')))
-
 
 let ACCESS_TOKEN = null;
 let currentUser = null;
@@ -425,7 +431,7 @@ function getUserToken(currentUser) {
 ; ('use strict')
 
 // read env vars from .env file
-require('dotenv').config()
+
 const {
   Configuration,
   PlaidApi,
@@ -1178,3 +1184,14 @@ appServer.post('/server/handle_webhook', async function (request, response, next
     next(error);
   }
 });
+
+const upload = multer({ dest: 'uploads/' })
+
+appServer.post('/fileupload', upload.single('file'), (req, res) => {
+  const file = req.file
+  const originalFileName = req.file.originalname 
+  res.json({
+    message: 'File uploaded successfully',
+    filename: originalFileName,
+  })
+})
