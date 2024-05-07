@@ -569,6 +569,7 @@
                             <button id="deactivateBtn">Deactivate</button>
                             <button id="activateBtn">Activate</button> <!-- New "Activate" button -->
                         </div>
+                        <button id="DeleteButton">Delete</button>
                     </div>
                 </div>
 
@@ -777,13 +778,30 @@
                         var displayName = document.getElementById("fullnameuser").value
                         var PhoneNumber = document.getElementById("phone").value
                         window.admin.MakeUser(email, password, PhoneNumber, displayName)
-
                         if (modal) {
                             modal.style.display = 'none';
                             setTimeout(function () {
                                 getAllUsers();
                             }, 1000);
                         }
+                    });
+
+                    document.getElementById('DeleteButton').addEventListener('click', function (event) {
+                        event.preventDefault();
+                        var confirmation = confirm("Are you sure you want to delete this user?");
+                        if (confirmation) {
+                            window.admin.Delete(userID)
+                            console.log("User deleted.");
+                        } else {
+                            modal.style.display = 'none';
+                            console.log("Deletion canceled.");
+                        }
+                    if (modal) {
+                        modal.style.display = 'none';
+                        setTimeout(function () {
+                            getAllUsers();
+                        }, 1000);
+                    }
                     });
 
                     getAllUsers()

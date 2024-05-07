@@ -128,3 +128,17 @@ table {
   justify-content: space-between;
   margin-bottom: 20px;
 }
+
+#DeleteButton {
+  background-color: #ff6347;
+  /* Red color */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+#DeleteButton:hover {
+  background-color: #d32f2f;
+  /* Darker shade of red on hover */
+}

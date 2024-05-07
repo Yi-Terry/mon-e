@@ -228,6 +228,16 @@ ipcMain.on("MakeUserAdmin", (event, userID) => {
     });
 });
 
+ipcMain.on("DeleteUser", (event, userID) => {
+  AdminApp.auth()
+  .deleteUser(userID)
+  .then((userRecord) => {
+    console.log('Successfully Deleted User');
+  })
+  .catch((error) => {
+    console.log('Error updating user:', error);
+  });
+});
 
 //Auth
 ipcMain.on("sendTokenCurrentUser", (event, accesstoken, itemid, currentUser) => {
