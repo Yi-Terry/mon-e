@@ -349,6 +349,10 @@
                                 class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                                 <i class="fas fa-download fa-sm text-white-50"></i> Add a Bank
                             </button>
+                            <button id="budgetBtn" data-toggle="modal" data-target="#addExpenseModal"
+                                class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                <i class="fas fa-download fa-sm text-white-50"></i> Add Budget
+                            </button>
                             <button id="add-Income-button"
                                 class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                                 <i class="fas fa-download fa-sm text-white-50"></i> Add Income
@@ -630,38 +634,6 @@
                                 </div>
                             </div>
 
-                            <!-- Budget set section-->
-                            <div class="card shadow mb-4">
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Add Budget</h6>
-                                </div>
-                                <div class="card-body">
-
-                                    <span></span>
-                                    <button id="budgetBtn" data-toggle="modal" data-target="#createBudgetModal"
-                                        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                                        <i class="fas fa-download fa-sm text-white-50"></i> Add Budget
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Sub Budget adder section -->
-                            <div class="card shadow mb-4">
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Add Sub-Budget</h6>
-                                </div>
-                                <div class="card-body">
-
-                                    <span></span>
-                                    <button id="budgetBtn" data-toggle="modal" data-target="#addExpenseModal"
-                                        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                                        <i class="fas fa-download fa-sm text-white-50"></i> Add Sub-Budget
-                                    </button>
-                                </div>
-                            </div>
-
                             <!-- End of Main Content -->
 
                             <!-- Footer -->
@@ -710,84 +682,56 @@
                     </div>
                 </div>
 
-                <!-- create Budget Modal-->
-                <div class="modal fade" id="createBudgetModal" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document" id="signOutPop">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Create Budget</h5>
-                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">Please enter amount and a date range.
-                                <form>
-                                    <div class="form-group">
-                                        <label for="amount">Amount:</label>
-                                        <input type="number" class="form-control" id="amounts" name="amount" required>
-                                    </div>
-                                    <label for="Date">End Date:</label>
-                                    <input type="date" id="dates">
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                <a class="btn btn-primary" id="Create" data-dismiss="modal">Create</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- create Sub Budget Modal -->
                 <div class="modal fade" id="addExpenseModal" tabindex="-1" role="dialog"
                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document" id="signOutPop">
+                    <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Add a Sub Budget</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Budget Details</h5>
                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">×</span>
                                 </button>
                             </div>
-                            <div class="modal-body">Please enter amount and description.
+                            <div class="modal-body">
                                 <form>
                                     <div class="form-group">
                                         <label for="budgetName">Budget Name:</label>
-                                        <input type="text" class="form-control" id="expenseName" name="expenseName"
+                                        <input type="text" class="form-control" id="budgetName" name="budgetName"
                                             required>
                                     </div>
                                     <div class="form-group">
                                         <label for="amount">Amount:</label>
-                                        <input type="number" class="form-control" id="amount" name="amount" required>
+                                        <input type="number" class="form-control" id="budgetAmount" name="budgetAmount"
+                                            required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="category">Category:</label>
-                                        <select class="form-control" id="category" name="category">
-                                            <option value="food">Food</option>
-                                            <option value="entertainment">Entertainment</option>
-                                            <option value="transportation">Transportation</option>
-                                            <option value="misc">Miscellaneous</option>
-                                            <!-- Add more options as needed -->
-                                        </select>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="subBudgetCheckbox">
+                                            <label class="form-check-label" for="subBudgetCheckbox">
+                                                Sub-Budget</label>
+                                        </div>
                                     </div>
+                                    <!-- Categories input fields will be generated dynamically -->
+                                    <div id="categorySelection" style="display: none;"></div>
+                                    <div id="dynamicAmountInputs"></div>
                                     <div class="form-group">
                                         <label for="description">Description:</label>
-                                        <textarea class="form-control" id="description" name="description" rows="4"
-                                            placeholder="Enter description..."></textarea>
+                                        <textarea class="form-control" id="budgetDescription" name="budgetDescription"
+                                            rows="4" placeholder="Enter description..."></textarea>
                                     </div>
-                                    <label for="Date">End Date:</label>
-                                    <input type="date" id="date">
+                                    <div class="form-group">
+                                        <label for="endDate">End Date:</label>
+                                        <input type="date" id="endDate" name="endDate">
+                                    </div>
                                 </form>
                             </div>
                             <div class="modal-footer">
                                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                <a class="btn btn-primary" id="Add" data-dismiss="modal">Add</a>
+                                <button class="btn btn-primary" id="Save">Save</button>
                             </div>
                         </div>
                     </div>
                 </div>
-
 
 
                 <!-- edit Modal-->
@@ -894,6 +838,33 @@
                     import { firebaseConfig } from "./firebase.js";
                     let currentUser;
 
+
+                    var selectedCategories = [];
+                    var selectedAmounts = [];
+
+                    // Event listener for the sub-budget checkbox
+                    document.getElementById('subBudgetCheckbox').addEventListener('change', function () {
+                        var categorySelection = document.getElementById('categorySelection');
+                        var dynamicAmountInputs = document.getElementById('dynamicAmountInputs');
+                        categorySelection.innerHTML = ''; // Clear previous categories
+                        dynamicAmountInputs.innerHTML = ''; // Clear previous dynamic inputs
+                        if (this.checked) {
+                            var categories = ['Food', 'Entertainment', 'Transportation', 'Miscellaneous'];
+                            categories.forEach(function (category) {
+                                var categoryLabel = document.createElement('label');
+                                categoryLabel.textContent = category + ':';
+                                var amountInput = document.createElement('input');
+                                amountInput.type = 'number';
+                                amountInput.className = 'form-control';
+                                categorySelection.appendChild(categoryLabel);
+                                categorySelection.appendChild(amountInput);
+                            });
+                            categorySelection.style.display = 'block';
+                        } else {
+                            categorySelection.style.display = 'none';
+                        }
+                    });
+
                     fetch('/CurrentUsers')
                         .then((response) => response.json())
                         .then((user) => {
@@ -990,24 +961,38 @@
                     }
                     var formattedDate = yyyy + '-' + mm + '-' + dd;
 
-                    document.getElementById('Add').addEventListener('click', function (event) {
-                        const budgetName = document.getElementById('expenseName').value;
-                        const amount = document.getElementById('amount').value;
-                        const category = document.getElementById('category').value;
-                        const description = document.getElementById('description').value;
-                        const date = document.getElementById('date').value;
-                        const Budget = ref(database, 'budgets')
-                        const newBudget = push(Budget)
+                    document.getElementById('Save').addEventListener('click', function (event) {
+                        var budgetName = document.getElementById('budgetName').value;
+                        var budgetAmount = document.getElementById('budgetAmount').value;
+                        var budgetDescription = document.getElementById('budgetDescription').value;
+                        var endDate = document.getElementById('endDate').value;
+
+                        var dynamicAmountInputs = document.getElementById('categorySelection');
+                        var inputFields = dynamicAmountInputs.querySelectorAll('input');
+                        var categoriesWithAmounts = [];
+                        var amounts = Array.from(inputFields)
+                            .map(function (input) {
+                                var amount = parseFloat(input.value || 0); // Parse the value to a number
+                                if (amount > 0) {
+                                    categoriesWithAmounts.push(input.previousElementSibling.textContent.replace(':', '').trim());
+                                }
+                                return amount;
+                            })
+                            .filter(function (amount) {
+                                return amount > 0; // Filter out values greater than 0
+                            });
+
+                        const Budget = ref(database, 'budgets/' + currentUser);
+                        const newBudget = push(Budget);
                         set(newBudget, {
-                            User: currentUser,
                             BudgetName: budgetName,
-                            Amount: amount,
-                            Category: category,
-                            Description: description,
+                            Amount: budgetAmount,
+                            Description: budgetDescription,
                             StartDate: formattedDate,
-                            EndDate: date,
-                        });
-                        fetchBudgetsForCurrentUser();
+                            EndDate: endDate,
+                            Categories: categoriesWithAmounts,
+                            Amounts: amounts,
+                        })
                     });
 
                     // Function to set the theme based on the value stored in localStorage
