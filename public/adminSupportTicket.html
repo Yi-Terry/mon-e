@@ -74,7 +74,7 @@
       const ticketsRef = ref(database, 'tickets');
       onValue(ticketsRef, (snapshot) => {
         const tickets = snapshot.val();
-        console.log(tickets)
+        console.log(tickets);
         const tableBody = document.querySelector('#ticket-table table tbody');
         const allTickets = Object.values(tickets).filter(ticket => ticket);
         while (tableBody.rows.length > 1) {
@@ -91,29 +91,34 @@
           messageCell.textContent = ticket.Message;
 
           const nameCell = row.insertCell();
-          nameCell.textContent = ticket.Name
+          nameCell.textContent = ticket.Name;
 
           const statusCell = row.insertCell();
-          statusCell.textContent = ticket.Status
+          statusCell.textContent = ticket.Status;
 
           const dateCreatedCell = row.insertCell();
           dateCreatedCell.textContent = new Date(ticket.Date).toLocaleDateString();
-
-
 
           const responseButtonCell = row.insertCell();
           const responseButton = document.createElement('button');
           responseButton.textContent = 'Reply';
           responseButtonCell.appendChild(responseButton);
 
+          // Adjust button style if the status is "closed"
+          if (ticket.Status.toLowerCase() === 'closed') {
+            responseButton.style.opacity = '0.5'; // Set opacity to 50% (more transparent)
+            responseButton.disabled = true;
+            responseButton.title = "Ticket is closed. You cannot reply.";
+          }
+
           responseButton.addEventListener('click', function () {
             const ticketKey = Object.keys(tickets).find(key => tickets[key] === ticket);
-            currentTicketKey = ticketKey
-            console.log(ticketKey)
+            currentTicketKey = ticketKey;
+            console.log(ticketKey);
             modal.style.display = 'block';
           });
         });
-      })
+      });
     }
 
     var closeModalBtn = modal.querySelector(".close");
