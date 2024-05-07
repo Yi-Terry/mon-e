@@ -312,19 +312,7 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="editProfile.html">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                                <a class="dropdown-item" href="settings.html">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                <!-- <a class="dropdown-item" href="supportTicket.html">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Help and Support
-                                </a> -->
-                               
+
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -344,6 +332,7 @@
                         <h1>User Information Table</h1>
                         <div style="margin-right: 20px;">
                             <button id="create-user-btn">Create User</button>
+                            <button id="supportTicket" onclick="goToTicketPage()">Support Tickets</button>
                         </div>
                     </div>
                     <div style="overflow-y: auto; max-height: 800px;">
@@ -393,7 +382,7 @@
                                 session.</div>
                             <div class="modal-footer">
                                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                <a class="btn btn-primary" id = "logout" href="signUp.html">Logout</a>
+                                <a class="btn btn-primary" id="logout" href="signUp.html">Logout</a>
                             </div>
                         </div>
                     </div>
@@ -681,6 +670,11 @@
                                 console.error('Error fetching user data:', error);
                             });
                     }
+
+                    document.getElementById('supportTicket').addEventListener('click', function (event) {
+                        window.location.href = 'adminSupportTicket.html';
+                    });
+
 
                     document.addEventListener('DOMContentLoaded', function () {
                         var modal = document.getElementById('editModal');

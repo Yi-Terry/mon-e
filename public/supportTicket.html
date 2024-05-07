@@ -1,105 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ticket Submission</title>
-    <link rel="stylesheet" href="supportTicket.css">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;600&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" href="images/newLogo-noBackground.png" type="">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket Submission</title>
+  <link rel="stylesheet" href="supportTicket.css">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;600&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="images/newLogo-noBackground.png" type="">
 
 </head>
+
 <body>
   <div class="navbar">
-    
+
     <a href="#Mon-E">Mon-E</a>
     <a href="homePage.html">Home</a>
   </div>
-  
 
-    <form action="">
-        <div class="title">
-          <h2>Ticket Submission</h2>
-        </div>
-        <div class="half">
-          <div class="item">
-            <label for="name">NAME</label>
-            <input type="text" id = "name">
-          </div>
-          <div class="item">
-            <label for="email">EMAIL</label>
-            <input type="text" id = "email">
-          </div>
-        </div>
-        <div class="full">
-          <label for="message">MESSAGE</label>
-          <textarea name="" id = "message"></textarea>
-        </div>
-        <div class="action">
-          <input type="submit" value = "Send Ticket">
-          <input type="reset" value = "Clear">
-          
-          <input type="button"  value="Back" onclick="goToHomePage()" >
-        
-        </div>
-     
-      </form>
-<script>
+  <form id="ticketForm" action="">
+    <div class="title">
+      <h2>Ticket Submission</h2>
+    </div>
+    <div class="half">
+      <div class="item">
+        <label for="name">NAME</label>
+        <input type="text" id="name">
+      </div>
+      <div class="item">
+        <label for="email">EMAIL</label>
+        <input type="text" id="email">
+      </div>
+    </div>
+    <div class="full">
+      <label for="message">MESSAGE</label>
+      <textarea id="message"></textarea>
+    </div>
+    <div class="action">
+      <input type="submit" value="Send Ticket">
+      <input type="reset" value="Clear">
+      <input type="button" value="Back" onclick="goToHomePage()">
+    </div>
+  </form>
 
-function goToHomePage() {
-    window.location.href = 'homepage.html';
-}
-    
+  </form>
+  <script type="module">
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
+    import { getDatabase, set, ref, onValue, push } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-database.js";
+    import { firebaseConfig } from "./firebase.js";
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const database = getDatabase(app);
+    let currentUser;
+
+    fetch('/CurrentUsers')
+      .then((response) => response.json())
+      .then((user) => {
+        currentUser = user;
+      })
+      .catch((error) => {
+        console.error('Error fetching user data:', error);
+      });
+
+    var today = new Date();
+
+    var yyyy = today.getFullYear();
+
+    var mm = today.getMonth() + 1;
+
+    var dd = today.getDate();
+
+    if (mm < 10) {
+      mm = '0' + mm;
+    }
+    if (dd < 10) {
+      dd = '0' + dd;
+    }
+    var formattedDate = yyyy + '-' + mm + '-' + dd;
+
+    document.getElementById('ticketForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      var name = document.getElementById('name').value;
+      var email = document.getElementById('email').value;
+      var message = document.getElementById('message').value;
+
+      const ticketRef = ref(database, 'tickets/');
+
+
+      const newTicket = push(ticketRef);
+      set(newTicket, {
+        User: currentUser,
+        Name: name,
+        Email: email,
+        Message: message,
+        Date: formattedDate,
+        Status: "Open",
+        admin_Respnse: ""
+      })
+
+      alert("ticket sent! expect a reply in 2-3 buisness days.")
+      this.reset();
+    });
+
+
+    function goToHomePage() {
+      window.location.href = 'homepage.html';
+    }
+
     // Function to set the theme based on the value stored in localStorage
     function setTheme() {
-        var storedTheme = localStorage.getItem('theme');
-        if (storedTheme === 'darkTheme') {
-            toggleTheme('darkTheme');
-        } else {
-            toggleTheme('lightTheme');
-        }
+      var storedTheme = localStorage.getItem('theme');
+      if (storedTheme === 'darkTheme') {
+        toggleTheme('darkTheme');
+      } else {
+        toggleTheme('lightTheme');
+      }
     }
 
     // Function to toggle the theme
     function toggleTheme(theme) {
-        var body = document.body;
-        
-        
+      var body = document.body;
 
-        if (theme === 'lightTheme') {
-            body.style.backgroundColor = 'white';
-            body.style.color = 'black';
-            
-        } else {
-            body.style.backgroundColor = '#333';
-            
-            body.style.color = 'white';
-         
-            
-        }
 
-        // Remove 'selected' class from all buttons
-        var buttons = document.querySelectorAll('.theme-button');
-        buttons.forEach(function (button) {
-            button.classList.remove('selected');
-        });
 
-        // Add 'selected' class to the clicked button
-        var clickedButton = document.getElementById(theme);
-        clickedButton.classList.add('selected');
+      if (theme === 'lightTheme') {
+        body.style.backgroundColor = 'white';
+        body.style.color = 'black';
 
-        // Store the selected theme in localStorage
-        localStorage.setItem('theme', theme);
-    
+      } else {
+        body.style.backgroundColor = '#333';
+
+        body.style.color = 'white';
+
+
+      }
+
+      // Remove 'selected' class from all buttons
+      var buttons = document.querySelectorAll('.theme-button');
+      buttons.forEach(function (button) {
+        button.classList.remove('selected');
+      });
+
+      // Add 'selected' class to the clicked button
+      var clickedButton = document.getElementById(theme);
+      clickedButton.classList.add('selected');
+
+      // Store the selected theme in localStorage
+      localStorage.setItem('theme', theme);
+
     }
-    
+
     // Call setTheme on page load
     setTheme();
-</script>
+  </script>
 
 </body>
+
 </html>
