@@ -734,6 +734,7 @@
                         .then((response) => response.json())
                         .then((user) => {
                             currentUser = user; // Assign user data to the variable
+                            fetchBudgetsForCurrentUser(currentUser);
                         })
                         .catch((error) => {
                             console.error('Error fetching user data:', error);
@@ -744,7 +745,7 @@
                     const auth = getAuth(app);
                     const database = getDatabase(app);
 
-                    const userId = "naaQDxsZKoPOemJtzeDYmmXQbUQ2";
+                    const userId = "DmRHa8SY4ghFZg27Xiqc8iz4Pdt2";
 
 
                     document.getElementById("manualForm").addEventListener("submit", function (event) {
@@ -783,28 +784,44 @@
 
 
 
-                    function fetchBudgetsForCurrentUser(userId) {
-                        const budgetsRef = ref(database, 'budgets');
+                    function fetchBudgetsForCurrentUser(currentUser) {
+                        const budgetsRef = ref(database, 'budgets/' + currentUser);
                         onValue(budgetsRef, (snapshot) => {
                             const budgets = snapshot.val();
-
+                            console.log(budgets);
                             if (budgets) {
                                 const budgetsContainer = document.querySelector('.card-body-budgets');
-                                const userBudgets = Object.values(budgets).filter(budget => budget.User === userId);
+                                const userBudgets = Object.values(budgets).filter(budget => budget);
 
                                 userBudgets.forEach((budget) => {
-                                    const budgetName = budget.Category;
-                                    const amount = budget.Amount;
+                                    const budgetNames = budget.Categories;
+                                    const amounts = budget.Amounts;
 
-                                    budgetsContainer.innerHTML = `
-                                        <h4 class="small font-weight-bold">${budgetName} <span class="float-right">$${amount}</span></h4><div class="progress mb-4">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 20%" aria-valuenow="${amount}" aria-valuemin="0" aria-valuemax="100"></div></div>
-                                        `;
+                                    // Check if both categories and amounts are defined and not empty
+                                    if (!budgetNames || !amounts) {
+                                        console.error("Categories and amounts arrays are undefined");
+                                        return;
+                                    }
+
+                                    for (let i = 0; i < budgetNames.length; i++) {
+                                        const budgetName = budgetNames[i];
+                                        const amount = amounts[i];
+                                        console.log(budgetName, amount);
+
+                                        // Create HTML elements for each budget and append them to the container
+                                        const budgetElement = document.createElement('div');
+                                        budgetElement.innerHTML = `
+                        <h4 class="small font-weight-bold">${budgetName} <span class="float-right">$${amount}</span></h4>
+                        <div class="progress mb-4">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 20%" aria-valuenow="${amount}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    `;
+                                        budgetsContainer.appendChild(budgetElement);
+                                    }
                                 });
                             }
                         });
                     }
-                    fetchBudgetsForCurrentUser(userId);
 
                     var today = new Date();
 
@@ -843,19 +860,31 @@
                                 return amount > 0; // Filter out values greater than 0
                             });
 
-                        const Budget = ref(database, 'budgets/' + currentUser);
-                        const newBudget = push(Budget);
-                        set(newBudget, {
-                            BudgetName: budgetName,
-                            Amount: budgetAmount,
-                            Description: budgetDescription,
-                            StartDate: formattedDate,
-                            EndDate: endDate,
-                            Categories: categoriesWithAmounts,
-                            Amounts: amounts,
+                        const currentUserBudgetRef = ref(database, 'budgets/' + currentUser);
+
+                        // Check if the user already has a budget
+                        onValue(currentUserBudgetRef, (snapshot) => {
+                            const currentUserBudget = snapshot.val();
+                            if (currentUserBudget) {
+                                // If the user already has a budget, inform them and prevent creating a new one
+                                console.log("You already have a budget. You cannot create another one.");
+                                return;
+                            }
+
+                            const newBudget = push(currentUserBudgetRef);
+                            set(newBudget, {
+                                BudgetName: budgetName,
+                                Amount: budgetAmount,
+                                Description: budgetDescription,
+                                StartDate: formattedDate,
+                                EndDate: endDate,
+                                Categories: categoriesWithAmounts,
+                                Amounts: amounts,
+                            });
+
+                            console.log("Budget created successfully!");
                         })
                     });
-
                     // Function to set the theme based on the value stored in localStorage
                     function setTheme() {
                         var storedTheme = localStorage.getItem('theme');
