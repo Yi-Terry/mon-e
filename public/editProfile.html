@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,23 +9,21 @@
     <link rel="stylesheet" href="editProfile.css">
     <link rel="shortcut icon" href="images/newLogo-noBackground.png" type="">
 </head>
+
 <body>
 
     <nav class="sidebar locked" id="sidebar">
         <div class="logo_items flex">
-          <span class="nav_image">
-           
-          </span>
-          
-          <span class="logo_name">Settings</span>
-          
+            <span class="nav_image">
+
+            </span>
+
+            <span class="logo_name">Settings</span>
+
         </div>
-  
+
         <br>
-        <br>
-  
-        
-            
+        <br>            
               <li class="item">
                 <a href="notification.html" class="link flex">
                   <i class="bx bx-grid-alt"></i>
@@ -72,13 +71,13 @@
                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                         <div class="form-group">
                             <label for="fullName">First Name</label>
-                            <input type="text" class="form-control" id="fullName" placeholder="Enter first name">
+                            <input type="text" class="form-control" id="firstName" placeholder="Enter first name">
                         </div>
                     </div>
                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                         <div class="form-group">
                             <label for="fullName">Last Name</label>
-                            <input type="text" class="form-control" id="fullName" placeholder="Enter last name">
+                            <input type="text" class="form-control" id="lastName" placeholder="Enter last name">
                         </div>
                     </div>
                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -104,98 +103,165 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="page">
-                <div class = "forgotPassword">
-                    <h3>Reset Password</h3>
-                    <label for="email">Enter Email Address
-                        <input type="text" placeholder="Email" name="email" id="emailInp" required>
-                        
-                        <button id="sendAuthenicationCode" type="submit">Send reset email</button> 
-                    <br>   
+                <div class="page">
+                    <div class="forgotPassword">
+                        <h3>Reset Password</h3>
+                        <label for="email">Enter Email Address
+                            <input type="text" placeholder="Email" name="email" id="emailInp" required>
+
+                            <button id="sendAuthenicationCode" type="submit">Send reset email</button>
+                            <br>
+                    </div>
                 </div>
             </div>
-        </div>
-  
 
 
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
-        import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
-        import { firebaseConfig } from "./firebase.js";  
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app)
+            <script type="module">
+                import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
+                import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
+                import { getDatabase, set, ref, onValue, push, child, update } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-database.js";
+                import { firebaseConfig } from "./firebase.js";
 
-        let EmailInp = document.getElementById('emailInp') //get email from input box
-        let forgotPassBtn = document.getElementById('sendAuthenicationCode') //when send auth code button is clicked
-  
+                const app = initializeApp(firebaseConfig);
+                const auth = getAuth(app)
+                const database = getDatabase(app);
 
-      //function for reset email
-      //TODO: create a button on settings page for forgot password 
-        let ForgotPassword = () =>{
-        sendPasswordResetEmail(auth, EmailInp.value)
-        .then(() =>{
-            alert("A Password Reset Link has been sent to you Email");
+                let EmailInp = document.getElementById('emailInp') //get email from input box
+                let forgotPassBtn = document.getElementById('sendAuthenicationCode') //when send auth code button is clicked
+                let updateBtn = document.getElementById("submit");
 
-        })
-        .catch((error) =>{
-            console.log(error.message)
-        })    
-    }
-    forgotPassBtn.addEventListener('click', ForgotPassword); //runs function on click
+                let currentUser;
 
-    </script>
+                fetch('/CurrentUsers')
+                    .then((response) => response.json())
+                    .then((user) => {
+                        currentUser = user; // Assign user data to the variable
+                        fetchUserCredentials(currentUser)
 
-
-<script>
-    // Function to set the theme based on the value stored in localStorage
-    function setTheme() {
-        var storedTheme = localStorage.getItem('theme');
-        if (storedTheme === 'darkTheme') {
-            toggleTheme('darkTheme');
-        } else {
-            toggleTheme('lightTheme');
-        }
-    }
-
-    // Function to toggle the theme
-    function toggleTheme(theme) {
-        var body = document.body;
-        var sidebar = document.getElementById('sidebar');
-        var settingsText = document.querySelector('.logo_name');
-        var card = document.getElementById('cardBody')
+                    })
+                    .catch((error) => {
+                        console.error('Error fetching user data:', error);
+                    });
 
 
-        if (theme === 'lightTheme') {
-            body.style.backgroundColor = 'white';
-            body.style.color = 'black';
-            sidebar.style.backgroundColor = 'rgb(240, 240, 242)';
-            settingsText.style.color = 'black';
-        } else {
-            body.style.backgroundColor = '#333';
-            body.style.color = 'white';
-            sidebar.style.backgroundColor = '#352F44';
-            settingsText.style.color = 'white';
-            card.style.backgroundColor='#333';
-        }
+                //fetch user credentials
+                function fetchUserCredentials() {
+                    const usersRef = ref(database, 'users/' + currentUser);
+                    onValue(usersRef, (snapshot) => {
+                        const users = snapshot.val();
 
-        // Remove 'selected' class from all buttons
-        var buttons = document.querySelectorAll('.theme-button');
-        buttons.forEach(function (button) {
-            button.classList.remove('selected');
-        });
+                        if (users) {
+                                const firstName = users.FirstName;
+                                const lastName = users.LastName;
+                                const email = users.email;
+                                const phoneNumber = users.PhoneNumber;
+                                console.log(firstName+lastName)
+                                document.getElementById('firstName').value = firstName;
+                                document.getElementById('lastName').value = lastName;
+                                // document.getElementById('lastnameInput').value = lastname;
+                                document.getElementById('eMail').value = email;
+                                document.getElementById('phone').value = phoneNumber;
 
-        // Add 'selected' class to the clicked button
-        var clickedButton = document.getElementById(theme);
-        clickedButton.classList.add('selected');
+                        }
+                    });
 
-        // Store the selected theme in localStorage
-        localStorage.setItem('theme', theme);
-        
-    }
-    setTheme();
-  </script>  
+                }
+
+                // update user credentials
+                function updateUserCredentials()
+                {
+                    const phoneNumber = document.getElementById("phone").value;
+                    const firstName = document.getElementById("firstName").value;
+                    const lastName = document.getElementById("lastName").value;
+
+                    if(firstName || phoneNumber || lastName){
+                        const userRef = ref(database, 'users/'+currentUser);
+
+                        update(userRef,{
+                            FirstName: firstName,
+                            LastName: lastName,
+                            PhoneNumber: phoneNumber
+                        }).then(() =>{
+                            console.log("Update complete");            
+                        }).catch((error) => {
+                            console.log("could not update: ",error);
+                        });
+                    }else{
+                        console.error("Other Error");
+                    }
+                }
+                updateBtn.addEventListener('click', updateUserCredentials);
+
+                
+
+
+                //function for reset email
+                //TODO: create a button on settings page for forgot password 
+                let ForgotPassword = () => {
+                    sendPasswordResetEmail(auth, EmailInp.value)
+                        .then(() => {
+                            alert("A Password Reset Link has been sent to you Email");
+
+                        })
+                        .catch((error) => {
+                            console.log(error.message)
+                        })
+                }
+                forgotPassBtn.addEventListener('click', ForgotPassword); //runs function on click
+
+            </script>
+
+
+            <script>
+                // Function to set the theme based on the value stored in localStorage
+                function setTheme() {
+                    var storedTheme = localStorage.getItem('theme');
+                    if (storedTheme === 'darkTheme') {
+                        toggleTheme('darkTheme');
+                    } else {
+                        toggleTheme('lightTheme');
+                    }
+                }
+
+                // Function to toggle the theme
+                function toggleTheme(theme) {
+                    var body = document.body;
+                    var sidebar = document.getElementById('sidebar');
+                    var settingsText = document.querySelector('.logo_name');
+                    var card = document.getElementById('cardBody')
+
+
+                    if (theme === 'lightTheme') {
+                        body.style.backgroundColor = 'white';
+                        body.style.color = 'black';
+                        sidebar.style.backgroundColor = 'rgb(240, 240, 242)';
+                        settingsText.style.color = 'black';
+                    } else {
+                        body.style.backgroundColor = '#333';
+                        body.style.color = 'white';
+                        sidebar.style.backgroundColor = '#352F44';
+                        settingsText.style.color = 'white';
+                        card.style.backgroundColor = '#333';
+                    }
+
+                    // Remove 'selected' class from all buttons
+                    var buttons = document.querySelectorAll('.theme-button');
+                    buttons.forEach(function (button) {
+                        button.classList.remove('selected');
+                    });
+
+                    // Add 'selected' class to the clicked button
+                    var clickedButton = document.getElementById(theme);
+                    clickedButton.classList.add('selected');
+
+                    // Store the selected theme in localStorage
+                    localStorage.setItem('theme', theme);
+
+                }
+                setTheme();
+            </script>
 </body>
+
 </html>
