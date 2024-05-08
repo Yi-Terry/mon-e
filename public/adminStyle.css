@@ -102,3 +102,43 @@ table {
   flex: 1;
   margin-right: 5px;
 }
+
+#ticket-table {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Style for the table */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+
+/* Optional: Style for the header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+#DeleteButton {
+  background-color: #ff6347;
+  /* Red color */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+#DeleteButton:hover {
+  background-color: #d32f2f;
+  /* Darker shade of red on hover */
+}

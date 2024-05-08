@@ -9,14 +9,14 @@
 /* Base styles */
 body {
   font-family: 'Source Sans Pro', sans-serif;
-  background-color: #00008B;
+  background-color: #87E76D;
 
   background-size: cover;
   
 }
 
 form {
-  background: #87e76d;
+  background: #D3D3D3;
   width: 640px;
   margin: 50px auto;
   max-width: 97%;
@@ -26,7 +26,7 @@ form {
 
 form .title h2 {
   letter-spacing: 6px;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid black;
   display: inline-block;
   padding-bottom: 8px;
   margin-bottom: 32px;
@@ -54,7 +54,7 @@ form label {
 form input[type="text"],
 form textarea {
   border-radius: 4px;
-  border: 1px solid white;
+  border: 1px solid black;
   outline: 0;
   padding: 12px 16px;
   width: 100%;
@@ -115,7 +115,7 @@ form .action input:hover {
 /* Style the navigation bar */
 .navbar {
   width: 100%;
-  background-color: #00008B;
+  background-color: #87E76D;
   overflow: auto;
 }
 
@@ -144,3 +144,8 @@ form .action input:hover {
 .navbar a[href="homePage.html"] {
   float: right;
 }
+
+.navbar a[href="submittedTickets.html"] {
+  float: right;
+}
+
