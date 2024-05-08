@@ -17,6 +17,7 @@ const ADMIN_API = {
   MakeUser: (email, password, PhoneNumber, displayName) => ipcRenderer.send("MakeUser", email, password, PhoneNumber, displayName),
   Deactivate: (userID) => ipcRenderer.send("DeactivateUser", userID),
   Activate: (userID) => ipcRenderer.send("ActivateUser", userID),
+  Delete: (userID) => ipcRenderer.send("DeleteUser", userID),
   UpdateUser: (userID, email, password, displayName) => ipcRenderer.send("UpdateUser", userID, email, password, displayName),
   MakeAdmin: (userID) => ipcRenderer.send("MakeUserAdmin", userID),
 }

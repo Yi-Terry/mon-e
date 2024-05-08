@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket Submission</title>
+  <link rel="stylesheet" href="adminStyle.css">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;600&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="images/newLogo-noBackground.png" type="">
+
+</head>
+
+<body>
+  <div id="ticket-table">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h1>Support Tickets</h1>
+      <div style="margin-right: 20px;">
+        <button id="back">Back</button>
+      </div>
+    </div>
+    <div style="overflow-y: auto; max-height: 800px;">
+      <table class="table">
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Message</th>
+          <th scope="col">Status</th>
+          <th scope="col">Date Created</th>
+          <th scope="col">Action</th>
+        </tr>
+        <tr>
+          <td>Name</td>
+          <td>Email</td>
+          <td>Message</td>
+          <td>Staus</td>
+          <td>Date Created</td>
+          <td>
+            <button id="Edit">Reply</button> <!-- Edit button column -->
+          </td>
+        </tr>
+        <!-- More rows can be added here -->
+      </table>
+    </div>
+  </div>
+
+  <div id="responseModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Enter Response</h2>
+      <textarea id="responseText" rows="8" cols="50"></textarea>
+      <button id="submitResponse">Submit</button>
+    </div>
+  </div>
+  <!-- End of Page Wrapper -->
+  <script type="module">
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
+    import { getDatabase, set, ref, onValue, push, update } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-database.js";
+    import { firebaseConfig } from "./firebase.js";
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const database = getDatabase(app);
+    let currentTicketKey;
+
+    const modal = document.getElementById('responseModal');
+
+    function fetchTickets() {
+      const ticketsRef = ref(database, 'tickets');
+      onValue(ticketsRef, (snapshot) => {
+        const tickets = snapshot.val();
+        console.log(tickets);
+        const tableBody = document.querySelector('#ticket-table table tbody');
+        const allTickets = Object.values(tickets).filter(ticket => ticket);
+        while (tableBody.rows.length > 1) {
+          tableBody.deleteRow(1);
+        }
+        allTickets.forEach((ticket) => {
+          const row = tableBody.insertRow();
+
+          // Create table cells for each user attribute
+          const emailCell = row.insertCell();
+          emailCell.textContent = ticket.Email;
+
+          const messageCell = row.insertCell();
+          messageCell.textContent = ticket.Message;
+
+          const nameCell = row.insertCell();
+          nameCell.textContent = ticket.Name;
+
+          const statusCell = row.insertCell();
+          statusCell.textContent = ticket.Status;
+
+          const dateCreatedCell = row.insertCell();
+          dateCreatedCell.textContent = new Date(ticket.Date).toLocaleDateString();
+
+          const responseButtonCell = row.insertCell();
+          const responseButton = document.createElement('button');
+          responseButton.textContent = 'Reply';
+          responseButtonCell.appendChild(responseButton);
+
+          // Adjust button style if the status is "closed"
+          if (ticket.Status.toLowerCase() === 'closed') {
+            responseButton.style.opacity = '0.5'; // Set opacity to 50% (more transparent)
+            responseButton.disabled = true;
+            responseButton.title = "Ticket is closed. You cannot reply.";
+          }
+
+          responseButton.addEventListener('click', function () {
+            const ticketKey = Object.keys(tickets).find(key => tickets[key] === ticket);
+            currentTicketKey = ticketKey;
+            console.log(ticketKey);
+            modal.style.display = 'block';
+          });
+        });
+      });
+    }
+
+    var closeModalBtn = modal.querySelector(".close");
+
+    window.addEventListener('click', function (event) {
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    });
+
+    window.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && (modal.style.display === 'block')) {
+        modal.style.display = 'none';
+      }
+    });
+
+    closeModalBtn.addEventListener('click', function () {
+      modal.style.display = 'none';
+    });
+
+
+    fetchTickets();
+
+
+    document.getElementById('back').addEventListener('click', function (event) {
+      window.location.href = 'adminHomePage.html';
+    });
+
+    document.getElementById('submitResponse').addEventListener('click', function (event) {
+      var responseText = document.getElementById("responseText").value;
+      const ticketRef = ref(database, 'tickets/' + currentTicketKey);
+      update(ticketRef, {
+        admin_Response: responseText,
+        Status: "Closed"
+      })
+        .then(() => {
+          console.log("Ticket Aanswered");
+        })
+        .catch((error) => {
+          console.error("Error updating user:", error);
+        });
+      modal.style.display = "none";
+    })
+
+
+    function goToHomePage() {
+      window.location.href = 'homepage.html';
+    }
+
+    // Function to set the theme based on the value stored in localStorage
+    function setTheme() {
+      var storedTheme = localStorage.getItem('theme');
+      if (storedTheme === 'darkTheme') {
+        toggleTheme('darkTheme');
+      } else {
+        toggleTheme('lightTheme');
+      }
+    }
+
+    // Function to toggle the theme
+    function toggleTheme(theme) {
+      var body = document.body;
+
+
+
+      if (theme === 'lightTheme') {
+        body.style.backgroundColor = 'white';
+        body.style.color = 'black';
+
+      } else {
+        body.style.backgroundColor = '#333';
+
+        body.style.color = 'white';
+
+
+      }
+
+      // Remove 'selected' class from all buttons
+      var buttons = document.querySelectorAll('.theme-button');
+      buttons.forEach(function (button) {
+        button.classList.remove('selected');
+      });
+
+      // Add 'selected' class to the clicked button
+      var clickedButton = document.getElementById(theme);
+      clickedButton.classList.add('selected');
+
+      // Store the selected theme in localStorage
+      localStorage.setItem('theme', theme);
+
+    }
+
+    // Call setTheme on page load
+    setTheme();
+  </script>
+
+</body>
+
+</html>

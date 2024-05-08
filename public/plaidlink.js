@@ -190,7 +190,6 @@ function groupByDate(transactions) {
     });
 }
 
-
   const dateRangeSelector = document.getElementById('date-range')
   dateRangeSelector.addEventListener('change', displayTransactions)
 
