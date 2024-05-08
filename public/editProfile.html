@@ -91,9 +91,7 @@
                             <label for="phone">Phone</label>
                             <input type="number" class="form-control" id="phone" placeholder="Enter phone number">
                         </div>
-                    </div>
-                </div>
-              
+                    </div>              
                 <div class="row gutters">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="text-right">
@@ -184,7 +182,9 @@
                             LastName: lastName,
                             PhoneNumber: phoneNumber
                         }).then(() =>{
-                            console.log("Update complete");            
+                            console.log("Update complete");
+                            alert("update Complete")
+
                         }).catch((error) => {
                             console.log("could not update: ",error);
                         });
