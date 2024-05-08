@@ -43,7 +43,8 @@
     <div class="action">
       <input type="submit" value="Send Ticket">
       <input type="reset" value="Clear">
-      <input type="button" value="Back" onclick="goToHomePage()">
+      <a href="homePage.html"><input type="button" value="Back"></a>
+
     </div>
   </form>
 
@@ -108,10 +109,6 @@
       this.reset();
     });
 
-
-    function goToHomePage() {
-      window.location.href = 'homepage.html';
-    }
 
     // Function to set the theme based on the value stored in localStorage
     function setTheme() {
