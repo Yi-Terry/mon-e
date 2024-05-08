@@ -190,23 +190,14 @@ function groupByDate(transactions) {
     });
 }
 
- function displayBudget(){
-    const budgetContainer = document.getElementById('h5 mb-0 mr-3 font-weight-bold text-gray-800');
-    const budgetData = document.getElementById('amount');
-    const budgetValue = budgetData.value;
-    const formattedBudget = `$${budgetValue} `;
-    budgetContainer.innerHTML = formattedBudget;
-}
 
   const dateRangeSelector = document.getElementById('date-range')
   dateRangeSelector.addEventListener('change', displayTransactions)
 
-  const budgetSubmitBtn = document.getElementById("Create");
-  budgetSubmitBtn.addEventListener('click', displayBudget)
+
   
   
-  displayTransactions()
-  displayBudget()
+  displayTransactions();
   displayRecurringTransactions();
 });
 
