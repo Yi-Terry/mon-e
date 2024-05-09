@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             localStorage.setItem('accessToken', accessToken);
             const itemId = data.item_id;
             window.plaid.sendToken(accessToken, itemId, currentUser)
+            window.location.assign('homePage.html')
             displayTransactions();
             displayRecurringTransactions();  
           })
@@ -53,54 +54,70 @@ document.addEventListener('DOMContentLoaded', async () => {
   let transactionCategories = {};
 
   function displayTransactions() {
-    const dateRangeSelector = document.getElementById('date-range');
-    const transactionsContainer = document.getElementById('transactions-container');
+    const dateRangeSelector = document.getElementById('date-range')
+    const transactionsContainer = document.getElementById(
+      'transactions-container',
+    )
 
-    transactionCategories = {};
+    transactionCategories = {}
 
     if (!accessToken) {
-        console.error('Access Token is not available. Please link your account first.');
-        return;
+      console.error(
+        'Access Token is not available. Please link your account first.',
+      )
+      return
     }
 
-    const dateRange = dateRangeSelector.value;
+    const dateRange = dateRangeSelector.value
 
     fetch(`/api/transactions/get?dateRange=${dateRange}`)
-    .then((response) => response.json())
-    .then((data) => {
-        const groupedTransactions = groupByDate(data.all_transactions);
+      .then((response) => response.json())
+      .then((data) => {
+        const groupedTransactions = groupByDate(data.all_transactions)
 
-        let tableHTML = '<table class="transactions-table">';
-        Object.keys(groupedTransactions).forEach(date => {
-            tableHTML += `<tr class="date-row"><th colspan="3">${date}</th></tr>`;
-            groupedTransactions[date].forEach(transaction => {
-                const mainCategory = String(transaction.category).split(',')[0].trim();
+        let tableHTML = '<table class="transactions-table">'
+        Object.keys(groupedTransactions).forEach((date) => {
+          tableHTML += `<tr class="date-row"><th colspan="3">${date}</th></tr>`
+          groupedTransactions[date].forEach((transaction) => {
+            const mainCategory = String(transaction.category)
+              .split(',')[0]
+              .trim()
 
-                if (transactionCategories[mainCategory]) {
-                    transactionCategories[mainCategory] += transaction.amount;
-                } else {
-                    transactionCategories[mainCategory] = transaction.amount;
-                }
+            if (
+              !transaction.name.includes('CREDIT CARD') &&
+              !transaction.name.includes('INTRST')
+            ) {
+              const amount = Math.abs(transaction.amount) 
 
-                const logoHTML = transaction.logo_url ? `<td class="transaction-logo"><img src="${transaction.logo_url}" alt="${transaction.name}"></td>` : '<td class="transaction-logo"></td>';
+              if (transactionCategories[mainCategory]) {
+                transactionCategories[mainCategory] += amount
+              } else {
+                transactionCategories[mainCategory] = amount
+              }
+            }
+            
+            const logoHTML = transaction.logo_url
+              ? `<td class="transaction-logo"><img src="${transaction.logo_url}" alt="${transaction.name}"></td>`
+              : '<td class="transaction-logo"></td>'
 
-                tableHTML += `
+            const formattedAmount = `$${Math.abs(transaction.amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+            
+            tableHTML += `
                     <tr class="transaction-row">
                         <td class="transaction-name">${transaction.name}</td>
                         ${logoHTML}
-                        <td class="transaction-amount">${transaction.amount} ${transaction.iso_currency_code}</td>
-                    </tr>`;
-            });
-        });
-        tableHTML += '</table>';
+                        <td class="transaction-amount">${formattedAmount}</td>
+                    </tr>`
+          })
+        })
+        tableHTML += '</table>'
 
-        transactionsContainer.innerHTML = tableHTML;
+        transactionsContainer.innerHTML = tableHTML
 
-        displayPieChart();
-    })
-    .catch((error) => console.error('Error fetching transactions:', error));
-}
-
+        displayPieChart()
+      })
+      .catch((error) => console.error('Error fetching transactions:', error))
+  }
 
 function groupByDate(transactions) {
     const grouped = {};
@@ -113,88 +130,106 @@ function groupByDate(transactions) {
     return grouped;
 }
 
-  function displayRecurringTransactions() {
-    const recurringTransactionsContainer = document.getElementById('recurring-transactions-container');
+ function displayRecurringTransactions() {
+   const recurringTransactionsContainer = document.getElementById(
+     'recurring-transactions-container',
+   )
 
-    if (!accessToken) {
-      console.error('Access Token is not available. Please link your account first.');
-      return;
-    }
+   if (!accessToken) {
+     console.error(
+       'Access Token is not available. Please link your account first.',
+     )
+     return
+   }
 
-    fetch('/api/transactions/recurring')
-    .then((response) => response.json())
-    .then((data) => {
-      let tableHTML = '<table class="recurring-transactions-table">';
-      
-      tableHTML += '<tr class="table-header"><th>Description</th><th>Frequency</th><th>Amount</th></tr>';
+   fetch('/api/transactions/recurring')
+     .then((response) => response.json())
+     .then((data) => {
+       let tableHTML = '<table class="recurring-transactions-table">'
 
-      data.recurring_Transactions.inflow_streams.forEach(stream => {
-        tableHTML += `
-          <tr>
+       tableHTML +=
+         '<tr class="table-header"><th>Description</th><th>Frequency</th><th>Amount</th></tr>'
 
-            <td>${stream.description}</td>
-            <td>${stream.frequency}</td>
-            <td>${stream.last_amount.amount}</td>
-          </tr>`;
-      });
+       data.recurring_Transactions.inflow_streams.forEach((stream) => {
+         const formattedAmount = `$${Math.abs(stream.last_amount.amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+         tableHTML += `
+                <tr>
+                    <td>${stream.description}</td>
+                    <td>${stream.frequency}</td>
+                    <td>${formattedAmount} </td>
+                </tr>`
+       })
 
-      data.recurring_Transactions.outflow_streams.forEach(stream => {
-        tableHTML += `
-          <tr>
-   
-            <td>${stream.description}</td>
-            <td>${stream.frequency}</td>
-            <td>${stream.last_amount.amount}</td>
-          </tr>`;
-      });
+       data.recurring_Transactions.outflow_streams.forEach((stream) => {
+         const formattedAmount = `$${Math.abs(stream.last_amount.amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+         tableHTML += `
+                <tr>
+                    <td>${stream.description}</td>
+                    <td>${stream.frequency}</td>
+                    <td>${formattedAmount}</td>
+                </tr>`
+       })
 
-      tableHTML += '</table>';
+       tableHTML += '</table>'
 
-      recurringTransactionsContainer.innerHTML = tableHTML;
-    })
-    .catch((error) => console.error('Error fetching recurring transactions:', error));
-}
+       recurringTransactionsContainer.innerHTML = tableHTML
+     })
+     .catch((error) =>
+       console.error('Error fetching recurring transactions:', error),
+     )
+ }
 
-  function displayPieChart() {
-    const ctx = document.getElementById('myPieChart').getContext('2d');
-    
-    const labels = Object.keys(transactionCategories);
-    const data = Object.values(transactionCategories);
+function displayPieChart() {
+  const ctx = document.getElementById('myPieChart').getContext('2d')
 
-    new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: labels,
-            datasets: [{
-                data: data,
-                backgroundColor: [
-                    '#FF6384',
-                    '#36A2EB',
-                    '#FFCE56',
-                    '#4BC0C0',
-                    '#FF8A80',
-                    '#A1887F',
-                    '#7986CB',
-                    '#81C784',
-                    '#FFD54F',
-                    '#64B5F6'
-                ]
-            }]
+  const labels = Object.keys(transactionCategories)
+  const data = Object.values(transactionCategories)
+
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          data: data,
+          backgroundColor: [
+            '#FF6384',
+            '#36A2EB',
+            '#FFCE56',
+            '#4BC0C0',
+            '#FF8A80',
+            '#A1887F',
+            '#7986CB',
+            '#81C784',
+            '#FFD54F',
+            '#64B5F6',
+          ],
         },
-        options: {
-            responsive: true,
-            legend: {
-                position: 'right'
+      ],
+    },
+    options: {
+      responsive: true,
+      legend: {
+        position: 'right',
+      },
+      tooltips: {
+        callbacks: {
+          label: function (tooltipItem, data) {
+            let label = data.labels[tooltipItem.index] || ''
+            let value = data.datasets[0].data[tooltipItem.index] || ''
+            if (value) {
+              value = '$' + Math.abs(value).toFixed(2)
             }
-        }
-    });
+            return label + ': ' + value
+          },
+        },
+      },
+    },
+  })
 }
 
   const dateRangeSelector = document.getElementById('date-range')
   dateRangeSelector.addEventListener('change', displayTransactions)
-
-
-  
   
   displayTransactions();
   displayRecurringTransactions();

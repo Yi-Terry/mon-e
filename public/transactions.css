@@ -62,3 +62,7 @@
 .recurring-transactions-table td {
     padding: 10px;
 }
+.transactions-container {
+  max-height: 700px; 
+  overflow-y: auto;
+}

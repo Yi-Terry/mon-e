@@ -59,28 +59,6 @@
                 Interface
             </div>
 
-            <!-- Modal for receipt scanner -->
-            <div class="modal fade" id="receiptScannerModal" tabindex="-1" role="dialog"
-                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Receipt Scanner</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Please select a receipt file (PDF or DOC):</p>
-                            <input type="file" id="receiptFileInput" accept=".pdf,.doc,.docx">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="uploadReceiptBtn">Upload Receipt</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <!-- Nav Item - Receipt Scanner -->
             <li class="nav-item">
@@ -92,8 +70,6 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Receipt Scanner</h6>
-                        <a id="receiptScannerButton" class="collapse-item" href="#" data-toggle="modal"
-                            data-target="#receiptScannerModal">Receipt Scanner</a>
                         <a class="collapse-item" data-toggle="modal" data-target="#manualModal">Enter Manually</a>
                     </div>
                 </div>
@@ -501,7 +477,7 @@
                                         </select>
                                     </div>
 
-                                    <div id="transactions-container"></div>
+                                    <div id="transactions-container" class="transactions-container">
                                 </div>
                             </div>
                             <!-- End of Main Content -->
@@ -660,29 +636,30 @@
                                 <form id="manualForm">
                                     <div class="form-group">
                                         <label for="storeName">Store Name:</label>
-                                        <input type="text" class="form-control" id="storeName" name="storeName"
-                                            required>
+                                        <input type="text" class="form-control" id="storeName" name="storeName" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="dateManual">Date:</label>
-                                        <input type="date" class="form-control" id="dateManual" name="dateManual"
-                                            required>
+                                        <input type="date" class="form-control" id="dateManual" name="dateManual" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="categoryManual">Category:</label>
-                                        <input type="text" class="form-control" id="categoryManual"
-                                            name="categoryManual" required>
+                                        <select class="form-control" id="categoryManual" name="categoryManual" required>
+                                            <option value="Food">Food</option>
+                                            <option value="Entertainment">Entertainment</option>
+                                            <option value="Transportation">Transportation</option>
+                                            <option value="Miscellaneous">Miscellaneous</option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="amountManual">Amount:</label>
-                                        <input type="text" class="form-control" id="amountManual" name="amountManual"
-                                            required>
+                                        <input type="text" class="form-control" id="amountManual" name="amountManual" required>
                                     </div>
                                     <button class="btn btn-primary" type="submit">Submit</button>
                                 </form>
-                                <p id="submissionMessage" style="display: none; color: green;">Transaction submitted
-                                    successfully!</p>
+                                <p id="submissionMessage" style="display: none; color: green;">Transaction submitted successfully!</p>
                             </div>
+
                             <div class="modal-footer">
                                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                             </div>
