@@ -136,7 +136,6 @@
             }
             onAuthStateChanged(auth, (user) => {
                 if (user) {
-                    window.location.assign("homePage.html")
                     window.api.GoogleLogIN(user.uid);
                 }
             });
@@ -152,7 +151,6 @@
             }
             onAuthStateChanged(auth, (user) => {
                 if (user) {
-                    window.location.assign("homePage.html")
                     window.api.AppleLogIN(user.uid);
                 }
             });

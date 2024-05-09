@@ -2352,7 +2352,6 @@
   
   .btn:not(:disabled):not(.disabled) {
     cursor: pointer;
-    display: flex;
     flex-wrap: wrap;
   }
   

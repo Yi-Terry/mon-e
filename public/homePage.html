@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -710,6 +709,9 @@
                     import { firebaseConfig } from "./firebase.js";
                     let currentUser;
 
+
+
+
                     document.getElementById('subBudgetCheckbox').addEventListener('change', function () {
                         var categorySelection = document.getElementById('categorySelection');
                         var dynamicAmountInputs = document.getElementById('dynamicAmountInputs');
@@ -740,28 +742,50 @@
                         .then((response) => response.json())
                         .then((user) => {
                             currentUser = user; // Assign user data to the variable
-                            fetchBudgetsForCurrentUser(currentUser);
                             fetchUserName(currentUser);
                         }).then(fetch(`/api/transactions/get?dateRange=${dateRange}`)
                             .then((response) => response.json())
                             .then((data) => {
-                                // Extract transactions from the response
+                                console.log(data);
                                 let transactions = data.all_transactions;
+                                let categoryAmounts = {}; // Object to store categories and their total transaction amounts
+                                let transactionAmount = 0; // Variable to store the total transaction amount
+
+                                // Mapping function to convert certain categories
+                                const categoryMap = {
+                                    'Food and Drink': 'Food',
+                                    'Travel': 'Transportation',
+                                    'Transfer': 'Miscellaneous',
+                                    'Payment': 'Miscellaneous'
+                                    // Add more mappings as needed
+                                };
 
                                 // Iterate through each transaction
                                 transactions.forEach(transaction => {
                                     let amount = parseFloat(transaction.amount);
 
-                                    if (amount > 0) { // Ensure amount is a valid number and positive
-                                        totalTransactions.push(amount);
+                                    if (amount > 0) { // Include only positive amounts
+                                        // Determine category based on mapping
+                                        let category = transaction.category[0]; // Default to the first category
+                                        if (categoryMap.hasOwnProperty(category)) {
+                                            category = categoryMap[category];
+                                        }
+
+                                        // Add transaction amount to the corresponding category
+                                        if (categoryAmounts.hasOwnProperty(category)) {
+                                            categoryAmounts[category] += amount;
+                                        } else {
+                                            categoryAmounts[category] = amount;
+                                        }
+
+                                        // Add positive transaction amount to the total
+                                        transactionAmount += amount;
                                     }
                                 });
 
-                                // Sum up the transaction amounts
-                                totalTransactions.forEach(amount => {
-                                    transactionAmount += amount;
-                                });
-                                console.log(totalTransactions)
+                                console.log(categoryAmounts); // Object containing categories and their total positive transaction amounts
+                                console.log(transactionAmount); // Total positive transaction amount
+                                fetchBudgetsForCurrentUser(currentUser, categoryAmounts)
                                 updateProgressBar(currentUser, transactionAmount);
                             }));
 
@@ -770,7 +794,6 @@
                     const auth = getAuth(app);
                     const database = getDatabase(app);
 
-                    const userId = "DmRHa8SY4ghFZg27Xiqc8iz4Pdt2";
 
 
                     document.getElementById("manualForm").addEventListener("submit", function (event) {
@@ -842,26 +865,25 @@
                             }
 
                         });
-
-
                     }
 
-                    function fetchUserName()
-                    {
-                        const usersRef = ref(database, 'users/' + currentUser);
-                    onValue(usersRef, (snapshot) => {
-                        const users = snapshot.val();
 
-                        if (users) {
+
+                    function fetchUserName() {
+                        const usersRef = ref(database, 'users/' + currentUser);
+                        onValue(usersRef, (snapshot) => {
+                            const users = snapshot.val();
+
+                            if (users) {
                                 const firstName = users.FirstName;
                                 const lastName = users.LastName;
                                 const currentUserName = document.getElementById("currentUserName");
-                                currentUserName.innerHTML = firstName+" "+lastName
-                        }
-                    });
+                                currentUserName.innerHTML = firstName + " " + lastName
+                            }
+                        });
                     }
 
-                    function fetchBudgetsForCurrentUser(currentUser) {
+                    function fetchBudgetsForCurrentUser(currentUser, categoryAmounts) {
                         const budgetsRef = ref(database, 'budgets/' + currentUser);
                         onValue(budgetsRef, (snapshot) => {
                             const budgets = snapshot.val();
@@ -883,14 +905,32 @@
                                     for (let i = 0; i < budgetNames.length; i++) {
                                         const budgetName = budgetNames[i];
                                         const amount = amounts[i];
-                                        console.log(budgetName, amount);
-
-                                        // Create HTML elements for each budget and append them to the container
+                                        const categoryAmount = categoryAmounts[budgetName];
                                         const budgetElement = document.createElement('div');
-                                        budgetElement.innerHTML = `
-                        <h4 class="small font-weight-bold">${budgetName} <span class="float-right">$${amount}</span></h4>
+                                        if (categoryAmount === undefined) {
+                                            const percentage = (amount / amount) * 100;
+                                            budgetElement.innerHTML = `
+                        <h4 class="small font-weight-bold">${budgetName} <span class="float-right">$${amount} / $${amount} (${percentage.toFixed(2)}%)</span></h4>
                         <div class="progress mb-4">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 20%" aria-valuenow="${amount}" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: ${percentage}%" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    `;
+                                            budgetsContainer.appendChild(budgetElement);
+                                            continue; // Skip this iteration if category amount is undefined
+                                        }
+                                        // Round category amount to 2 decimal places to avoid precision issues
+                                        const roundedCategoryAmount = parseFloat(categoryAmounts[budgetName].toFixed(2));
+
+                                        // Calculate the remaining budget/amount if category amount is defined, otherwise set it to the full amount
+                                        const remainingAmount = roundedCategoryAmount !== undefined ? amount - roundedCategoryAmount : amount;
+
+                                        // Calculate the percentage of the remaining budget/amount
+                                        const percentage = (remainingAmount / amount) * 100;
+
+                                        budgetElement.innerHTML = `
+                        <h4 class="small font-weight-bold">${budgetName} <span class="float-right">$${remainingAmount} / $${amount} (${percentage.toFixed(2)}%)</span></h4>
+                        <div class="progress mb-4">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: ${percentage}%" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     `;
                                         budgetsContainer.appendChild(budgetElement);

@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             localStorage.setItem('accessToken', accessToken);
             const itemId = data.item_id;
             window.plaid.sendToken(accessToken, itemId, currentUser)
+            window.location.assign("homePage.html")
             displayTransactions();
             displayRecurringTransactions();  
           })
