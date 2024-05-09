@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const addIncomeButton = document.getElementById('add-Income-button');
-  let linkTokenData;
-  let currentUser;
+
 
 
   addIncomeButton.addEventListener('click', async () => {
@@ -15,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const linkHandler = Plaid.create({
       token: linkToken,
       onSuccess: () => {
-        setTimeout(getIncome, 3000);
+        setTimeout(location.reload(), 3000);
       },
       onExit: (err, metadata) => {
         console.error('Plaid Link exited:', err, metadata);
@@ -26,7 +25,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   function getIncome() {
-    fetch('/api/credit/payroll_income/get').then((response) => response.json())
+    fetch('/api/credit/payroll_income/get', {
+      method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+    }).then((response) => response.json())
       .then((data) => {
         incomeData = data.items[0].payroll_income[0].pay_stubs
           .filter((_, index) => index <= 1)

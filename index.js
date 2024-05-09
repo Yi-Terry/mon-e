@@ -261,6 +261,11 @@ ipcMain.on("AppleSignIn", (event, user) => {
     onValue(Access_Token, (snapshot) => {
       const data = snapshot.val();
       ACCESS_TOKEN = data
+      if(ACCESS_TOKEN === null){
+        win.loadURL(`http://localhost:${serverPort}/noBankAccountLinked.html`);
+      } else {
+        win.loadURL(`http://localhost:${serverPort}/homePage.html`);
+      }
     });
     const User_Token = ref(database, 'userToken/' + user.uid + '/User_Token');
     onValue(User_Token, (snapshot) => {
@@ -287,6 +292,11 @@ ipcMain.on('GoogleSignIn', (event, user) => {
     onValue(Access_Token, (snapshot) => {
       const data = snapshot.val();
       ACCESS_TOKEN = data
+      if(ACCESS_TOKEN === null){
+        win.loadURL(`http://localhost:${serverPort}/noBankAccountLinked.html`);
+      } else {
+        win.loadURL(`http://localhost:${serverPort}/homePage.html`);
+      }
     });
     const User_Token = ref(database, 'userToken/' + user.uid + '/User_Token');
     onValue(User_Token, (snapshot) => {
@@ -382,6 +392,11 @@ ipcMain.on('Login', (event, email, password) => {
           onValue(Access_Token, (snapshot) => {
             const data = snapshot.val();
             ACCESS_TOKEN = data;
+            if(ACCESS_TOKEN === null){
+              win.loadURL(`http://localhost:${serverPort}/noBankAccountLinked.html`);
+            } else {
+              win.loadURL(`http://localhost:${serverPort}/homePage.html`);
+            }
           });
           const User_Token = ref(database, 'userToken/' + user.uid + '/User_Token');
           onValue(User_Token, (snapshot) => {
@@ -399,7 +414,6 @@ ipcMain.on('Login', (event, email, password) => {
             const data = snapshot.val();
             First_Name = data;
           });
-          win.loadURL(`http://localhost:${serverPort}/homePage.html`);
         } else {
           dialog.showMessageBox({
             type: 'question',
@@ -870,7 +884,7 @@ appServer.get('/api/transactions/refresh', function (request, response, next) {
 //INCOME
 //refreshes the users bank income info
 //https://plaid.com/docs/api/products/income/#creditbank_incomerefresh
-appServer.get('/api/credit/payroll_income/get', function (request, response, next) {
+appServer.post('/api/credit/payroll_income/get', function (request, response, next) {
   Promise.resolve()
     .then(async function () {
       const bankdata = await client.creditPayrollIncomeGet({

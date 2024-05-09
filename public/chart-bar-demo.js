@@ -2,7 +2,12 @@ let revenueData = []
 let revenueNumber;
 
 function getIncomeAndUpdateChart() {
-  fetch('/api/credit/payroll_income/get')
+  fetch('/api/credit/payroll_income/get', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  })
     .then((response) => response.json())
     .then((data) => {
       // Extract net pay YTD amounts
