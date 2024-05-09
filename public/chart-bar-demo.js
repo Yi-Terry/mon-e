@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let revenueData = []
   let revenueNumber;
   const dateRange = 365
-  let cashSpentData = []
+  let cashSpentData = [];
   let cashFlowData = [];
   let currentUser;
 
@@ -29,6 +29,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       let cashSpent = cashSpentData[i] || 0;
       cashFlowData.push(revenue - cashSpent);
     }
+    myBarChart.data.datasets[2].data = cashFlowData;
+    myBarChart.update();
+    cashFlowData = [];
   }
 
   fetch('/api/credit/payroll_income/get')
@@ -67,18 +70,13 @@ document.addEventListener('DOMContentLoaded', async () => {
           const transactionsRef = ref(database, 'transactions');
 
           onValue(transactionsRef, (snapshot) => {
-
             snapshot.forEach((childSnapshot) => {
               const transaction = childSnapshot.val();
               const key = childSnapshot.key;
 
-              // Check if the transaction has already been processed
               if (!processedTransactionKeys.has(key) && transaction.user === currentUserUid) {
-                // Transaction not processed before, add it to processedTransactionKeys
                 processedTransactionKeys.add(key);
-
-                // Generate a unique key for each firebaseTransaction
-                transaction.key = key; // Add the key to the transaction object
+                transaction.key = key; 
                 firebaseTransactions.push(transaction);
               }
             });
@@ -115,7 +113,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             myBarChart.data.datasets[1].data = cashSpentData;
             myBarChart.options.scales.yAxes[0].ticks.max = revenueNumber;
             calculateCashFlow(revenueData, cashSpentData);
-            myBarChart.update();
           });
         })
     );
