@@ -200,7 +200,7 @@
                     </div>
 
                     <!-- Any other content of your dashboard -->
-                    <script src="plaidlink.js"></script>
+                    <script type="module" src="plaidlink.js"></script>
                     <script src="incomelink.js"></script>
 
 
@@ -638,9 +638,9 @@
                                     <div class="form-group">
                                         <label for="categoryManual">Category:</label>
                                         <select class="form-control" id="categoryManual" name="categoryManual" required>
-                                            <option value="Food">Food</option>
+                                            <option value="Food and Drink">Food</option>
                                             <option value="Entertainment">Entertainment</option>
-                                            <option value="Transportation">Transportation</option>
+                                            <option value="Travel">Transportation</option>
                                             <option value="Miscellaneous">Miscellaneous</option>
                                         </select>
                                     </div>
@@ -772,23 +772,23 @@
 
                         // Get form data
                         const storeName = document.getElementById("storeName").value;
-                        const date = document.getElementById("dateManual").value.toString();
-                        const category = document.getElementById("categoryManual").value;
-                        const amount = document.getElementById("amountManual").value;
+                        const actiondate = document.getElementById("dateManual").value.toString();
+                        const purchasecategory = document.getElementById("categoryManual").value;
+                        const cost = document.getElementById("amountManual").value;
 
-                        console.log(storeName, date, category, amount);
+                        console.log(storeName, actiondate, purchasecategory, cost);
 
-                        if (storeName && date && category && amount) {
+                        if (storeName && actiondate && purchasecategory && cost) {
 
                             const transactionsRef = ref(database, 'transactions');
 
                             // Push new transaction data to Firebase
                             push(transactionsRef, {
-                                Amount: amount,
-                                Category: category,
-                                Date: date,
-                                Merchant: storeName,
-                                User: currentUser
+                                amount: cost,
+                                category: purchasecategory,
+                                date: actiondate,
+                                name: storeName,
+                                user: currentUser
                             }).then(() => {
                                 console.log("Transaction posted successfully!");
                                 document.getElementById("submissionMessage").style.display = "block";

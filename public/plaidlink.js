@@ -1,25 +1,38 @@
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js'
+import { getAuth } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js'
+import {
+  getDatabase,
+  ref,
+  onValue,
+} from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-database.js'
+import { firebaseConfig } from './firebase.js'
+
 document.addEventListener('DOMContentLoaded', async () => {
-  const addBankButton = document.getElementById('add-bank-button');
-  let accessToken = localStorage.getItem('accessToken'); // Retrieve access token from localStorage
-  let currentUser;
+  const firebaseApp = initializeApp(firebaseConfig)
+  const database = getDatabase(firebaseApp)
+  const auth = getAuth(firebaseApp)
+
+  const addBankButton = document.getElementById('add-bank-button')
+  let accessToken = localStorage.getItem('accessToken')
+  let currentUser
 
   fetch('/CurrentUsers')
     .then((response) => response.json())
     .then((user) => {
-      currentUser = user; // Assign user data to the variable
-      console.log(currentUser); // You can log it here if needed
+      currentUser = user
+      console.log(currentUser)
     })
     .catch((error) => {
-      console.error('Error fetching user data:', error);
-    });
+      console.error('Error fetching user data:', error)
+    })
 
   addBankButton.addEventListener('click', async () => {
     const linkTokenResponse = await fetch('/api/create_link_token', {
       method: 'POST',
-    });
+    })
 
-    const linkTokenData = await linkTokenResponse.json();
-    const linkToken = linkTokenData.link_token;
+    const linkTokenData = await linkTokenResponse.json()
+    const linkToken = linkTokenData.link_token
 
     const linkHandler = Plaid.create({
       token: linkToken,
@@ -33,47 +46,59 @@ document.addEventListener('DOMContentLoaded', async () => {
         })
           .then((response) => response.json())
           .then((data) => {
-            accessToken = data.access_token;
-            localStorage.setItem('accessToken', accessToken);
-            const itemId = data.item_id;
+            accessToken = data.access_token
+            localStorage.setItem('accessToken', accessToken)
+            const itemId = data.item_id
             window.plaid.sendToken(accessToken, itemId, currentUser)
             window.location.assign('homePage.html')
-            displayTransactions();
-            displayRecurringTransactions();  
+            displayTransactions()
+            displayRecurringTransactions()
           })
-          .catch((error) => console.error('Error setting access token:', error));
+          .catch((error) => console.error('Error setting access token:', error))
       },
       onExit: (err, metadata) => {
-        console.error('Plaid Link exited:', err, metadata);
+        console.error('Plaid Link exited:', err, metadata)
       },
-    });
+    })
 
-    linkHandler.open();
-  });
+    linkHandler.open()
+  })
 
-  let transactionCategories = {};
+  let transactionCategories = {}
 
-  function displayTransactions() {
-    const dateRangeSelector = document.getElementById('date-range')
-    const transactionsContainer = document.getElementById(
-      'transactions-container',
+function displayTransactions() {
+  const dateRangeSelector = document.getElementById('date-range')
+  const transactionsContainer = document.getElementById(
+    'transactions-container',
+  )
+
+  if (!accessToken) {
+    console.error(
+      'Access Token is not available. Please link your account first.',
     )
+    return
+  }
 
-    transactionCategories = {}
+  fetch(`/api/transactions/get?dateRange=${dateRangeSelector.value}`)
+    .then((response) => response.json())
+    .then((plaidData) => {
+      const plaidTransactions = plaidData.all_transactions
 
-    if (!accessToken) {
-      console.error(
-        'Access Token is not available. Please link your account first.',
-      )
-      return
-    }
+      const currentUserUid = currentUser
+      const transactionsRef = ref(database, 'transactions')
+      onValue(transactionsRef, (snapshot) => {
+        const firebaseTransactions = []
+        snapshot.forEach((childSnapshot) => {
+          const transaction = childSnapshot.val()
+          if (transaction.user === currentUserUid) {
+            firebaseTransactions.push(transaction)
+          }
+        })
 
-    const dateRange = dateRangeSelector.value
+        const allTransactions = plaidTransactions.concat(firebaseTransactions)
+        allTransactions.sort((a, b) => new Date(b.date) - new Date(a.date))
 
-    fetch(`/api/transactions/get?dateRange=${dateRange}`)
-      .then((response) => response.json())
-      .then((data) => {
-        const groupedTransactions = groupByDate(data.all_transactions)
+        const groupedTransactions = groupByDate(allTransactions)
 
         let tableHTML = '<table class="transactions-table">'
         Object.keys(groupedTransactions).forEach((date) => {
@@ -87,27 +112,26 @@ document.addEventListener('DOMContentLoaded', async () => {
               !transaction.name.includes('CREDIT CARD') &&
               !transaction.name.includes('INTRST')
             ) {
-              const amount = Math.abs(transaction.amount) 
-
+              const amount = Math.abs(transaction.amount)
               if (transactionCategories[mainCategory]) {
                 transactionCategories[mainCategory] += amount
               } else {
                 transactionCategories[mainCategory] = amount
               }
             }
-            
+
             const logoHTML = transaction.logo_url
               ? `<td class="transaction-logo"><img src="${transaction.logo_url}" alt="${transaction.name}"></td>`
               : '<td class="transaction-logo"></td>'
 
             const formattedAmount = `$${Math.abs(transaction.amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-            
+
             tableHTML += `
-                    <tr class="transaction-row">
-                        <td class="transaction-name">${transaction.name}</td>
-                        ${logoHTML}
-                        <td class="transaction-amount">${formattedAmount}</td>
-                    </tr>`
+                            <tr class="transaction-row">
+                                <td class="transaction-name">${transaction.name}</td>
+                                ${logoHTML}
+                                <td class="transaction-amount">${formattedAmount}</td>
+                            </tr>`
           })
         })
         tableHTML += '</table>'
@@ -116,126 +140,127 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         displayPieChart()
       })
-      .catch((error) => console.error('Error fetching transactions:', error))
-  }
-
-function groupByDate(transactions) {
-    const grouped = {};
-    transactions.forEach(transaction => {
-        if (!grouped[transaction.date]) {
-            grouped[transaction.date] = [];
-        }
-        grouped[transaction.date].push(transaction);
-    });
-    return grouped;
+    })
+    .catch((error) => console.error('Error fetching transactions:', error))
 }
 
- function displayRecurringTransactions() {
-   const recurringTransactionsContainer = document.getElementById(
-     'recurring-transactions-container',
-   )
 
-   if (!accessToken) {
-     console.error(
-       'Access Token is not available. Please link your account first.',
-     )
-     return
-   }
+  function groupByDate(transactions) {
+    const grouped = {}
+    transactions.forEach((transaction) => {
+      if (!grouped[transaction.date]) {
+        grouped[transaction.date] = []
+      }
+      grouped[transaction.date].push(transaction)
+    })
+    return grouped
+  }
 
-   fetch('/api/transactions/recurring')
-     .then((response) => response.json())
-     .then((data) => {
-       let tableHTML = '<table class="recurring-transactions-table">'
+  function displayRecurringTransactions() {
+    const recurringTransactionsContainer = document.getElementById(
+      'recurring-transactions-container',
+    )
 
-       tableHTML +=
-         '<tr class="table-header"><th>Description</th><th>Frequency</th><th>Amount</th></tr>'
+    if (!accessToken) {
+      console.error(
+        'Access Token is not available. Please link your account first.',
+      )
+      return
+    }
 
-       data.recurring_Transactions.inflow_streams.forEach((stream) => {
-         const formattedAmount = `$${Math.abs(stream.last_amount.amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-         tableHTML += `
-                <tr>
-                    <td>${stream.description}</td>
-                    <td>${stream.frequency}</td>
-                    <td>${formattedAmount} </td>
-                </tr>`
-       })
+    fetch('/api/transactions/recurring')
+      .then((response) => response.json())
+      .then((data) => {
+        let tableHTML = '<table class="recurring-transactions-table">'
+        tableHTML +=
+          '<tr class="table-header"><th>Description</th><th>Frequency</th><th>Amount</th></tr>'
 
-       data.recurring_Transactions.outflow_streams.forEach((stream) => {
-         const formattedAmount = `$${Math.abs(stream.last_amount.amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-         tableHTML += `
-                <tr>
-                    <td>${stream.description}</td>
-                    <td>${stream.frequency}</td>
-                    <td>${formattedAmount}</td>
-                </tr>`
-       })
+        data.recurring_Transactions.inflow_streams.forEach((stream) => {
+          const formattedAmount = `$${Math.abs(stream.last_amount.amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+          tableHTML += `
+                        <tr>
+                            <td>${stream.description}</td>
+                            <td>${stream.frequency}</td>
+                            <td>${formattedAmount}</td>
+                        </tr>`
+        })
 
-       tableHTML += '</table>'
+        data.recurring_Transactions.outflow_streams.forEach((stream) => {
+          const formattedAmount = `$${Math.abs(stream.last_amount.amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+          tableHTML += `
+                        <tr>
+                            <td>${stream.description}</td>
+                            <td>${stream.frequency}</td>
+                            <td>${formattedAmount}</td>
+                        </tr>`
+        })
 
-       recurringTransactionsContainer.innerHTML = tableHTML
-     })
-     .catch((error) =>
-       console.error('Error fetching recurring transactions:', error),
-     )
- }
+        tableHTML += '</table>'
 
-function displayPieChart() {
-  const ctx = document.getElementById('myPieChart').getContext('2d')
+        recurringTransactionsContainer.innerHTML = tableHTML
+      })
+      .catch((error) =>
+        console.error('Error fetching recurring transactions:', error),
+      )
+  }
 
-  const labels = Object.keys(transactionCategories)
-  const data = Object.values(transactionCategories)
+  function displayPieChart() {
+    const ctx = document.getElementById('myPieChart').getContext('2d')
 
-  new Chart(ctx, {
-    type: 'pie',
-    data: {
-      labels: labels,
-      datasets: [
-        {
-          data: data,
-          backgroundColor: [
-            '#FF6384',
-            '#36A2EB',
-            '#FFCE56',
-            '#4BC0C0',
-            '#FF8A80',
-            '#A1887F',
-            '#7986CB',
-            '#81C784',
-            '#FFD54F',
-            '#64B5F6',
-          ],
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      legend: {
-        position: 'right',
+    const labels = Object.keys(transactionCategories)
+    const data = Object.values(transactionCategories)
+
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            data: data,
+            backgroundColor: [
+              '#FF6384',
+              '#36A2EB',
+              '#FFCE56',
+              '#4BC0C0',
+              '#FF8A80',
+              '#A1887F',
+              '#7986CB',
+              '#81C784',
+              '#FFD54F',
+              '#64B5F6',
+            ],
+          },
+        ],
       },
-      tooltips: {
-        callbacks: {
-          label: function (tooltipItem, data) {
-            let label = data.labels[tooltipItem.index] || ''
-            let value = data.datasets[0].data[tooltipItem.index] || ''
-            if (value) {
-              value = '$' + Math.abs(value).toFixed(2)
-            }
-            return label + ': ' + value
+      options: {
+        responsive: true,
+        legend: {
+          position: 'right',
+        },
+        tooltips: {
+          callbacks: {
+            label: function (tooltipItem, data) {
+              let label = data.labels[tooltipItem.index] || ''
+              let value = data.datasets[0].data[tooltipItem.index] || ''
+              if (value) {
+                value = '$' + Math.abs(value).toFixed(2)
+              }
+              return label + ': ' + value
+            },
           },
         },
       },
-    },
-  })
-}
+    })
+  }
 
   const dateRangeSelector = document.getElementById('date-range')
   dateRangeSelector.addEventListener('change', displayTransactions)
-  
-  displayTransactions();
-  displayRecurringTransactions();
-});
 
-const linkElement = document.createElement('link');
-linkElement.rel = 'stylesheet';
-linkElement.href = 'transactions.css';
-document.head.appendChild(linkElement);
+  displayTransactions()
+  displayRecurringTransactions()
+})
+
+const linkElement = document.createElement('link')
+linkElement.rel = 'stylesheet'
+linkElement.href = 'transactions.css'
+document.head.appendChild(linkElement)
