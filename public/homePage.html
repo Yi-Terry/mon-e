@@ -59,20 +59,14 @@
             </div>
 
 
-            <!-- Nav Item - Receipt Scanner -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fa-solid fa-barcode"></i>
-                    <span>Receipt Scanner</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Receipt Scanner</h6>
-                        <a class="collapse-item" data-toggle="modal" data-target="#manualModal">Enter Manually</a>
-                    </div>
-                </div>
-            </li>
+            <!-- Enter Manually Button -->
+<li class="nav-item">
+    <a class="nav-link" href="#" data-toggle="modal" data-target="#manualModal">
+        <i class="fa-solid fa-barcode"></i>
+        <span>Add Transaction</span>
+    </a>
+</li>
+
 
 
 
@@ -626,7 +620,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Manual Receipt Entry</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Add Transaction</h5>
                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">×</span>
                                 </button>
@@ -634,7 +628,7 @@
                             <div class="modal-body">
                                 <form id="manualForm">
                                     <div class="form-group">
-                                        <label for="storeName">Store Name:</label>
+                                        <label for="storeName">Merchant Name:</label>
                                         <input type="text" class="form-control" id="storeName" name="storeName" required>
                                     </div>
                                     <div class="form-group">
