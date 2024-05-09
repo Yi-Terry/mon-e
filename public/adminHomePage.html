@@ -76,7 +76,7 @@
             </li>
 
             <!-- Nav Item - budget Collapse Menu -->
-            <!-- <li class="nav-item">
+                <!-- <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fa-solid fa-piggy-bank"></i>
@@ -94,15 +94,15 @@
                 </div>
             </li> -->
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
+                <!-- Divider -->
+                <hr class="sidebar-divider">
 
-            <!-- Heading 
+                <!-- Heading 
             <div class="sidebar-heading">
                 Addons
             </div> -->
 
-            <!-- Nav Item - Pages Collapse Menu 
+                <!-- Nav Item - Pages Collapse Menu 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapsePages">
@@ -137,14 +137,14 @@
                     <span>Tables</span></a>
             </li>
         -->
-            <!-- Divider -->
-            <!-- <hr class="sidebar-divider d-none d-md-block">
+                <!-- Divider -->
+                <!-- <hr class="sidebar-divider d-none d-md-block">
 
             <!-- Sidebar Toggler (Sidebar) -->
-            <!-- <div class="text-center d-none d-md-inline">
+                <!-- <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div> -->
- 
+
 
 
         </ul>
@@ -185,7 +185,7 @@
                             </form>
                         </div>
                         </li>
-                       
+
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -218,6 +218,7 @@
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <h1>User Information Table</h1>
                         <div style="margin-right: 20px;">
+                            <input type="text" id="searchInput" placeholder="Search by Username">
                             <button id="create-user-btn">Create User</button>
                             <button id="supportTicket" onclick="goToTicketPage()">Support Tickets</button>
                         </div>
@@ -225,15 +226,15 @@
                     <div style="overflow-y: auto; max-height: 800px;">
                         <table class="table">
                             <tr>
-                                <th scope="col">Username</th>
+                                <th scope="col">Email</th>
                                 <th scope="col">Display Name</th>
                                 <th scope="col">Account Status</th>
-                                <th scope="col">Date Created</th>
+                                <th scope="col">Date Created <span id="sortIcon" class="fas fa-sort"></span></th>
                                 <th scope="col">Last Signed In</th>
                                 <th scope="col">Action</th>
                             </tr>
                             <tr>
-                                <td>Username Data</td>
+                                <td>Email Data</td>
                                 <td>Display Data</td>
                                 <td>Account Status Data</td>
                                 <td>Date Created Data</td>
@@ -270,167 +271,6 @@
                             <div class="modal-footer">
                                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                                 <a class="btn btn-primary" id="logout" href="signUp.html">Logout</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- create Budget Modal-->
-                <div class="modal fade" id="createBudgetModal" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document" id="signOutPop">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Create Budget</h5>
-                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">Please enter amount and a date range.
-                                <form>
-                                    <div class="form-group">
-                                        <label for="amount">Amount:</label>
-                                        <input type="number" class="form-control" id="amount" name="amount" required>
-                                    </div>
-                                    <label for="Date">End Date:</label>
-                                    <input type="date" id="date">
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                <a class="btn btn-primary" id="Create" data-dismiss="modal">Create</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- create Sub Budget Modal -->
-                <div class="modal fade" id="addExpenseModal" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document" id="signOutPop">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Add a Sub Budget</h5>
-                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">Please enter amount and description.
-                                <form>
-                                    <div class="form-group">
-                                        <label for="budgetName">Budget Name:</label>
-                                        <input type="text" class="form-control" id="expenseName" name="expenseName"
-                                            required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="amount">Amount:</label>
-                                        <input type="number" class="form-control" id="amount" name="amount" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="category">Category:</label>
-                                        <select class="form-control" id="category" name="category">
-                                            <option value="food">Food</option>
-                                            <option value="entertainment">Entertainment</option>
-                                            <option value="transportation">Transportation</option>
-                                            <option value="misc">Miscellaneous</option>
-                                            <!-- Add more options as needed -->
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="description">Description:</label>
-                                        <textarea class="form-control" id="description" name="description" rows="4"
-                                            placeholder="Enter description..."></textarea>
-                                    </div>
-                                    <label for="Date">End Date:</label>
-                                    <input type="date" id="date">
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                <a class="btn btn-primary" id="Add" data-dismiss="modal">Add</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-                <!-- edit Modal-->
-                <div class="modal fade" id="editBudgetModal" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document" id="signOutPop">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Edit Budget</h5>
-                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">--</div>
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                <a class="btn btn-primary" data-dismiss="modal">Confirm</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- delete Modal-->
-                <div class="modal fade" id="deleteBudgetModal" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document" id="signOutPop">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Delete Budget</h5>
-                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">--</div>
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                <a class="btn btn-primary" data-dismiss="modal">Confirm</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- Manual input receipt Modal-->
-                <div class="modal fade" id="manualModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Manual Receipt Entry</h5>
-                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="manualForm">
-                                    <div class="form-group">
-                                        <label for="storeName">Store Name:</label>
-                                        <input type="text" class="form-control" id="storeName" name="storeName"
-                                            required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="date">Date:</label>
-                                        <input type="date" class="form-control" id="date" name="date" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="time">Time:</label>
-                                        <input type="text" class="form-control" id="time" name="time" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="amount">Amount:</label>
-                                        <input type="number" class="form-control" id="amount" name="amount" required>
-                                    </div>
-
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                <button class="btn btn-primary" id="submitManualBtn">Submit</button>
                             </div>
                         </div>
                     </div>
@@ -503,6 +343,13 @@
                     const modal = document.getElementById('editModal');
                     let userID;
 
+                    let sortAscending = true;
+
+                    document.getElementById('sortIcon').addEventListener('click', function () {
+                        sortAscending = !sortAscending;
+                        sortTable();
+                    });
+
                     function getAllUsers() {
                         fetch('/listallusers')
                             .then((response) => response.json())
@@ -516,8 +363,8 @@
                                     const row = tableBody.insertRow();
 
                                     // Create table cells for each user attribute
-                                    const usernameCell = row.insertCell();
-                                    usernameCell.textContent = user.email;
+                                    const usernameEmail = row.insertCell();
+                                    usernameEmail.textContent = user.email;
 
                                     const displayNameCell = row.insertCell();
                                     displayNameCell.textContent = user.displayName;
@@ -558,6 +405,40 @@
                                 console.error('Error fetching user data:', error);
                             });
                     }
+
+                    document.getElementById('searchInput').addEventListener('input', function () {
+                        const searchText = this.value.toLowerCase();
+                        const tableRows = document.querySelectorAll('#user-information-table table tbody tr');
+
+                        tableRows.forEach((row) => {
+                            const username = row.cells[0].textContent.toLowerCase(); // Get the username from the first cell of each row
+                            if (username.includes(searchText)) {
+                                row.style.display = ''; // Show the row if the username matches the search text
+                            } else {
+                                row.style.display = 'none'; // Hide the row if the username does not match the search text
+                            }
+                        });
+                    });
+
+                    function sortTable() {
+                        const tableBody = document.querySelector('#user-information-table table tbody');
+                        const rows = Array.from(tableBody.querySelectorAll('tr:not(.placeholder)')); // Exclude placeholder row
+
+                        rows.sort((a, b) => {
+                            const dateA = new Date(a.cells[3].textContent);
+                            const dateB = new Date(b.cells[3].textContent);
+                            if (sortAscending) {
+                                return dateA - dateB;
+                            } else {
+                                return dateB - dateA;
+                            }
+                        });
+                        
+
+                        // Reorder table rows
+                        rows.forEach(row => tableBody.appendChild(row));
+                    }
+                    
 
                     document.getElementById('supportTicket').addEventListener('click', function (event) {
                         window.location.href = 'adminSupportTicket.html';
@@ -683,12 +564,12 @@
                             modal.style.display = 'none';
                             console.log("Deletion canceled.");
                         }
-                    if (modal) {
-                        modal.style.display = 'none';
-                        setTimeout(function () {
-                            getAllUsers();
-                        }, 1000);
-                    }
+                        if (modal) {
+                            modal.style.display = 'none';
+                            setTimeout(function () {
+                                getAllUsers();
+                            }, 1000);
+                        }
                     });
 
                     getAllUsers()
