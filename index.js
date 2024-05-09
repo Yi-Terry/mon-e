@@ -269,7 +269,7 @@ ipcMain.on("AppleSignIn", (event, user) => {
         win.loadURL(`http://localhost:${serverPort}/homePage.html`);
       }
     });
-    const User_Token = ref(database, 'userToken/' + user.uid + '/User_Token');
+    const User_Token = ref(database, 'userToken/' + user + '/User_Token');
     onValue(User_Token, (snapshot) => {
       const data = snapshot.val();
       USER_TOKEN = data
@@ -302,7 +302,7 @@ ipcMain.on('GoogleSignIn', (event, user) => {
         win.loadURL(`http://localhost:${serverPort}/homePage.html`);
       }
     });
-    const User_Token = ref(database, 'userToken/' + user.uid + '/User_Token');
+    const User_Token = ref(database, 'userToken/' + user + '/User_Token');
     onValue(User_Token, (snapshot) => {
       const data = snapshot.val();
       USER_TOKEN = data
