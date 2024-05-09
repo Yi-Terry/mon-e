@@ -10892,17 +10892,23 @@
     }
   }
   
+  .chart-body {
+    height: 15rem; /* Set the default height of the chart container */
+    overflow-y: auto;
+  }
   .chart-pie {
     position: relative;
-    height: 15rem;
     width: 100%;
-  }
-  
-  @media (min-width: 768px) {
-    .chart-pie {
-      height: calc(20rem - 43px) !important;
+    height: 100%; /* Ensure the chart takes up the full height of its container */
+}
+
+@media (max-width: 768px) {
+    .chart-body {
+        height: 20rem; /* Reduce height for smaller screens */
     }
   }
+
+
   
   .bg-login-image {
     background: url("https://source.unsplash.com/K4mSJ7kc0As/600x800");
