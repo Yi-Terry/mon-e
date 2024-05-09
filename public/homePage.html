@@ -283,8 +283,9 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Pending Requests</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                                Budget Progress
+                                                </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="remainingBudget"></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -337,7 +338,7 @@
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Transaction Distribution</h6>
-                                    <div class="dropdown no-arrow">
+                                    <!-- <div class="dropdown no-arrow">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -350,11 +351,11 @@
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" href="#">Something else here</a>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    <div class="chart-pie pt-4 pb-2">
+                                    <div class="chart-pie pt-4 pb-2" >
                                         <canvas id="myPieChart"></canvas>
                                     </div>
                                     <!-- <div class="mt-4 text-center small">
@@ -758,6 +759,7 @@
                                 console.log(transactionAmount); // Total positive transaction amount
                                 fetchBudgetsForCurrentUser(currentUser, categoryAmounts)
                                 updateProgressBar(currentUser, transactionAmount);
+                                updateRemainingBudget(currentUser, transactionAmount);
                             }));
 
 
@@ -801,11 +803,36 @@
                         }
                     });
 
+                    function updateRemainingBudget(currentUser, transactionAmount)
+                    {
+                        const remaingBudgetProgress = document.getElementById("remainingBudget");
+                        const budgetsRef = ref(database, 'budgets/' + currentUser);
+                        onValue(budgetsRef, (snapshot) => {
+                            const budgets = snapshot.val();
+                            if (budgets) {
+                                console.log("Budget :", budgets);
+                                const userBudgets = Object.values(budgets).filter(budget => budget);
+
+                                userBudgets.forEach((budget) => {
+                                    const amount = budget.Amount;
+                                    console.log(transactionAmount)
+                                    console.log(amount)
+                                    const remainingBudget = amount - parseFloat(transactionAmount);
+                                    const formattedRemainingBudget = `$${remainingBudget}/${amount}`;
+                                    console.log("Remainging Budget: "+formattedRemainingBudget);
+                                    remaingBudgetProgress.innerHTML = formattedRemainingBudget;
+
+                    });
+                }
+            });
+        }
+
 
 
                     function updateProgressBar(currentUser, transactionAmount) {
                         const budgetContainer = document.getElementById('h5 mb-0 mr-3 font-weight-bold text-gray-800');
                         const progressBar = document.getElementById("my-progress-bar");
+                        
                         //change possibly
                         const budgetsRef = ref(database, 'budgets/' + currentUser);
                         onValue(budgetsRef, (snapshot) => {
@@ -821,6 +848,8 @@
                                     const remainingBudget = amount - parseFloat(transactionAmount);
                                     var progressPrecentage = (remainingBudget / amount) * 100;
                                     const formattedBudget = `$${amount} `;
+                                    console.log("Remaining amouunt: "+formattedBudget);
+                                    const remainingBudgetProgress = `$${amount}`;
                                     budgetContainer.innerHTML = formattedBudget;
                                     progressBar.style.width = `${progressPrecentage}%`;
                                     if (remainingBudget < 0) {
@@ -837,6 +866,7 @@
 
                         });
                     }
+
 
 
 
