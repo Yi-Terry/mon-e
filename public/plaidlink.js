@@ -14,13 +14,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const addBankButton = document.getElementById('add-bank-button')
   let accessToken = localStorage.getItem('accessToken')
-  let currentUser
+  let currentUser;
 
   fetch('/CurrentUsers')
     .then((response) => response.json())
     .then((user) => {
       currentUser = user
-      console.log(currentUser)
     })
     .catch((error) => {
       console.error('Error fetching user data:', error)
@@ -66,86 +65,86 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   let transactionCategories = {}
 
-function displayTransactions() {
-  const dateRangeSelector = document.getElementById('date-range')
-  const transactionsContainer = document.getElementById(
-    'transactions-container',
-  )
-
-  if (!accessToken) {
-    console.error(
-      'Access Token is not available. Please link your account first.',
+  function displayTransactions() {
+    const dateRangeSelector = document.getElementById('date-range')
+    const transactionsContainer = document.getElementById(
+      'transactions-container',
     )
-    return
-  }
 
-  // Reset transactionCategories object
-  transactionCategories = {}
+    if (!accessToken) {
+      console.error(
+        'Access Token is not available. Please link your account first.',
+      )
+      return
+    }
 
-  fetch(`/api/transactions/get?dateRange=${dateRangeSelector.value}`)
-    .then((response) => response.json())
-    .then((plaidData) => {
-      const plaidTransactions = plaidData.all_transactions
+    // Reset transactionCategories object
+    transactionCategories = {}
 
-      const currentUserUid = currentUser
-      const transactionsRef = ref(database, 'transactions')
-      onValue(transactionsRef, (snapshot) => {
-        const firebaseTransactions = []
-        snapshot.forEach((childSnapshot) => {
-          const transaction = childSnapshot.val()
-          if (transaction.user === currentUserUid) {
-            firebaseTransactions.push(transaction)
-          }
-        })
+    fetch(`/api/transactions/get?dateRange=${dateRangeSelector.value}`)
+      .then((response) => response.json())
+      .then((plaidData) => {
+        const plaidTransactions = plaidData.all_transactions
 
-        const allTransactions = plaidTransactions.concat(firebaseTransactions)
-        allTransactions.sort((a, b) => new Date(b.date) - new Date(a.date))
-
-        const groupedTransactions = groupByDate(allTransactions)
-
-        let tableHTML = '<table class="transactions-table">'
-        Object.keys(groupedTransactions).forEach((date) => {
-          tableHTML += `<tr class="date-row"><th colspan="3">${date}</th></tr>`
-          groupedTransactions[date].forEach((transaction) => {
-            const mainCategory = String(transaction.category)
-              .split(',')[0]
-              .trim()
-
-            if (
-              !transaction.name.includes('CREDIT CARD') &&
-              !transaction.name.includes('INTRST')
-            ) {
-              const amount = Math.abs(transaction.amount)
-              if (transactionCategories[mainCategory]) {
-                transactionCategories[mainCategory] += amount
-              } else {
-                transactionCategories[mainCategory] = amount
-              }
+        const currentUserUid = currentUser
+        const transactionsRef = ref(database, 'transactions')
+        onValue(transactionsRef, (snapshot) => {
+          const firebaseTransactions = []
+          snapshot.forEach((childSnapshot) => {
+            const transaction = childSnapshot.val()
+            if (transaction.user === currentUserUid) {
+              firebaseTransactions.push(transaction)
             }
+          })
 
-            const logoHTML = transaction.logo_url
-              ? `<td class="transaction-logo"><img src="${transaction.logo_url}" alt="${transaction.name}"></td>`
-              : '<td class="transaction-logo"></td>'
+          const allTransactions = plaidTransactions.concat(firebaseTransactions)
+          allTransactions.sort((a, b) => new Date(b.date) - new Date(a.date))
 
-            const formattedAmount = `$${Math.abs(transaction.amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+          const groupedTransactions = groupByDate(allTransactions)
 
-            tableHTML += `
+          let tableHTML = '<table class="transactions-table">'
+          Object.keys(groupedTransactions).forEach((date) => {
+            tableHTML += `<tr class="date-row"><th colspan="3">${date}</th></tr>`
+            groupedTransactions[date].forEach((transaction) => {
+              const mainCategory = String(transaction.category)
+                .split(',')[0]
+                .trim()
+
+              if (
+                !transaction.name.includes('CREDIT CARD') &&
+                !transaction.name.includes('INTRST')
+              ) {
+                const amount = Math.abs(transaction.amount)
+                if (transactionCategories[mainCategory]) {
+                  transactionCategories[mainCategory] += amount
+                } else {
+                  transactionCategories[mainCategory] = amount
+                }
+              }
+
+              const logoHTML = transaction.logo_url
+                ? `<td class="transaction-logo"><img src="${transaction.logo_url}" alt="${transaction.name}"></td>`
+                : '<td class="transaction-logo"></td>'
+
+              const formattedAmount = `$${Math.abs(transaction.amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+
+              tableHTML += `
                             <tr class="transaction-row">
                                 <td class="transaction-name">${transaction.name}</td>
                                 ${logoHTML}
                                 <td class="transaction-amount">${formattedAmount}</td>
                             </tr>`
+            })
           })
+          tableHTML += '</table>'
+
+          transactionsContainer.innerHTML = tableHTML
+
+          displayPieChart()
         })
-        tableHTML += '</table>'
-
-        transactionsContainer.innerHTML = tableHTML
-
-        displayPieChart()
       })
-    })
-    .catch((error) => console.error('Error fetching transactions:', error))
-}
+      .catch((error) => console.error('Error fetching transactions:', error))
+  }
 
 
   function groupByDate(transactions) {
@@ -260,8 +259,8 @@ function displayTransactions() {
   dateRangeSelector.addEventListener('change', displayTransactions)
 
 
-  
-  
+
+
   displayTransactions();
   setTimeout(displayRecurringTransactions, 1000)
 });
