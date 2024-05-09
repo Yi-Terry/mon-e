@@ -38,8 +38,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const itemId = data.item_id;
             window.plaid.sendToken(accessToken, itemId, currentUser)
             window.location.assign("homePage.html")
-            displayTransactions();
-            displayRecurringTransactions();  
           })
           .catch((error) => console.error('Error setting access token:', error));
       },
@@ -198,7 +196,7 @@ function groupByDate(transactions) {
   
   
   displayTransactions();
-  displayRecurringTransactions();
+  setTimeout(displayRecurringTransactions, 1000)
 });
 
 const linkElement = document.createElement('link');

@@ -230,13 +230,13 @@ ipcMain.on("MakeUserAdmin", (event, userID) => {
 
 ipcMain.on("DeleteUser", (event, userID) => {
   AdminApp.auth()
-  .deleteUser(userID)
-  .then((userRecord) => {
-    console.log('Successfully Deleted User');
-  })
-  .catch((error) => {
-    console.log('Error updating user:', error);
-  });
+    .deleteUser(userID)
+    .then((userRecord) => {
+      console.log('Successfully Deleted User');
+    })
+    .catch((error) => {
+      console.log('Error updating user:', error);
+    });
 });
 
 //Auth
@@ -252,7 +252,9 @@ ipcMain.on("sendTokenCurrentUser", (event, accesstoken, itemid, currentUser) => 
 });
 
 ipcMain.on("AppleSignIn", (event, user) => {
+  currentUser = user
   if (user) {
+    First_Name = "AppleUser"
     appServer.get('/CurrentUsers', (req, res) => {
       res.json(user)
       currentUser = user
@@ -261,7 +263,7 @@ ipcMain.on("AppleSignIn", (event, user) => {
     onValue(Access_Token, (snapshot) => {
       const data = snapshot.val();
       ACCESS_TOKEN = data
-      if(ACCESS_TOKEN === null){
+      if (ACCESS_TOKEN === null) {
         win.loadURL(`http://localhost:${serverPort}/noBankAccountLinked.html`);
       } else {
         win.loadURL(`http://localhost:${serverPort}/homePage.html`);
@@ -271,12 +273,12 @@ ipcMain.on("AppleSignIn", (event, user) => {
     onValue(User_Token, (snapshot) => {
       const data = snapshot.val();
       USER_TOKEN = data
-      console.log(USER_TOKEN)
+      if (USER_TOKEN == null) {
+        createUserToken(currentUser);
+      } else if (USER_TOKEN == null) {
+        getUserToken(currentUser);
+      }
     });
-    First_Name = "AppleUser"
-    if (USER_TOKEN == null) {
-      createUserToken()
-    }
     console.log('user signed in');
   } else {
     console.log('User is logged out');
@@ -284,7 +286,9 @@ ipcMain.on("AppleSignIn", (event, user) => {
 });
 
 ipcMain.on('GoogleSignIn', (event, user) => {
+  currentUser = user
   if (user) {
+    First_Name = "GoogleUser"
     appServer.get('/CurrentUsers', (req, res) => {
       res.json(user)
     })
@@ -292,7 +296,7 @@ ipcMain.on('GoogleSignIn', (event, user) => {
     onValue(Access_Token, (snapshot) => {
       const data = snapshot.val();
       ACCESS_TOKEN = data
-      if(ACCESS_TOKEN === null){
+      if (ACCESS_TOKEN === null) {
         win.loadURL(`http://localhost:${serverPort}/noBankAccountLinked.html`);
       } else {
         win.loadURL(`http://localhost:${serverPort}/homePage.html`);
@@ -302,12 +306,13 @@ ipcMain.on('GoogleSignIn', (event, user) => {
     onValue(User_Token, (snapshot) => {
       const data = snapshot.val();
       USER_TOKEN = data
-      console.log(USER_TOKEN)
+      if (USER_TOKEN == null) {
+        createUserToken(currentUser);
+      } else if (USER_TOKEN == null) {
+        getUserToken(currentUser);
+      }
     });
     First_Name = "GoogleUser"
-    if (USER_TOKEN == null) {
-      createUserToken()
-    }
     console.log('user signed in')
   } else {
     console.log('User is logged out')
@@ -374,7 +379,7 @@ ipcMain.on('Login', (event, email, password) => {
     .then((userCredential) => {
       const user = userCredential.user;
       currentUser = user.uid;
-      
+
       const is_Admin = ref(database, 'users/' + user.uid + '/is_Admin');
       onValue(is_Admin, (snapshot) => {
         const isAdmin = snapshot.val();
@@ -392,7 +397,7 @@ ipcMain.on('Login', (event, email, password) => {
           onValue(Access_Token, (snapshot) => {
             const data = snapshot.val();
             ACCESS_TOKEN = data;
-            if(ACCESS_TOKEN === null){
+            if (ACCESS_TOKEN === null) {
               win.loadURL(`http://localhost:${serverPort}/noBankAccountLinked.html`);
             } else {
               win.loadURL(`http://localhost:${serverPort}/homePage.html`);
@@ -581,13 +586,16 @@ appServer.post('/api/link/token/create', function (req, res, next) {
   Promise.resolve()
     .then(async function () {
       const incomeTokenObject = {
-        user: { client_user_id: PLAID_CLIENT_ID },
+        user: { client_user_id: currentUser },
         client_name: First_Name,
         language: "en",
         products: ["income_verification"],
         user_token: USER_TOKEN,
         income_verification: {
           income_source_types: ["payroll"],
+          payroll_income: {
+            flow_types: ['payroll_digital_income']
+          }
         },
         country_codes: ["US"],
       };
@@ -600,7 +608,7 @@ appServer.post('/api/link/token/create', function (req, res, next) {
 async function createUserToken(currentUser) {
   try {
     const response = await client.userCreate({
-      client_user_id: PLAID_CLIENT_ID
+      client_user_id: currentUser
     });
     USER_TOKEN = response.data.user_token
     USER_ID = response.data.user_id;
@@ -884,7 +892,7 @@ appServer.get('/api/transactions/refresh', function (request, response, next) {
 //INCOME
 //refreshes the users bank income info
 //https://plaid.com/docs/api/products/income/#creditbank_incomerefresh
-appServer.post('/api/credit/payroll_income/get', function (request, response, next) {
+appServer.get('/api/credit/payroll_income/get', function (request, response, next) {
   Promise.resolve()
     .then(async function () {
       const bankdata = await client.creditPayrollIncomeGet({
@@ -906,6 +914,7 @@ appServer.get('/api/credit/bank_income/get', function (request, response, next) 
       response.json(bankdata.data);
     }).catch(next)
 })
+
 
 //IDENTITY
 // Retrieve Identity for an Item
@@ -1213,7 +1222,7 @@ const upload = multer({ dest: 'uploads/' })
 
 appServer.post('/fileupload', upload.single('file'), (req, res) => {
   const file = req.file
-  const originalFileName = req.file.originalname 
+  const originalFileName = req.file.originalname
   res.json({
     message: 'File uploaded successfully',
     filename: originalFileName,
