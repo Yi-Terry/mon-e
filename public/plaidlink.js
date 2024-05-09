@@ -79,6 +79,9 @@ function displayTransactions() {
     return
   }
 
+  // Reset transactionCategories object
+  transactionCategories = {}
+
   fetch(`/api/transactions/get?dateRange=${dateRangeSelector.value}`)
     .then((response) => response.json())
     .then((plaidData) => {
