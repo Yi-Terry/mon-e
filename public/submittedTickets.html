@@ -1,12 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tickets</title>
-    <h1>Tickets</h1>
+    <title>View Tickets</title>
+    <link rel="stylesheet" href="adminStyle.css">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="images/newLogo-noBackground.png" type="">
 </head>
+
 <body>
-    
+    <div id="ticket-table">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1>Your Support Tickets</h1>
+            <div style="margin-right: 20px;">
+                <button id="back">Back</button>
+            </div>
+        </div>
+        <div style="overflow-y: auto; max-height: 800px;">
+            <table class="table">
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Message</th>
+                    <th scope="col">Date Created</th>
+                    <th scope="col">Reply</th>
+                    <th scope="col">Status</th>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>Message</td>
+                    <td>Date Created</td>
+                    <td>Reply</td>
+                    <td>Status</td>
+                </tr>
+                <!-- More rows can be added here -->
+            </table>
+
+            <script type="module">
+                import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js'
+                import { getDatabase, ref, onValue } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-database.js'
+                import { firebaseConfig } from './firebase.js'
+                let currentUser;
+
+                fetch('/CurrentUsers')
+                    .then((response) => response.json())
+                    .then((user) => {
+                        currentUser = user
+                    })
+                    .catch((error) => {
+                        console.error('Error fetching user data:', error)
+                    })
+                const firebaseApp = initializeApp(firebaseConfig)
+                const database = getDatabase(firebaseApp)
+
+                function fetchTickets() {
+                    const ticketsRef = ref(database, 'tickets');
+
+                    onValue(ticketsRef, (snapshot) => {
+                        const currentUserUid = currentUser
+                        snapshot.forEach((childSnapshot) => {
+                            const tickets = childSnapshot.val();
+                            const tableBody = document.querySelector('#ticket-table table tbody');
+                            while (tableBody.rows.length > 1) {
+                                tableBody.deleteRow(1);
+                            }
+                            if (tickets.User === currentUserUid) {
+                                const row = tableBody.insertRow();
+
+                                // Create table cells for each user attribute
+                                const nameCell = row.insertCell();
+                                nameCell.textContent = tickets.Name;
+
+                                const messageCell = row.insertCell();
+                                messageCell.textContent = tickets.Message;
+
+                                const dateCreatedCell = row.insertCell();
+                                dateCreatedCell.textContent = new Date(tickets.Date).toLocaleDateString();
+
+                                const replyCell = row.insertCell();
+                                replyCell.textContent = tickets.admin_Response;
+
+                                const statusCell = row.insertCell();
+                                statusCell.textContent = tickets.Status;
+
+                            }
+                        });
+                    });
+                }
+
+                document.getElementById('back').addEventListener('click', function (event) {
+                    window.location.href = 'homePage.html';
+                });
+
+                fetchTickets()
+            </script>
+
 </body>
+
 </html>
