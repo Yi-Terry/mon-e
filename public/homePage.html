@@ -81,10 +81,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Utilities:</h6>
-                        <!-- <a class="collapse-item" data-toggle="modal" data-target="#createBudgetModal">Create</a> -->
-                        <a class="collapse-item" data-toggle="modal" data-target="#editBudgetModal">Edit</a>
-                        <a class="collapse-item" data-toggle="modal" data-target="#deleteBudgetModal">Delete</a>
-
+                        <a class="collapse-item" data-toggle="modal" id="edit" data-target="#editBudgetModal">Edit</a>
                     </div>
                 </div>
             </li>
@@ -576,7 +573,8 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="endDate">End Date:</label>
-                                            <input type="date" id="endDate" name="endDate">
+                                            <input type="date" id="endDate" name="endDate"
+                                                onfocus="this.min = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split('T')[0];">
                                         </div>
                                     </form>
                                 </div>
@@ -600,14 +598,51 @@
                                         <span aria-hidden="true">×</span>
                                     </button>
                                 </div>
-                                <div class="modal-body">--</div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="budgetName">Budget Name:</label>
+                                            <input type="text" class="form-control" id="EditbudgetName"
+                                                name="budgetName" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="amount">Amount:</label>
+                                            <input type="number" class="form-control" id="EditbudgetAmount"
+                                                name="budgetAmount" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox"
+                                                    id="EditsubBudgetCheckbox">
+                                                <label class="form-check-label" for="EditsubBudgetCheckbox">
+                                                    Sub-Budget</label>
+                                            </div>
+                                        </div>
+                                        <!-- Categories input fields will be generated dynamically -->
+                                        <div id="EditcategorySelection" style="display: none;"></div>
+                                        <div id="EditdynamicAmountInputs"></div>
+                                        <div class="form-group">
+                                            <label for="description">Description:</label>
+                                            <textarea class="form-control" id="EditbudgetDescription"
+                                                name="budgetDescription" rows="4"
+                                                placeholder="Enter description..."></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="endDate">End Date:</label>
+                                            <input type="date" id="endDateEdit" name="endDate"
+                                                onfocus="this.min = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split('T')[0];">
+                                        </div>
+                                    </form>
+                                </div>
                                 <div class="modal-footer">
+
                                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                    <a class="btn btn-primary" data-dismiss="modal">Confirm</a>
+                                    <button class="btn btn-primary" id="saveChangesBtnBudget">Save Changes</button>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <!-- delete Modal-->
                     <div class="modal fade" id="deleteBudgetModal" tabindex="-1" role="dialog"
                         aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -619,10 +654,12 @@
                                         <span aria-hidden="true">×</span>
                                     </button>
                                 </div>
-                                <div class="modal-body">--</div>
+                                <div class="modal-body">
+                                    <p>Are you sure you want to delete this budget?</p>
+                                </div>
                                 <div class="modal-footer">
                                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                    <a class="btn btn-primary" data-dismiss="modal">Confirm</a>
+                                    <button class="btn btn-danger" id="deleteBtnBudget">Delete</button>
                                 </div>
                             </div>
                         </div>
@@ -650,6 +687,7 @@
                                         <div class="form-group">
                                             <label for="dateManual">Date:</label>
                                             <input type="date" class="form-control" id="dateManual" name="dateManual"
+                                                onfocus="this.max = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split('T')[0];"
                                                 required>
                                         </div>
                                         <div class="form-group">
@@ -696,10 +734,12 @@
                     <script type="module">
                         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
                         import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
-                        import { getDatabase, set, ref, onValue, push } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-database.js";
+                        import { getDatabase, set, ref, onValue, push, remove, update } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-database.js";
                         import { firebaseConfig } from "./firebase.js";
                         let currentUser;
-
+                        const app = initializeApp(firebaseConfig);
+                        const auth = getAuth(app);
+                        const database = getDatabase(app);
 
 
 
@@ -725,11 +765,136 @@
                             }
                         });
 
+                        document.getElementById('edit').addEventListener('click', function () {
+                            var budgetAmount = document.getElementById('EditbudgetAmount');
+                            var budgetName = document.getElementById('EditbudgetName');
+                            var budgetDescription = document.getElementById('EditbudgetDescription');
+                            var budgetDate = document.getElementById('endDateEdit');
+                            const budgetsRef = ref(database, 'budgets/' + currentUser);
+                            onValue(budgetsRef, (snapshot) => {
+                                const budgets = snapshot.val();
+                                const userBudgets = Object.values(budgets).filter(budget => budget);
+                                userBudgets.forEach((budget) => {
+                                    budgetName.value = budget.BudgetName
+                                    budgetAmount.value = budget.Amount
+                                    budgetDescription.value = budget.Description
+                                    budgetDate.value = budget.EndDate
+                                });
+                            });
+                        });
+
+
+                        document.getElementById('EditsubBudgetCheckbox').addEventListener('change', function () {
+                            var categorySelection = document.getElementById('EditcategorySelection');
+                            var dynamicAmountInputs = document.getElementById('EditdynamicAmountInputs');
+                            categorySelection.innerHTML = ''; // Clear previous categories
+                            dynamicAmountInputs.innerHTML = ''; // Clear previous dynamic inputs
+                            const budgetsRef = ref(database, 'budgets/' + currentUser);
+                            onValue(budgetsRef, (snapshot) => {
+                                const budgets = snapshot.val();
+                                const userBudgets = Object.values(budgets).filter(budget => budget);
+                                userBudgets.forEach((budget) => {
+                                    budgetName.value = budget.BudgetName
+                                    budgetAmount.value = budget.Amount
+                                    if (this.checked) {
+                                        var categories = ['Food', 'Entertainment', 'Transportation', 'Miscellaneous'];
+                                        categories.forEach(function (category) {
+                                            var categoryLabel = document.createElement('label');
+                                            categoryLabel.textContent = category + ':';
+                                            var amountInput = document.createElement('input');
+                                            amountInput.type = 'number';
+                                            amountInput.className = 'form-control';
+                                            amountInput.value = budget.Amounts[categories.indexOf(category)];
+                                            categorySelection.appendChild(categoryLabel);
+                                            categorySelection.appendChild(amountInput);
+                                            categorySelection.style.display = 'block';
+                                        });
+                                    } else {
+                                        categorySelection.style.display = 'none';
+                                    }
+                                });
+                            });
+                        })
+
+
                         let dateRange = 365;
                         let totalTransactions = [];
                         let transactionAmount = 0;
                         let processedTransactionKeys = new Set();
+                        let categoryAmounts = {};
 
+                        $('#editBudgetModal').on('show.bs.modal', function () {
+                            // Reset the checkbox state to unchecked
+                            document.getElementById('EditsubBudgetCheckbox').checked = false;
+                        });
+
+                        $('#editBudgetModal').on('hidden.bs.modal', function () {
+                            // Clear the dynamic fields
+                            var categorySelection = document.getElementById('EditcategorySelection');
+                            var dynamicAmountInputs = document.getElementById('EditdynamicAmountInputs');
+                            categorySelection.innerHTML = '';
+                            dynamicAmountInputs.innerHTML = '';
+                        });
+
+                        document.getElementById('saveChangesBtnBudget').addEventListener('click', function () {
+                            // Get references to the input fields in the modal
+                            var budgetNameInput = document.getElementById('EditbudgetName');
+                            var budgetAmountInput = document.getElementById('EditbudgetAmount');
+                            var budgetDescriptionInput = document.getElementById('EditbudgetDescription');
+                            var endDateInput = document.getElementById('endDateEdit');
+
+                            // Get the values from the input fields
+                            var budgetName = budgetNameInput.value;
+                            var budgetAmount = parseFloat(budgetAmountInput.value); // Parse as float if needed
+                            var budgetDescription = budgetDescriptionInput.value;
+                            var endDate = endDateInput.value;
+
+                            const budgetRef = ref(database, 'budgets/' + currentUser);
+                            let key;
+                            onValue(budgetRef, (snapshot) => {
+                                snapshot.forEach((childSnapshot) => {
+                                    key = childSnapshot.key;
+                                    const transaction = childSnapshot.val()
+                                });
+                            });
+
+                            // Create an empty array to collect category values
+                            var categoryValues = [];
+
+                            // Get references to the dynamically generated category inputs
+                            var categoryInputs = document.querySelectorAll('#EditcategorySelection input');
+                            categoryInputs.forEach(function (input) {
+                                // Push each input value into the array
+                                categoryValues.push(parseFloat(input.value));
+                            });
+
+                            var updates = {
+                                'BudgetName': budgetName,
+                                'Amount': budgetAmount,
+                                'Description': budgetDescription,
+                                'EndDate': endDate
+                            };
+
+                            // Add the array of category values to the updates object
+                            updates['Amounts'] = categoryValues;
+
+                            console.log(updates)
+
+                            // Reference to the specific budget node in the database
+                            const budgetRefNext = ref(database, 'budgets/' + currentUser + '/' + key);
+
+                            // Update the data in the database
+                            update(budgetRefNext, updates)
+                                .then(() => {
+                                    console.log("Budget updated successfully");
+                                    fetchBudgetsForCurrentUser(currentUser, categoryAmounts);
+                                    $('#editBudgetModal').modal('hide');
+                                })
+                                .catch((error) => {
+                                    console.error("Error updating budget:", error);
+                                    // Handle any errors
+                                });
+                        });
 
                         fetch('/CurrentUsers')
                             .then((response) => response.json())
@@ -740,7 +905,6 @@
                                 .then((response) => response.json())
                                 .then((data) => {
                                     const currentUserUid = currentUser
-                                    let categoryAmounts = {};
                                     totalTransactions = [];
                                     const categoryMap = {
                                         'Food and Drink': 'Food',
@@ -797,9 +961,7 @@
                                 }));
 
 
-                        const app = initializeApp(firebaseConfig);
-                        const auth = getAuth(app);
-                        const database = getDatabase(app);
+
 
 
 
@@ -829,6 +991,7 @@
                                     console.log("Transaction posted successfully!");
                                     document.getElementById("submissionMessage").style.display = "block";
                                     document.getElementById("manualForm").reset();
+                                    $('#manualModal').modal('hide');
                                 }).catch((error) => {
                                     console.error("Error posting transaction:", error);
                                 });
@@ -846,7 +1009,7 @@
                                     const userBudgets = Object.values(budgets).filter(budget => budget);
                                     userBudgets.forEach((budget) => {
                                         const amount = budget.Amount;
-                                        const remainingBudget =  parseFloat(transactionAmount);
+                                        const remainingBudget = parseFloat(transactionAmount);
                                         const formattedRemainingBudget = `$${remainingBudget}/${amount}`;
                                         remaingBudgetProgress.innerHTML = formattedRemainingBudget;
                                     });
@@ -931,12 +1094,14 @@
                                         for (let i = 0; i < budgetNames.length; i++) {
                                             const budgetName = budgetNames[i];
                                             const amount = amounts[i];
-                                            const categoryAmount = categoryAmounts[budgetName];
+                                            let categoryAmount = categoryAmounts[budgetName];
+                                            console.log(categoryAmount)
                                             const budgetElement = document.createElement('div');
                                             if (categoryAmount === undefined) {
-                                                const percentage = (amount / amount) * 100;
+                                                categoryAmount = 0;
+                                                const percentage = (categoryAmount / amount) * 100;
                                                 budgetElement.innerHTML = `
-                            <h4 class="small font-weight-bold">${budgetName} <span class="float-right">$${amount} / $${amount} (${percentage.toFixed(2)}%)</span></h4>
+                            <h4 class="small font-weight-bold">${budgetName} <span class="float-right">$${categoryAmount} / $${amount} (${percentage.toFixed(2)}%)</span></h4>
                             <div class="progress mb-4">
                                 <div class="progress-bar bg-primary" role="progressbar" style="width: ${percentage}%" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
@@ -965,7 +1130,6 @@
                                 }
                             });
                         }
-
                         var today = new Date();
 
                         var yyyy = today.getFullYear();
@@ -1024,7 +1188,7 @@
                                     Categories: categoriesWithAmounts,
                                     Amounts: amounts,
                                 });
-
+                                $('#addExpenseModal').modal('hide');
                                 console.log("Budget created successfully!");
                             })
                         });

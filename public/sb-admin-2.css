@@ -10629,6 +10629,7 @@
       animation-timing-function: transform cubic-bezier(0.18, 1.25, 0.4, 1), opacity cubic-bezier(0, 1, 0.4, 1);
     }
     .sidebar.toggled .nav-item .collapse .collapse-inner {
+      background-color: white;
       box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
       border-radius: 0.35rem;
     }
