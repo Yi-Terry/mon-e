@@ -60,12 +60,12 @@
 
 
             <!-- Enter Manually Button -->
-<li class="nav-item">
-    <a class="nav-link" href="#" data-toggle="modal" data-target="#manualModal">
-        <i class="fa-solid fa-barcode"></i>
-        <span>Add Transaction</span>
-    </a>
-</li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#manualModal">
+                    <i class="fa-solid fa-barcode"></i>
+                    <span>Add Transaction</span>
+                </a>
+            </li>
 
 
 
@@ -284,8 +284,9 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                                 Budget Progress
-                                                </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="remainingBudget"></div>
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="remainingBudget">
+                                            </div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -355,7 +356,7 @@
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    <div class="chart-pie pt-4 pb-2" >
+                                    <div class="chart-pie pt-4 pb-2">
                                         <canvas id="myPieChart"></canvas>
                                     </div>
                                     <!-- <div class="mt-4 text-center small">
@@ -472,607 +473,620 @@
                                     </div>
 
                                     <div id="transactions-container" class="transactions-container">
+                                    </div>
                                 </div>
-                            </div>
-                            <!-- End of Main Content -->
+                                <!-- End of Main Content -->
 
-                            <!-- Footer -->
-                            <!-- <footer class="sticky-footer " id="foot">
+                                <!-- Footer -->
+                                <!-- <footer class="sticky-footer " id="foot">
                                 <div class="container my-auto">
                                     <div class="copyright text-center my-auto">
                                         <span>Copyright &copy; Your Website 2021</span>
                                     </div>
                                 </div>
                             </footer> -->
-                            <!-- End of Footer -->
+                                <!-- End of Footer -->
 
+                            </div>
+                            <!-- End of Content Wrapper -->
+                            <!--- Place Cards under budget if needed-->
                         </div>
-                        <!-- End of Content Wrapper -->
-                        <!--- Place Cards under budget if needed-->
+
+
+                        <div id="loader" class="center"></div>
+
                     </div>
+                    <!-- End of Page Wrapper -->
 
+                    <!-- Scroll to Top Button-->
+                    <a class="scroll-to-top rounded" href="#page-top">
+                        <i class="fas fa-angle-up"></i>
+                    </a>
 
-                    <div id="loader" class="center"></div>
-
-                </div>
-                <!-- End of Page Wrapper -->
-
-                <!-- Scroll to Top Button-->
-                <a class="scroll-to-top rounded" href="#page-top">
-                    <i class="fas fa-angle-up"></i>
-                </a>
-
-                <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog" role="document" id="signOutPop">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <div class="spinner"></div>
-                                <p>Verifying Income...</p>
+                    <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document" id="signOutPop">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div class="spinner"></div>
+                                    <p>Verifying Income...</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-            <!-- Logout Modal-->
-            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document" id="signOutPop">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">Select "Logout" below if you are ready to end your current
-                            session.</div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                            <a class="btn btn-primary" href="signUp.html">Logout</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Budget Modal -->
-            <div class="modal fade" id="addExpenseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Budget Details</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <div class="form-group">
-                                    <label for="budgetName">Budget Name:</label>
-                                    <input type="text" class="form-control" id="budgetName" name="budgetName" required>
+                    <!-- Logout Modal-->
+                    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document" id="signOutPop">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
                                 </div>
-                                <div class="form-group">
-                                    <label for="amount">Amount:</label>
-                                    <input type="number" class="form-control" id="budgetAmount" name="budgetAmount"
-                                        required>
+                                <div class="modal-body">Select "Logout" below if you are ready to end your current
+                                    session.</div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                    <a class="btn btn-primary" href="signUp.html">Logout</a>
                                 </div>
-                                <div class="form-group">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="subBudgetCheckbox">
-                                        <label class="form-check-label" for="subBudgetCheckbox">
-                                            Sub-Budget</label>
-                                    </div>
-                                </div>
-                                <!-- Categories input fields will be generated dynamically -->
-                                <div id="categorySelection" style="display: none;"></div>
-                                <div id="dynamicAmountInputs"></div>
-                                <div class="form-group">
-                                    <label for="description">Description:</label>
-                                    <textarea class="form-control" id="budgetDescription" name="budgetDescription"
-                                        rows="4" placeholder="Enter description..."></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="endDate">End Date:</label>
-                                    <input type="date" id="endDate" name="endDate">
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                            <button class="btn btn-primary" id="Save">Save</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- edit Modal-->
-            <div class="modal fade" id="editBudgetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document" id="signOutPop">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Edit Budget</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">--</div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                            <a class="btn btn-primary" data-dismiss="modal">Confirm</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- delete Modal-->
-            <div class="modal fade" id="deleteBudgetModal" tabindex="-1" role="dialog"
-                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document" id="signOutPop">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Delete Budget</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">--</div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                            <a class="btn btn-primary" data-dismiss="modal">Confirm</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-                <!-- Manual input receipt Modal-->
-                <div class="modal fade" id="manualModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Add Transaction</h5>
-                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="manualForm">
-                                    <div class="form-group">
-                                        <label for="storeName">Merchant Name:</label>
-                                        <input type="text" class="form-control" id="storeName" name="storeName" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="dateManual">Date:</label>
-                                        <input type="date" class="form-control" id="dateManual" name="dateManual" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="categoryManual">Category:</label>
-                                        <select class="form-control" id="categoryManual" name="categoryManual" required>
-                                            <option value="Food and Drink">Food</option>
-                                            <option value="Entertainment">Entertainment</option>
-                                            <option value="Travel">Transportation</option>
-                                            <option value="Miscellaneous">Miscellaneous</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="amountManual">Amount:</label>
-                                        <input type="text" class="form-control" id="amountManual" name="amountManual" required>
-                                    </div>
-                                    <button class="btn btn-primary" type="submit">Submit</button>
-                                </form>
-                                <p id="submissionMessage" style="display: none; color: green;">Transaction submitted successfully!</p>
-                            </div>
-
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                             </div>
                         </div>
                     </div>
-                </div>
+
+                    <!-- Budget Modal -->
+                    <div class="modal fade" id="addExpenseModal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Budget Details</h5>
+                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="budgetName">Budget Name:</label>
+                                            <input type="text" class="form-control" id="budgetName" name="budgetName"
+                                                required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="amount">Amount:</label>
+                                            <input type="number" class="form-control" id="budgetAmount"
+                                                name="budgetAmount" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="subBudgetCheckbox">
+                                                <label class="form-check-label" for="subBudgetCheckbox">
+                                                    Sub-Budget</label>
+                                            </div>
+                                        </div>
+                                        <!-- Categories input fields will be generated dynamically -->
+                                        <div id="categorySelection" style="display: none;"></div>
+                                        <div id="dynamicAmountInputs"></div>
+                                        <div class="form-group">
+                                            <label for="description">Description:</label>
+                                            <textarea class="form-control" id="budgetDescription"
+                                                name="budgetDescription" rows="4"
+                                                placeholder="Enter description..."></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="endDate">End Date:</label>
+                                            <input type="date" id="endDate" name="endDate">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-primary" id="Save">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
-            <!-- Bootstrap core JavaScript-->
-            <script src="jquery.min.js"></script>
-            <script src="bootstrap.bundle.min.js"></script>
-
-            <!-- Core plugin JavaScript-->
-            <script src="jquery.easing.min.js"></script>
-
-            <!-- Custom scripts for all pages-->
-            <script src="sb-admin-2.min.js"></script>
-
-
-
-            <script type="module">
-                import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
-                import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
-                import { getDatabase, set, ref, onValue, push } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-database.js";
-                import { firebaseConfig } from "./firebase.js";
-                let currentUser;
-
-
-
-
-                document.getElementById('subBudgetCheckbox').addEventListener('change', function () {
-                    var categorySelection = document.getElementById('categorySelection');
-                    var dynamicAmountInputs = document.getElementById('dynamicAmountInputs');
-                    categorySelection.innerHTML = ''; // Clear previous categories
-                    dynamicAmountInputs.innerHTML = ''; // Clear previous dynamic inputs
-                    if (this.checked) {
-                        var categories = ['Food', 'Entertainment', 'Transportation', 'Miscellaneous'];
-                        categories.forEach(function (category) {
-                            var categoryLabel = document.createElement('label');
-                            categoryLabel.textContent = category + ':';
-                            var amountInput = document.createElement('input');
-                            amountInput.type = 'number';
-                            amountInput.className = 'form-control';
-                            categorySelection.appendChild(categoryLabel);
-                            categorySelection.appendChild(amountInput);
-                        });
-                        categorySelection.style.display = 'block';
-                    } else {
-                        categorySelection.style.display = 'none';
-                    }
-                });
-
-                let dateRange = 365;
-                let totalTransactions = [];
-                let transactionAmount = 0;
-
-                fetch('/CurrentUsers')
-                    .then((response) => response.json())
-                    .then((user) => {
-                        currentUser = user; // Assign user data to the variable
-                        fetchUserName(currentUser);
-                    }).then(fetch(`/api/transactions/get?dateRange=${dateRange}`)
-                        .then((response) => response.json())
-                        .then((data) => {
-                            console.log(data);
-                            let transactions = data.all_transactions;
-                            let categoryAmounts = {}; // Object to store categories and their total transaction amounts
-                            let transactionAmount = 0; // Variable to store the total transaction amount
-
-                            // Mapping function to convert certain categories
-                            const categoryMap = {
-                                'Food and Drink': 'Food',
-                                'Travel': 'Transportation',
-                                'Transfer': 'Miscellaneous',
-                                'Payment': 'Miscellaneous'
-                                // Add more mappings as needed
-                            };
-
-                            // Iterate through each transaction
-                            transactions.forEach(transaction => {
-                                let amount = parseFloat(transaction.amount);
-
-                                if (amount > 0) { // Include only positive amounts
-                                    // Determine category based on mapping
-                                    let category = transaction.category[0]; // Default to the first category
-                                    if (categoryMap.hasOwnProperty(category)) {
-                                        category = categoryMap[category];
-                                    }
-
-                                    // Add transaction amount to the corresponding category
-                                    if (categoryAmounts.hasOwnProperty(category)) {
-                                        categoryAmounts[category] += amount;
-                                    } else {
-                                        categoryAmounts[category] = amount;
-                                    }
-
-                                    // Add positive transaction amount to the total
-                                    transactionAmount += amount;
-                                }
-                            });
-
-                                console.log(categoryAmounts); // Object containing categories and their total positive transaction amounts
-                                console.log(transactionAmount); // Total positive transaction amount
-                                fetchBudgetsForCurrentUser(currentUser, categoryAmounts)
-                                updateProgressBar(currentUser, transactionAmount);
-                                updateRemainingBudget(currentUser, transactionAmount);
-                            }));
+                    <!-- edit Modal-->
+                    <div class="modal fade" id="editBudgetModal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document" id="signOutPop">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Edit Budget</h5>
+                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">--</div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                    <a class="btn btn-primary" data-dismiss="modal">Confirm</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- delete Modal-->
+                    <div class="modal fade" id="deleteBudgetModal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document" id="signOutPop">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Delete Budget</h5>
+                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">--</div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                    <a class="btn btn-primary" data-dismiss="modal">Confirm</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
-                const app = initializeApp(firebaseConfig);
-                const auth = getAuth(app);
-                const database = getDatabase(app);
+                    <!-- Manual input receipt Modal-->
+                    <div class="modal fade" id="manualModal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Add Transaction</h5>
+                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="manualForm">
+                                        <div class="form-group">
+                                            <label for="storeName">Merchant Name:</label>
+                                            <input type="text" class="form-control" id="storeName" name="storeName"
+                                                required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dateManual">Date:</label>
+                                            <input type="date" class="form-control" id="dateManual" name="dateManual"
+                                                required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="categoryManual">Category:</label>
+                                            <select class="form-control" id="categoryManual" name="categoryManual"
+                                                required>
+                                                <option value="Food and Drink">Food</option>
+                                                <option value="Entertainment">Entertainment</option>
+                                                <option value="Travel">Transportation</option>
+                                                <option value="Miscellaneous">Miscellaneous</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="amountManual">Amount:</label>
+                                            <input type="text" class="form-control" id="amountManual"
+                                                name="amountManual" required>
+                                        </div>
+                                        <button class="btn btn-primary" type="submit">Submit</button>
+                                    </form>
+                                    <p id="submissionMessage" style="display: none; color: green;">Transaction submitted
+                                        successfully!</p>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
+                    <!-- Bootstrap core JavaScript-->
+                    <script src="jquery.min.js"></script>
+                    <script src="bootstrap.bundle.min.js"></script>
 
-                document.getElementById("manualForm").addEventListener("submit", function (event) {
-                    event.preventDefault();
+                    <!-- Core plugin JavaScript-->
+                    <script src="jquery.easing.min.js"></script>
 
-                        // Get form data
-                        const storeName = document.getElementById("storeName").value;
-                        const actiondate = document.getElementById("dateManual").value.toString();
-                        const purchasecategory = document.getElementById("categoryManual").value;
-                        const cost = document.getElementById("amountManual").value;
-
-                        console.log(storeName, actiondate, purchasecategory, cost);
-
-                        if (storeName && actiondate && purchasecategory && cost) {
-
-                        const transactionsRef = ref(database, 'transactions');
-
-                            // Push new transaction data to Firebase
-                            push(transactionsRef, {
-                                amount: cost,
-                                category: purchasecategory,
-                                date: actiondate,
-                                name: storeName,
-                                user: currentUser
-                            }).then(() => {
-                                console.log("Transaction posted successfully!");
-                                document.getElementById("submissionMessage").style.display = "block";
-                                document.getElementById("manualForm").reset();
-                            }).catch((error) => {
-                                console.error("Error posting transaction:", error);
-                            });
-                        } else {
-                            console.error("Please fill all required fields.");
-                        }
-                    });
-
-                    function updateRemainingBudget(currentUser, transactionAmount)
-                    {
-                        const remaingBudgetProgress = document.getElementById("remainingBudget");
-                        const budgetsRef = ref(database, 'budgets/' + currentUser);
-                        onValue(budgetsRef, (snapshot) => {
-                            const budgets = snapshot.val();
-                            if (budgets) {
-                                console.log("Budget :", budgets);
-                                const userBudgets = Object.values(budgets).filter(budget => budget);
-
-                                userBudgets.forEach((budget) => {
-                                    const amount = budget.Amount;
-                                    console.log(transactionAmount)
-                                    console.log(amount)
-                                    const remainingBudget = amount - parseFloat(transactionAmount);
-                                    const formattedRemainingBudget = `$${remainingBudget}/${amount}`;
-                                    console.log("Remainging Budget: "+formattedRemainingBudget);
-                                    remaingBudgetProgress.innerHTML = formattedRemainingBudget;
-
-                    });
-                }
-            });
-        }
+                    <!-- Custom scripts for all pages-->
+                    <script src="sb-admin-2.min.js"></script>
 
 
 
-                    function updateProgressBar(currentUser, transactionAmount) {
-                        const budgetContainer = document.getElementById('h5 mb-0 mr-3 font-weight-bold text-gray-800');
-                        const progressBar = document.getElementById("my-progress-bar");
-                        
-                        //change possibly
-                        const budgetsRef = ref(database, 'budgets/' + currentUser);
-                        onValue(budgetsRef, (snapshot) => {
-                            const budgets = snapshot.val();
-                            if (budgets) {
-                                console.log("Budget :", budgets);
-                                const userBudgets = Object.values(budgets).filter(budget => budget);
+                    <script type="module">
+                        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
+                        import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
+                        import { getDatabase, set, ref, onValue, push } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-database.js";
+                        import { firebaseConfig } from "./firebase.js";
+                        let currentUser;
 
-                                userBudgets.forEach((budget) => {
-                                    const amount = budget.Amount;
-                                    console.log(transactionAmount)
-                                    console.log(amount)
-                                    const remainingBudget = amount - parseFloat(transactionAmount);
-                                    var progressPrecentage = (remainingBudget / amount) * 100;
-                                    const formattedBudget = `$${amount} `;
-                                    console.log("Remaining amouunt: "+formattedBudget);
-                                    const remainingBudgetProgress = `$${amount}`;
-                                    budgetContainer.innerHTML = formattedBudget;
-                                    progressBar.style.width = `${progressPrecentage}%`;
-                                    if (remainingBudget < 0) {
-                                        progressPrecentage = 100
-                                        progressBar.style.backgroundColor = "red";
-                                        progressBar.style.width = `${progressPrecentage}%`;
-                                    } else {
-                                        progressBar.style.backgroundColor = "#4caf50"; //green
-                                    }
-                                })
+
+
+
+                        document.getElementById('subBudgetCheckbox').addEventListener('change', function () {
+                            var categorySelection = document.getElementById('categorySelection');
+                            var dynamicAmountInputs = document.getElementById('dynamicAmountInputs');
+                            categorySelection.innerHTML = ''; // Clear previous categories
+                            dynamicAmountInputs.innerHTML = ''; // Clear previous dynamic inputs
+                            if (this.checked) {
+                                var categories = ['Food', 'Entertainment', 'Transportation', 'Miscellaneous'];
+                                categories.forEach(function (category) {
+                                    var categoryLabel = document.createElement('label');
+                                    categoryLabel.textContent = category + ':';
+                                    var amountInput = document.createElement('input');
+                                    amountInput.type = 'number';
+                                    amountInput.className = 'form-control';
+                                    categorySelection.appendChild(categoryLabel);
+                                    categorySelection.appendChild(amountInput);
+                                });
+                                categorySelection.style.display = 'block';
                             } else {
-                                console.log("Budget data not found for this user.");
+                                categorySelection.style.display = 'none';
                             }
+                        });
 
-                    });
-                }
+                        let dateRange = 365;
+                        let totalTransactions = [];
+                        let transactionAmount = 0;
+                        let processedTransactionKeys = new Set();
+
+
+                        fetch('/CurrentUsers')
+                            .then((response) => response.json())
+                            .then((user) => {
+                                currentUser = user; // Assign user data to the variable
+                                fetchUserName(currentUser);
+                            }).then(fetch(`/api/transactions/get?dateRange=${dateRange}`)
+                                .then((response) => response.json())
+                                .then((data) => {
+                                    const currentUserUid = currentUser
+                                    let categoryAmounts = {};
+                                    totalTransactions = [];
+                                    const categoryMap = {
+                                        'Food and Drink': 'Food',
+                                        'Travel': 'Transportation',
+                                        'Transfer': 'Miscellaneous',
+                                        'Payment': 'Miscellaneous'
+                                        // Add more mappings as needed
+                                    };
+                                    const firebaseTransactions = [];
+                                    const transactionsRef = ref(database, 'transactions');
+                                    totalTransactions = []; // Reset totalTransactions here
+
+                                    onValue(transactionsRef, (snapshot) => {
+                                        snapshot.forEach((childSnapshot) => {
+                                            const key = childSnapshot.key;
+                                            const transaction = childSnapshot.val()
+                                            if (!processedTransactionKeys.has(key) && transaction.user === currentUserUid) {
+                                                processedTransactionKeys.add(key);
+                                                transaction.key = key;
+                                                firebaseTransactions.push(transaction);
+                                            }
+                                        });
+
+                                        let transactions = data.all_transactions.concat(firebaseTransactions);
+                                        console.log(transactions)
+                                        transactionAmount = 0;
+                                        categoryAmounts = {}
+                                        transactions.forEach(transaction => {
+                                            let category = Array.isArray(transaction.category) ? transaction.category[0] : transaction.category;
+                                            let amount = parseFloat(transaction.amount);
+                                            if (amount > 0) { // Include only positive amounts
+                                                if (categoryMap.hasOwnProperty(category)) {
+                                                    category = categoryMap[category];
+                                                    console.log(category)
+                                                }
+
+                                                // Add transaction amount to the corresponding category
+                                                if (categoryAmounts.hasOwnProperty(category)) {
+                                                    categoryAmounts[category] += amount;
+                                                } else {
+                                                    categoryAmounts[category] = amount;
+                                                }
+
+                                                // Add positive transaction amount to the total
+                                                transactionAmount += amount;
+                                            }
+
+                                        });
+                                        console.log(categoryAmounts)
+                                        fetchBudgetsForCurrentUser(currentUser, categoryAmounts);
+                                        updateProgressBar(currentUser, transactionAmount);
+                                        updateRemainingBudget(currentUser, transactionAmount);
+                                    })
+                                }));
+
+
+                        const app = initializeApp(firebaseConfig);
+                        const auth = getAuth(app);
+                        const database = getDatabase(app);
 
 
 
+                        document.getElementById("manualForm").addEventListener("submit", function (event) {
+                            event.preventDefault();
 
-                function fetchUserName() {
-                    const usersRef = ref(database, 'users/' + currentUser);
-                    onValue(usersRef, (snapshot) => {
-                        const users = snapshot.val();
+                            // Get form data
+                            const storeName = document.getElementById("storeName").value;
+                            const actiondate = document.getElementById("dateManual").value.toString();
+                            const purchasecategory = document.getElementById("categoryManual").value;
+                            const cost = document.getElementById("amountManual").value;
 
-                        if (users) {
-                            const firstName = users.FirstName;
-                            const lastName = users.LastName;
-                            const currentUserName = document.getElementById("currentUserName");
-                            currentUserName.innerHTML = firstName + " " + lastName
+                            console.log(storeName, actiondate, purchasecategory, cost);
+
+                            if (storeName && actiondate && purchasecategory && cost) {
+
+                                const transactionsRef = ref(database, 'transactions');
+
+                                // Push new transaction data to Firebase
+                                push(transactionsRef, {
+                                    amount: cost,
+                                    category: purchasecategory,
+                                    date: actiondate,
+                                    name: storeName,
+                                    user: currentUser
+                                }).then(() => {
+                                    console.log("Transaction posted successfully!");
+                                    document.getElementById("submissionMessage").style.display = "block";
+                                    document.getElementById("manualForm").reset();
+                                }).catch((error) => {
+                                    console.error("Error posting transaction:", error);
+                                });
+                            } else {
+                                console.error("Please fill all required fields.");
+                            }
+                        });
+
+                        function updateRemainingBudget(currentUser, transactionAmount) {
+                            const remaingBudgetProgress = document.getElementById("remainingBudget");
+                            const budgetsRef = ref(database, 'budgets/' + currentUser);
+                            onValue(budgetsRef, (snapshot) => {
+                                const budgets = snapshot.val();
+                                if (budgets) {
+                                    const userBudgets = Object.values(budgets).filter(budget => budget);
+                                    userBudgets.forEach((budget) => {
+                                        const amount = budget.Amount;
+                                        const remainingBudget = amount - parseFloat(transactionAmount);
+                                        const formattedRemainingBudget = `$${remainingBudget}/${amount}`;
+                                        remaingBudgetProgress.innerHTML = formattedRemainingBudget;
+                                    });
+                                }
+                            });
                         }
-                    });
-                }
 
-                function fetchBudgetsForCurrentUser(currentUser, categoryAmounts) {
-                    const budgetsRef = ref(database, 'budgets/' + currentUser);
-                    onValue(budgetsRef, (snapshot) => {
-                        const budgets = snapshot.val();
-                        console.log(budgets);
-                        if (budgets) {
-                            const budgetsContainer = document.querySelector('.card-body-budgets');
-                            const userBudgets = Object.values(budgets).filter(budget => budget);
 
-                            userBudgets.forEach((budget) => {
-                                const budgetNames = budget.Categories;
-                                const amounts = budget.Amounts;
 
-                                // Check if both categories and amounts are defined and not empty
-                                if (!budgetNames || !amounts) {
-                                    console.error("Categories and amounts arrays are undefined");
-                                    return;
+                        function updateProgressBar(currentUser, transactionAmount) {
+                            const budgetContainer = document.getElementById('h5 mb-0 mr-3 font-weight-bold text-gray-800');
+                            const progressBar = document.getElementById("my-progress-bar");
+
+                            //change possibly
+                            const budgetsRef = ref(database, 'budgets/' + currentUser);
+                            onValue(budgetsRef, (snapshot) => {
+                                const budgets = snapshot.val();
+                                if (budgets) {
+                                    const userBudgets = Object.values(budgets).filter(budget => budget);
+                                    userBudgets.forEach((budget) => {
+                                        const amount = budget.Amount;
+                                        const remainingBudget = amount - parseFloat(transactionAmount);
+                                        var progressPrecentage = (remainingBudget / amount) * 100;
+                                        const formattedBudget = `$${amount} `;
+                                        const remainingBudgetProgress = `$${amount}`;
+                                        budgetContainer.innerHTML = formattedBudget;
+                                        progressBar.style.width = `${progressPrecentage}%`;
+                                        if (remainingBudget < 0) {
+                                            progressPrecentage = 100
+                                            progressBar.style.backgroundColor = "red";
+                                            progressBar.style.width = `${progressPrecentage}%`;
+                                        } else {
+                                            progressBar.style.backgroundColor = "#4caf50"; //green
+                                        }
+                                    })
+                                } else {
+                                    console.log("Budget data not found for this user.");
                                 }
 
-                                for (let i = 0; i < budgetNames.length; i++) {
-                                    const budgetName = budgetNames[i];
-                                    const amount = amounts[i];
-                                    const categoryAmount = categoryAmounts[budgetName];
-                                    const budgetElement = document.createElement('div');
-                                    if (categoryAmount === undefined) {
-                                        const percentage = (amount / amount) * 100;
-                                        budgetElement.innerHTML = `
-                        <h4 class="small font-weight-bold">${budgetName} <span class="float-right">$${amount} / $${amount} (${percentage.toFixed(2)}%)</span></h4>
-                        <div class="progress mb-4">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: ${percentage}%" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    `;
-                                        budgetsContainer.appendChild(budgetElement);
-                                        continue; // Skip this iteration if category amount is undefined
-                                    }
-                                    // Round category amount to 2 decimal places to avoid precision issues
-                                    const roundedCategoryAmount = parseFloat(categoryAmounts[budgetName].toFixed(2));
+                            });
+                        }
 
-                                    // Calculate the remaining budget/amount if category amount is defined, otherwise set it to the full amount
-                                    const remainingAmount = roundedCategoryAmount !== undefined ? amount - roundedCategoryAmount : amount;
 
-                                    // Calculate the percentage of the remaining budget/amount
-                                    const percentage = (remainingAmount / amount) * 100;
 
-                                    budgetElement.innerHTML = `
+
+                        function fetchUserName() {
+                            const usersRef = ref(database, 'users/' + currentUser);
+                            onValue(usersRef, (snapshot) => {
+                                const users = snapshot.val();
+
+                                if (users) {
+                                    const firstName = users.FirstName;
+                                    const lastName = users.LastName;
+                                    const currentUserName = document.getElementById("currentUserName");
+                                    currentUserName.innerHTML = firstName + " " + lastName
+                                }
+                            });
+                        }
+
+                        function fetchBudgetsForCurrentUser(currentUser, categoryAmounts) {
+                            const budgetsRef = ref(database, 'budgets/' + currentUser);
+                            const budgetsContainer = document.querySelector('.card-body-budgets');
+
+                            // Clear existing budget elements
+                            budgetsContainer.innerHTML = '';
+
+                            onValue(budgetsRef, (snapshot) => {
+                                const budgets = snapshot.val();
+                                if (budgets) {
+                                    const userBudgets = Object.values(budgets).filter(budget => budget);
+
+                                    userBudgets.forEach((budget) => {
+                                        const budgetNames = budget.Categories;
+                                        const amounts = budget.Amounts;
+
+                                        // Check if both categories and amounts are defined and not empty
+                                        if (!budgetNames || !amounts) {
+                                            console.error("Categories and amounts arrays are undefined");
+                                            return;
+                                        }
+
+                                        for (let i = 0; i < budgetNames.length; i++) {
+                                            const budgetName = budgetNames[i];
+                                            const amount = amounts[i];
+                                            const categoryAmount = categoryAmounts[budgetName];
+                                            const budgetElement = document.createElement('div');
+                                            if (categoryAmount === undefined) {
+                                                const percentage = (amount / amount) * 100;
+                                                budgetElement.innerHTML = `
+                            <h4 class="small font-weight-bold">${budgetName} <span class="float-right">$${amount} / $${amount} (${percentage.toFixed(2)}%)</span></h4>
+                            <div class="progress mb-4">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: ${percentage}%" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        `;
+                                                budgetsContainer.appendChild(budgetElement);
+                                                continue; // Skip this iteration if category amount is undefined
+                                            }
+                                            // Round category amount to 2 decimal places to avoid precision issues
+                                            const roundedCategoryAmount = parseFloat(categoryAmounts[budgetName].toFixed(2));
+
+                                            // Calculate the remaining budget/amount if category amount is defined, otherwise set it to the full amount
+                                            const remainingAmount = roundedCategoryAmount !== undefined ? amount - roundedCategoryAmount : amount;
+
+                                            // Calculate the percentage of the remaining budget/amount
+                                            const percentage = (remainingAmount / amount) * 100;
+
+                                            budgetElement.innerHTML = `
                         <h4 class="small font-weight-bold">${budgetName} <span class="float-right">$${remainingAmount} / $${amount} (${percentage.toFixed(2)}%)</span></h4>
                         <div class="progress mb-4">
                             <div class="progress-bar bg-primary" role="progressbar" style="width: ${percentage}%" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     `;
-                                    budgetsContainer.appendChild(budgetElement);
+                                            budgetsContainer.appendChild(budgetElement);
+                                        }
+                                    });
                                 }
                             });
                         }
-                    });
-                }
 
-                var today = new Date();
+                        var today = new Date();
 
-                var yyyy = today.getFullYear();
+                        var yyyy = today.getFullYear();
 
-                var mm = today.getMonth() + 1;
+                        var mm = today.getMonth() + 1;
 
-                var dd = today.getDate();
+                        var dd = today.getDate();
 
-                if (mm < 10) {
-                    mm = '0' + mm;
-                }
-                if (dd < 10) {
-                    dd = '0' + dd;
-                }
-                var formattedDate = yyyy + '-' + mm + '-' + dd;
+                        if (mm < 10) {
+                            mm = '0' + mm;
+                        }
+                        if (dd < 10) {
+                            dd = '0' + dd;
+                        }
+                        var formattedDate = yyyy + '-' + mm + '-' + dd;
 
-                document.getElementById('Save').addEventListener('click', function (event) {
-                    var budgetName = document.getElementById('budgetName').value;
-                    var budgetAmount = document.getElementById('budgetAmount').value;
-                    var budgetDescription = document.getElementById('budgetDescription').value;
-                    var endDate = document.getElementById('endDate').value;
+                        document.getElementById('Save').addEventListener('click', function (event) {
+                            var budgetName = document.getElementById('budgetName').value;
+                            var budgetAmount = document.getElementById('budgetAmount').value;
+                            var budgetDescription = document.getElementById('budgetDescription').value;
+                            var endDate = document.getElementById('endDate').value;
 
-                    var dynamicAmountInputs = document.getElementById('categorySelection');
-                    var inputFields = dynamicAmountInputs.querySelectorAll('input');
-                    var categoriesWithAmounts = [];
-                    var amounts = Array.from(inputFields)
-                        .map(function (input) {
-                            var amount = parseFloat(input.value || 0); // Parse the value to a number
-                            if (amount > 0) {
-                                categoriesWithAmounts.push(input.previousElementSibling.textContent.replace(':', '').trim());
-                            }
-                            return amount;
-                        })
-                        .filter(function (amount) {
-                            return amount > 0; // Filter out values greater than 0
+                            var dynamicAmountInputs = document.getElementById('categorySelection');
+                            var inputFields = dynamicAmountInputs.querySelectorAll('input');
+                            var categoriesWithAmounts = [];
+                            var amounts = Array.from(inputFields)
+                                .map(function (input) {
+                                    var amount = parseFloat(input.value || 0); // Parse the value to a number
+                                    if (amount > 0) {
+                                        categoriesWithAmounts.push(input.previousElementSibling.textContent.replace(':', '').trim());
+                                    }
+                                    return amount;
+                                })
+                                .filter(function (amount) {
+                                    return amount > 0; // Filter out values greater than 0
+                                });
+
+                            const currentUserBudgetRef = ref(database, 'budgets/' + currentUser);
+
+                            // Check if the user already has a budget
+                            onValue(currentUserBudgetRef, (snapshot) => {
+                                const currentUserBudget = snapshot.val();
+                                if (currentUserBudget) {
+                                    // If the user already has a budget, inform them and prevent creating a new one
+                                    console.log("You already have a budget. You cannot create another one.");
+                                    return;
+                                }
+
+                                const newBudget = push(currentUserBudgetRef);
+                                set(newBudget, {
+                                    BudgetName: budgetName,
+                                    Amount: budgetAmount,
+                                    Description: budgetDescription,
+                                    StartDate: formattedDate,
+                                    EndDate: endDate,
+                                    Categories: categoriesWithAmounts,
+                                    Amounts: amounts,
+                                });
+
+                                console.log("Budget created successfully!");
+                            })
                         });
 
-                    const currentUserBudgetRef = ref(database, 'budgets/' + currentUser);
 
-                    // Check if the user already has a budget
-                    onValue(currentUserBudgetRef, (snapshot) => {
-                        const currentUserBudget = snapshot.val();
-                        if (currentUserBudget) {
-                            // If the user already has a budget, inform them and prevent creating a new one
-                            console.log("You already have a budget. You cannot create another one.");
-                            return;
+
+                        // Function to set the theme based on the value stored in localStorage
+                        function setTheme() {
+                            var storedTheme = localStorage.getItem('theme');
+
+                            if (storedTheme === 'darkTheme') {
+                                toggleTheme('darkTheme');
+                            } else {
+                                toggleTheme('lightTheme');
+                            }
                         }
 
-                        const newBudget = push(currentUserBudgetRef);
-                        set(newBudget, {
-                            BudgetName: budgetName,
-                            Amount: budgetAmount,
-                            Description: budgetDescription,
-                            StartDate: formattedDate,
-                            EndDate: endDate,
-                            Categories: categoriesWithAmounts,
-                            Amounts: amounts,
-                        });
+                        // Function to toggle the theme
+                        function toggleTheme(theme) {
+                            var body = document.body;
+                            var container = document.getElementById('content');
+                            var footw = document.getElementById('foot')
 
-                        console.log("Budget created successfully!");
-                    })
-                });
+                            if (theme === 'lightTheme') {
+                                body.style.backgroundColor = 'white';
+                                body.style.color = 'black';
 
+                            } else {
+                                body.style.backgroundColor = '#333';
+                                body.style.color = 'black';
+                                container.style.backgroundColor = '#333';
+                                footw.style.backgroundColor = '#333';
+                            }
 
+                            // Remove 'selected' class from all buttons
+                            var buttons = document.querySelectorAll('.theme-button');
+                            buttons.forEach(function (button) {
+                                button.classList.remove('selected');
+                            });
 
-                // Function to set the theme based on the value stored in localStorage
-                function setTheme() {
-                    var storedTheme = localStorage.getItem('theme');
+                            // Add 'selected' class to the clicked button
+                            var clickedButton = document.getElementById(theme);
+                            clickedButton.classList.add('selected');
 
-                    if (storedTheme === 'darkTheme') {
-                        toggleTheme('darkTheme');
-                    } else {
-                        toggleTheme('lightTheme');
-                    }
-                }
+                            // Store the selected theme in localStorage
+                            localStorage.setItem('theme', theme);
 
-                // Function to toggle the theme
-                function toggleTheme(theme) {
-                    var body = document.body;
-                    var container = document.getElementById('content');
-                    var footw = document.getElementById('foot')
+                        }
 
-                    if (theme === 'lightTheme') {
-                        body.style.backgroundColor = 'white';
-                        body.style.color = 'black';
+                        // Call setTheme on page load
+                        setTheme();
+                    </script>
 
-                    } else {
-                        body.style.backgroundColor = '#333';
-                        body.style.color = 'black';
-                        container.style.backgroundColor = '#333';
-                        footw.style.backgroundColor = '#333';
-                    }
+                    <!--Page level plugins-->
+                    <script src="Chart.js"></script>
 
-                    // Remove 'selected' class from all buttons
-                    var buttons = document.querySelectorAll('.theme-button');
-                    buttons.forEach(function (button) {
-                        button.classList.remove('selected');
-                    });
+                    <!--Page level custom scripts -->
+                    <script src="chart-area-demo.js"></script>
+                    <script src="chart-pie-demo.js"></script>
+                    <script type="module" src="chart-bar-demo.js"></script>
 
-                    // Add 'selected' class to the clicked button
-                    var clickedButton = document.getElementById(theme);
-                    clickedButton.classList.add('selected');
-
-                    // Store the selected theme in localStorage
-                    localStorage.setItem('theme', theme);
-
-                }
-
-                // Call setTheme on page load
-                setTheme();
-            </script>
-
-            <!--Page level plugins-->
-            <script src="Chart.js"></script>
-
-            <!--Page level custom scripts -->
-            <script src="chart-area-demo.js"></script>
-            <script src="chart-pie-demo.js"></script>
-            <script type = "module" src="chart-bar-demo.js"></script>
-
-            <script src="chartjs-plugin-doughnutlabel.js"></script>
+                    <script src="chartjs-plugin-doughnutlabel.js"></script>
 
 </body>
 
