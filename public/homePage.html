@@ -846,7 +846,7 @@
                                     const userBudgets = Object.values(budgets).filter(budget => budget);
                                     userBudgets.forEach((budget) => {
                                         const amount = budget.Amount;
-                                        const remainingBudget = amount - parseFloat(transactionAmount);
+                                        const remainingBudget =  parseFloat(transactionAmount);
                                         const formattedRemainingBudget = `$${remainingBudget}/${amount}`;
                                         remaingBudgetProgress.innerHTML = formattedRemainingBudget;
                                     });
@@ -948,7 +948,7 @@
                                             const roundedCategoryAmount = parseFloat(categoryAmounts[budgetName].toFixed(2));
 
                                             // Calculate the remaining budget/amount if category amount is defined, otherwise set it to the full amount
-                                            const remainingAmount = roundedCategoryAmount !== undefined ? amount - roundedCategoryAmount : amount;
+                                            const remainingAmount = roundedCategoryAmount !== undefined ? roundedCategoryAmount : amount;
 
                                             // Calculate the percentage of the remaining budget/amount
                                             const percentage = (remainingAmount / amount) * 100;
