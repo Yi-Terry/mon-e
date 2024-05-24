@@ -30,7 +30,7 @@ Mon-E is a comprehensive budgeting application designed to help users manage and
 
 ## Technologies Used
 
-- HTML, CSS, JavaScript, Bootstrap, Electron
+- HTML, CSS, JavaScript, Bootstrap, Electron, Express
 - **APIs and Services**: Plaid API (sandbox environment), Firebase Authentication & Realtime Database
 
 ## Installation
