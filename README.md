@@ -19,15 +19,14 @@ Mon-E is a comprehensive budgeting application designed to help users manage and
 
 1. **Landing Page**
    <br/>
-   <img width="230" alt="Landing Page" src="">
+   <img width="600" alt="Landing Page" src="https://github.com/Yi-Terry/mon-e/blob/main/assets/MonEimage1.png">
    <br/>
-   Filling in...
 
 2. **Dashboard**
    <br/>
-   <img width="230" alt="Dashboard" src="">
+   <img width="600" alt="Dashboard" src="https://github.com/Yi-Terry/mon-e/blob/main/assets/MonEimage2.jpg">
    <br/>
-   Filling In...
+   User can access different charts and displays on the dashboard after linking their bank account. 
 
 ## Technologies Used
 
