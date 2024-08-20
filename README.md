@@ -2,7 +2,7 @@
 
 ## Overview
 
-Mon-E is a comprehensive budgeting application designed to help users manage and better budget their money. This desktop application is built with HTML, CSS, JavaScript, Electron, and Bootstrap. Mon-E offers a variety of features to make budgeting inutitve and hassle free for users.
+Mon-E is a comprehensive budgeting application designed to help users manage and better budget their money. This desktop application is built with HTML, CSS, JavaScript, Electron, and Bootstrap. Mon-E offers a variety of features to make budgeting intuitive and hassle free for users.
 
 ## Features
 - **Create a Budget**: Add customizable budgets and sub budgets. 
